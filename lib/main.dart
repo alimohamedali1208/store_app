@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'login.dart';
-
+//Ali is my Waifu
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
+
 void main() {
   runApp(MaterialApp(
     home: HomePage(),
@@ -40,12 +41,10 @@ class _HomePageState extends State<HomePage> {
     );
     return Scaffold(
       appBar: new AppBar(
-
         elevation: 0.0,
         backgroundColor: Colors.blueGrey[900],
         title: Text("El Wekala"),
         actions: <Widget>[
-
           new IconButton(
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
           new IconButton(
@@ -94,7 +93,8 @@ class _HomePageState extends State<HomePage> {
               onTap: () {},
               child: ListTile(
                 title: Text('My Orders'),
-                leading: Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
+                leading:
+                    Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
               ),
             ),
 
@@ -154,5 +154,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
