@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "61853435207",
+    "project_id": "store-fb761",
+    "storage_bucket": "store-fb761.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61853435207:android:5d63e5114da4d7f8e6b862",
+        "android_client_info": {
+          "package_name": "lol.store_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61853435207-b1cpavjvbgar1p9i491knsvfrspl36rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlobdpNq0QyKTP95qTDl5JhVQ5tpPf8h0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61853435207-b1cpavjvbgar1p9i491knsvfrspl36rq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
