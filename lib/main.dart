@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'login.dart';
-//Ali is my Waifu
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           AssetImage("images/watches.jpg"),
           AssetImage("images/clothes.jpg"),
         ],
-        autoplay: true,
+        autoplay: false,
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(microseconds: 1000),
         dotSize: 4.0,
