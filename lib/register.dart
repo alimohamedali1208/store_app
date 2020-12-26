@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:store_app/register.dart';
 
-final _formKey = GlobalKey<FormState>();
-
-class login extends StatefulWidget {
+class register extends StatefulWidget {
   @override
-  _loginState createState() => _loginState();
+  _registerState createState() => _registerState();
 }
 
-class _loginState extends State<login> {
+class _registerState extends State<register> {
   final _auth = FirebaseAuth.instance;
   String email;
   String pass;
@@ -18,7 +15,7 @@ class _loginState extends State<login> {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("SignUp"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
@@ -27,7 +24,6 @@ class _loginState extends State<login> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _formKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -58,22 +54,6 @@ class _loginState extends State<login> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: FlatButton(
-                      color: Colors.blueGrey[900],
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => register()));
-                      },
-                      child: Text(
-                        'New user?, Sign up here',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -89,14 +69,17 @@ class _loginState extends State<login> {
               color: Colors.blueGrey[900],
               onPressed: () async {
                 try {
-                  final newuser = await _auth.signInWithEmailAndPassword(
+                  final newuser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: pass);
+                  // if (newuser != null) {
+                  //   Navigator.push(context, );
+                  // }
                 } catch (e) {
                   print(e);
                 }
               },
               child: Text(
-                'Sign in',
+                'Sign up',
                 style: TextStyle(color: Colors.white),
               ),
             ),

@@ -32,18 +32,7 @@ flutter:
   uses-material-design: true
 
   assets:
-   - images/mobiles.jpg
-   - images/home.jpg
-   - images/laptop.jpg
-   - images/tv.jpg
-   - images/watches.jpg
-   - images/clothes.jpg
-   - images/tablets.jpg
-   - images/cooker.jpg
-   - images/usb.jpg
-   - images/projector.jpg
-   - images/rings.jpg
-   - images/pants.jpg
+   - images/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
