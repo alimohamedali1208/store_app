@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "61853435207",
-    "project_id": "store-fb761",
-    "storage_bucket": "store-fb761.appspot.com"
+    "project_number": "36642527988",
+    "project_id": "store-cc25c",
+    "storage_bucket": "store-cc25c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:61853435207:android:5d63e5114da4d7f8e6b862",
+        "mobilesdk_app_id": "1:36642527988:android:869a65a57e02172c28dca1",
         "android_client_info": {
           "package_name": "lol.store_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "61853435207-b1cpavjvbgar1p9i491knsvfrspl36rq.apps.googleusercontent.com",
+          "client_id": "36642527988-7o8leqbilprkvtf97sbueldtuh0ab5a7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAlobdpNq0QyKTP95qTDl5JhVQ5tpPf8h0"
+          "current_key": "AIzaSyBykjyIdbKjOyEzVpOEHFVc_s3kQaIki5A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "61853435207-b1cpavjvbgar1p9i491knsvfrspl36rq.apps.googleusercontent.com",
+              "client_id": "36642527988-7o8leqbilprkvtf97sbueldtuh0ab5a7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

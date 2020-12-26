@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -8,6 +9,9 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  final _auth = FirebaseAuth.instance;
+  String email;
+  String pass;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +38,9 @@ class _loginState extends State<login> {
                         hintText: 'somone@something.com',
                         border: OutlineInputBorder(),
                       ),
+                      onChanged: (value) {
+                        email = value;
+                      },
                     ),
                   ),
                   Padding(
@@ -45,6 +52,9 @@ class _loginState extends State<login> {
                         hintText: 'you really need a hint for this?',
                         border: OutlineInputBorder(),
                       ),
+                      onChanged: (value) {
+                        pass = value;
+                      },
                     ),
                   ),
                 ],
@@ -60,7 +70,14 @@ class _loginState extends State<login> {
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
               color: Colors.blueGrey[900],
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final newuser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: pass);
+                } catch (e) {
+                  print(e);
+                }
+              },
               child: Text(
                 'Sign in',
                 style: TextStyle(color: Colors.white),

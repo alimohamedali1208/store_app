@@ -4,9 +4,12 @@ import 'login.dart';
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
+import 'package:firebase_core/firebase_core.dart';
 //Ammar is my love :)
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: HomePage(),
   ));
