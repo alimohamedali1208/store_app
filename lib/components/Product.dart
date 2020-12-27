@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../ProductDetails.dart';
+
 class Product extends StatefulWidget {
   @override
   _ProductState createState() => _ProductState();
@@ -84,7 +86,19 @@ class Single_product extends StatelessWidget {
         tag: prod_name,
         child: Material(
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                return Navigator.of(context).push(
+                  new MaterialPageRoute(
+                    builder: (context) => new ProductDetails(
+                      // passing the values via constructor
+                      product_detail_name: prod_name,
+                      product_detail_new_price: prod_price,
+                      product_detail_old_price: prod_old_price,
+                      product_detail_picture: prod_picture,
+                    ),
+                  ),
+                );
+              },
               child: GridTile(
                 footer: Container(
                   color: Colors.white70,
