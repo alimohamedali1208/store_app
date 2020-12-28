@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:store_app/Cart.dart';
 import 'login.dart';
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         animationDuration: Duration(microseconds: 1000),
         dotSize: 4.0,
         indicatorBgPadding: 4.0,
+        dotBgColor: Colors.transparent,
       ),
     );
     return Scaffold(
@@ -43,7 +45,10 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
           new IconButton(
               icon: Icon(Icons.shopping_cart, color: Colors.white),
-              onPressed: () {}),
+              onPressed: () {
+                return Navigator.push(context, MaterialPageRoute(
+                    builder: (context)=> Cart()));
+              }),
           IconButton(
               icon: Icon(Icons.account_circle_sharp),
               onPressed: () {
@@ -84,7 +89,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                return Navigator.push(context, MaterialPageRoute(
+                    builder: (context)=> Cart()));
+              },
               child: ListTile(
                 title: Text('My Orders'),
                 leading:

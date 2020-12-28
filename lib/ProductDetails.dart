@@ -27,9 +27,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         actions: <Widget>[
           new IconButton(
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
-          new IconButton(
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-              onPressed: () {}),
+
         ],
       ),
       body: new ListView(
@@ -76,7 +74,25 @@ class _ProductDetailsState extends State<ProductDetails> {
 //======== color button ==========
               Expanded(
                   child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context,
+                  builder: (context){
+                    return new AlertDialog(
+                      title: new Text("Color"),
+                      content: new Text("Choose The Color"),
+                      actions: <Widget>[
+                        new MaterialButton(onPressed: ()
+                        {
+                          Navigator.of(context).pop(context);
+                        },
+                        child: new Text("Close"),
+                        )
+                        
+                      ],
+                    );
+                  }
+                  );
+                },
                 color: Colors.grey,
                 textColor: Colors.black,
                 child: Row(
@@ -94,7 +110,25 @@ class _ProductDetailsState extends State<ProductDetails> {
               // ========== the qty button =========
               Expanded(
                   child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context,
+                      builder: (context){
+                        return new AlertDialog(
+                          title: new Text("Quantity"),
+                          content: new Text("Choose The Quantity"),
+                          actions: <Widget>[
+                            new MaterialButton(onPressed: ()
+                            {
+                              Navigator.of(context).pop(context);
+                            },
+                              child: new Text("Close"),
+                            )
+
+                          ],
+                        );
+                      }
+                  );
+                },
                 color: Colors.grey,
                 textColor: Colors.black,
                 child: Row(
@@ -124,10 +158,53 @@ class _ProductDetailsState extends State<ProductDetails> {
                       )),
                 ),
               ),
-              new IconButton(icon: Icon(Icons.add_shopping_cart), onPressed: (){}),
-              new IconButton(icon: Icon(Icons.favorite_border), onPressed: (){})
+              new IconButton(
+                  icon: Icon(Icons.add_shopping_cart), onPressed: () {}),
+              new IconButton(
+                  icon: Icon(Icons.favorite_border), onPressed: () {})
             ],
           ),
+          Divider(color: Colors.black87),
+          new ListTile(
+            title: new Text("Product Details"),
+            subtitle: new Text("Product Description"),
+          ),
+          new Row(
+            children: <Widget>[
+              Padding(padding: const EdgeInsets.fromLTRB(12.0,5.0,5.0,5.0),
+              child: new Text("product Name",
+                style: TextStyle(color: Colors.grey),
+              ),
+              ),
+              Padding(padding: const EdgeInsets.all(5.0),
+              child: Text(widget.product_detail_name),)
+            ],
+          ),
+//          the brand
+          new Row(
+            children: <Widget>[
+              Padding(padding: const EdgeInsets.fromLTRB(12.0,5.0,5.0,5.0),
+                child: new Text("product Brand",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Padding(padding: const EdgeInsets.all(5.0),
+                child: Text("the Brand Field"),)
+            ],
+          ),
+//             filtering the product
+          new Row(
+            children: <Widget>[
+              Padding(padding: const EdgeInsets.fromLTRB(12.0,5.0,5.0,5.0),
+                child: new Text("product filtering",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Padding(padding: const EdgeInsets.all(5.0),
+                child: Text("product condition or filtering"),)
+            ],
+          ),
+
         ],
       ),
     );
