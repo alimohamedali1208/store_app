@@ -52,8 +52,7 @@ class SingleCartProduct extends StatelessWidget {
       this.cart_prod_picture,
       this.cart_prod_price,
       this.cart_prod_color,
-      this.cart_prod_qty
-      });
+      this.cart_prod_qty});
 
   @override
   Widget build(BuildContext context) {
@@ -71,24 +70,18 @@ class SingleCartProduct extends StatelessWidget {
             Row(
               children: <Widget>[
                 //    ======== this for color section =========
+                Text("Color:"),
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Expanded(child: Text("Color")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     cart_prod_color,
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
                 //    ========== this for Qty section =========
+                Text("Quantity:"),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 8.0, 8.0, 8.0),
-                  child: Expanded(child: Text("Quantity:")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "$cart_prod_qty",
                     style: TextStyle(color: Colors.red),
@@ -107,26 +100,26 @@ class SingleCartProduct extends StatelessWidget {
           ],
         ),
         //==============================
-      //   trailing: Container(
-      //     child: Column(
-      //       children: <Widget>[
-      //         IconButton(
-      //           icon: Icon(
-      //             Icons.arrow_drop_up,
-      //           ),
-      //           onPressed: () {},
-      //         ),
-      //         Text("$cart_prod_qty"),
-      //         IconButton(
-      //           icon: Icon(
-      //             Icons.arrow_drop_down,
-      //           ),
-      //           onPressed: () {},
-      //         )
-      //       ],
-      //     ),
-      //   ),
-      //   //============================
+        //   trailing: Container(
+        //     child: Column(
+        //       children: <Widget>[
+        //         IconButton(
+        //           icon: Icon(
+        //             Icons.arrow_drop_up,
+        //           ),
+        //           onPressed: () {},
+        //         ),
+        //         Text("$cart_prod_qty"),
+        //         IconButton(
+        //           icon: Icon(
+        //             Icons.arrow_drop_down,
+        //           ),
+        //           onPressed: () {},
+        //         )
+        //       ],
+        //     ),
+        //   ),
+        //   //============================
       ),
     );
   }

@@ -6,10 +6,19 @@ class register extends StatefulWidget {
   _registerState createState() => _registerState();
 }
 
+enum SingingCharacter { Male, Female }
+
 class _registerState extends State<register> {
   final _auth = FirebaseAuth.instance;
+  String Fname;
+  String Lname;
+  String phone;
+  String sex;
+  String type;
   String email;
   String pass;
+  SingingCharacter _character = SingingCharacter.Male;
+  String dropdownValue = 'Customer';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +28,7 @@ class _registerState extends State<register> {
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
-      body: Stack(
+      body: ListView(
         children: <Widget>[
           Container(
             alignment: Alignment.center,
@@ -27,11 +36,75 @@ class _registerState extends State<register> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'First Name:',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        Fname = value;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Last Name:',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        Lname = value;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Phone:',
+                        hintText: '017775000',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        phone = value;
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Male'),
+                    leading: Radio(
+                      value: SingingCharacter.Male,
+                      groupValue: _character,
+                      onChanged: (SingingCharacter value) {
+                        setState(
+                          () {
+                            _character = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Female'),
+                    leading: Radio(
+                      value: SingingCharacter.Female,
+                      groupValue: _character,
+                      onChanged: (SingingCharacter value) {
+                        setState(
+                          () {
+                            _character = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Email',
-                        icon: Icon(Icons.email),
                         hintText: 'somone@something.com',
                         border: OutlineInputBorder(),
                       ),
@@ -41,11 +114,10 @@ class _registerState extends State<register> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(8),
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        icon: Icon(Icons.vpn_key_sharp),
                         hintText: 'you really need a hint for this?',
                         border: OutlineInputBorder(),
                       ),
@@ -54,6 +126,29 @@ class _registerState extends State<register> {
                       },
                     ),
                   ),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 10,
+                    elevation: 10,
+                    style: TextStyle(color: Colors.black),
+                    underline: Container(
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>['Customer', 'Seller']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  )
                 ],
               ),
             ),
