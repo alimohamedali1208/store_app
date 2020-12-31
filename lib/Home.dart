@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       child: Carousel(
         boxFit: BoxFit.cover,
         images: [
-          AssetImage("images/mobiles.jpg"),
+          //AssetImage("images/mobiles.jpg"),
           AssetImage("images/home.jpg"),
           AssetImage("images/laptop.jpg"),
           AssetImage("images/tv.jpg"),
