@@ -3,18 +3,34 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:store_app/Cart.dart';
-import 'login.dart';
+import 'package:store_app/Home.dart';
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
 
-class Home extends StatefulWidget {
-  static String id = 'Home';
+class loggedinhome extends StatefulWidget {
+  static String id = 'LHome';
   @override
-  _HomeState createState() => _HomeState();
+  _loggedinhomeState createState() => _loggedinhomeState();
 }
 
-class _HomeState extends State<Home> {
+class _loggedinhomeState extends State<loggedinhome> {
+  final _auth = FirebaseAuth.instance;
+  // FirebaseUser loggedin;
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      print(_auth.currentUser.email);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget image_carusel = new Container(
@@ -43,23 +59,23 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueGrey[900],
         title: Text("El Wekala"),
         actions: <Widget>[
-          IconButton(
+          new IconButton(
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
-          IconButton(
-              icon: Icon(Icons.account_circle_sharp),
+          new IconButton(
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => login()));
+                return Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Cart()));
               }),
         ],
       ),
-      drawer: Drawer(
+      drawer: new Drawer(
         child: ListView(
           children: <Widget>[
             //header
-            UserAccountsDrawerHeader(
-              accountName: Text('Guest'),
-              accountEmail: Text(''),
+            new UserAccountsDrawerHeader(
+              accountName: Text('Ali'),
+              accountEmail: Text(_auth.currentUser.email),
               currentAccountPicture: GestureDetector(
                 child: new CircleAvatar(
                     backgroundColor: Colors.blueGrey,
@@ -124,6 +140,16 @@ class _HomeState extends State<Home> {
                 onTap: () {},
                 title: Text('Help'),
                 leading: Icon(Icons.help, color: Colors.blueGrey[900]),
+              ),
+            ),
+            InkWell(
+              child: ListTile(
+                onTap: () {
+                  _auth.signOut();
+                  Navigator.pushNamed(context, Home.id);
+                },
+                title: Text('Log out'),
+                leading: Icon(Icons.logout, color: Colors.blueGrey[900]),
               ),
             ),
           ],

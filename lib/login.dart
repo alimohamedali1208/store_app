@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:store_app/loggedinhome.dart';
 import 'package:store_app/register.dart';
-import 'package:store_app/Home.dart';
-
-final _formKey = GlobalKey<FormState>();
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class login extends StatefulWidget {
   @override
@@ -12,8 +11,12 @@ class login extends StatefulWidget {
 
 class _loginState extends State<login> {
   final _auth = FirebaseAuth.instance;
+  String dropdownValue = 'Customer';
+  bool flagDB = false;
   String email;
   String pass;
+  bool showSpinner = false;
+  final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,63 +26,93 @@ class _loginState extends State<login> {
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        icon: Icon(Icons.email),
-                        hintText: 'somone@something.com',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        icon: Icon(Icons.vpn_key_sharp),
-                        hintText: 'you really need a hint for this?',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        pass = value;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: FlatButton(
-                      color: Colors.blueGrey[900],
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => register()));
-                      },
-                      child: Text(
-                        'New user?, Sign up here',
-                        style: TextStyle(color: Colors.white),
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          icon: Icon(Icons.email),
+                          hintText: 'somone@something.com',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          email = value;
+                        },
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          icon: Icon(Icons.vpn_key_sharp),
+                          hintText: 'you really need a hint for this?',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          pass = value;
+                        },
+                      ),
+                    ),
+                    DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          if (dropdownValue == 'Seller') {
+                            flagDB = true;
+                          } else if (dropdownValue == 'Customer') {
+                            flagDB = true;
+                          }
+                        });
+                      },
+                      items: <String>['Customer', 'Seller']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlatButton(
+                        color: Colors.blueGrey[900],
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => register()));
+                        },
+                        child: Text(
+                          'New user?, Sign up here',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -89,12 +122,23 @@ class _loginState extends State<login> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
+                setState(() {
+                  showSpinner = true;
+                });
                 try {
                   final newuser = await _auth.signInWithEmailAndPassword(
                       email: email, password: pass);
+                  if (newuser != null) {
+                    setState(() {
+                      showSpinner = false;
+                    });
+                  }
                 } catch (e) {
                   print(e);
+                  //showSpinner = false;
+                  // Scaffold.of(context).showSnackBar(snackBar);
                 }
+                Navigator.pushNamed(context, loggedinhome.id);
               },
               child: Text(
                 'Sign in',
