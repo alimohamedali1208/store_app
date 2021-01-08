@@ -4,7 +4,9 @@ import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 class register extends StatefulWidget {
   @override
   _registerState createState() => _registerState();
@@ -13,6 +15,7 @@ class register extends StatefulWidget {
 enum SingingCharacter { Male, Female }
 
 class _registerState extends State<register> {
+
   final _auth = FirebaseAuth.instance;
   String Fname, Lname, phone, sex, email, pass, companyName, tax;
   UserCustomer cust = UserCustomer();
@@ -22,10 +25,15 @@ class _registerState extends State<register> {
   bool showSpinner = false;
   SingingCharacter _character = SingingCharacter.Male;
   String dropdownValue = 'Customer';
+  final refrence=FirebaseDatabase.instance;
+
+  //insertData
+  //insertData = FirebaseDatabase.Instance().Reference().child("customer");
   @override
   Widget build(BuildContext context) {
+    final table = refrence.reference();
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("SignUp"),
         centerTitle: true,
@@ -191,6 +199,20 @@ class _registerState extends State<register> {
                         },
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        enabled: flagTF,
+                        decoration: InputDecoration(
+                          labelText: 'Company Address',
+                          hintText: 'street/ district',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          tax = value;
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -220,6 +242,14 @@ class _registerState extends State<register> {
                   });
                 } catch (e) {
                   print(e);
+                }
+
+                if (dropdownValue == 'Seller') {
+                    table.child('seller');
+
+                } else if (dropdownValue == 'Customer') {
+                    table.child('customer');
+
                 }
               },
               child: Text(

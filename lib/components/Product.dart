@@ -49,7 +49,10 @@ class _ProductState extends State<Product> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+
+    return
+      GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
         itemCount: product_list.length,
         gridDelegate:
         new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
