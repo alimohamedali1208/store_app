@@ -9,7 +9,6 @@ class login extends StatefulWidget {
   _loginState createState() => _loginState();
 }
 
-//dd
 class _loginState extends State<login> {
   final _auth = FirebaseAuth.instance;
   String dropdownValue = 'Customer';

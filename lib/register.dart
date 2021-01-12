@@ -5,7 +5,6 @@ import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-//dd
 class register extends StatefulWidget {
   @override
   _registerState createState() => _registerState();

@@ -8,7 +8,6 @@ import 'login.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
 
-//dd
 class Home extends StatefulWidget {
   static String id = 'Home';
   @override
@@ -130,9 +129,8 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       body: ListView(
-
         children: <Widget>[
           // carusel list
           image_carusel,

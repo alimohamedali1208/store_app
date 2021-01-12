@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../ProductDetails.dart';
 
-//dd
 class Product extends StatefulWidget {
   @override
   _ProductState createState() => _ProductState();
@@ -50,9 +49,7 @@ class _ProductState extends State<Product> {
 
   @override
   Widget build(BuildContext context) {
-
-    return
-      GridView.builder(
+    return GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: product_list.length,
         gridDelegate:
