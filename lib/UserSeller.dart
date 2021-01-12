@@ -1,6 +1,6 @@
 class UserSeller {
   String _firstName, _lastName, _phone, _sex, _email, _pass, _company, _tax;
-
+//dd
   String get firstName => _firstName;
 
   set firstName(String value) {

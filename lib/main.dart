@@ -5,6 +5,7 @@ import 'package:store_app/register.dart';
 import 'Home.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+//dd
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

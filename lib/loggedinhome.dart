@@ -8,6 +8,7 @@ import 'package:store_app/Home.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
 
+//dd
 class loggedinhome extends StatefulWidget {
   static String id = 'LHome';
   @override
