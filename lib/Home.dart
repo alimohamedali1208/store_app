@@ -130,7 +130,9 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+      resizeToAvoidBottomInset:false,
       body: ListView(
+
         children: <Widget>[
           // carusel list
           image_carusel,
