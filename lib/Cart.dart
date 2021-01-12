@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/CartProduct.dart';
+
 class Cart extends StatefulWidget {
   @override
   _CartState createState() => _CartState();
@@ -18,24 +19,28 @@ class _CartState extends State<Cart> {
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
         ],
       ),
-
       body: CartProduct(),
-
-      bottomNavigationBar: new Container(color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          Expanded(child: ListTile(
-            title: Text("Total Mount"),
-            subtitle: Text("\$300"),
-          )),
-          Expanded(
-              child: new MaterialButton(onPressed: (){},
-              child: Text("Check Out",style: TextStyle(color: Colors.white),),
+      bottomNavigationBar: new Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                child: ListTile(
+              title: Text("Total Mount"),
+              subtitle: Text("\$300"),
+            )),
+            Expanded(
+                child: new MaterialButton(
+              onPressed: () {},
+              child: Text(
+                "Check Out",
+                style: TextStyle(color: Colors.white),
+              ),
               color: Colors.grey,
-          ))
-        ],
-      )
-        ,),
+            ))
+          ],
+        ),
+      ),
     );
   }
 }
