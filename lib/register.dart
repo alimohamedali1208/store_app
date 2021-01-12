@@ -213,6 +213,7 @@ class _registerState extends State<register> {
                   final newuser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: pass);
                   if (newuser != null) {
+                    //Did it change?
                     Navigator.pushNamed(context, loggedinhome.id);
                   }
                   setState(() {
