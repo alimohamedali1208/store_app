@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:store_app/Cart.dart';
 import 'package:store_app/Home.dart';
-// my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
 
@@ -16,20 +14,6 @@ class loggedinhome extends StatefulWidget {
 
 class _loggedinhomeState extends State<loggedinhome> {
   final _auth = FirebaseAuth.instance;
-  // FirebaseUser loggedin;
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      print(_auth.currentUser.email);
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

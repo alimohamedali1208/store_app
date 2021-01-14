@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
@@ -13,8 +14,9 @@ class register extends StatefulWidget {
 enum SingingCharacter { Male, Female }
 
 class _registerState extends State<register> {
+  final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  String Fname, Lname, phone, sex, email, pass, companyName, tax;
+  String fname, lname, phone, sex = 'M', email, pass, companyName, tax;
   UserCustomer cust = UserCustomer();
   UserSeller sell = UserSeller();
   bool flagTF = false;
@@ -29,7 +31,7 @@ class _registerState extends State<register> {
       appBar: AppBar(
         title: Text("SignUp"),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.blueGrey,
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
@@ -48,7 +50,7 @@ class _registerState extends State<register> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          Fname = value;
+                          fname = value;
                         },
                       ),
                     ),
@@ -60,7 +62,7 @@ class _registerState extends State<register> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          Lname = value;
+                          lname = value;
                         },
                       ),
                     ),
@@ -77,35 +79,42 @@ class _registerState extends State<register> {
                         },
                       ),
                     ),
-                    ListTile(
-                      title: const Text('Male'),
-                      leading: Radio(
-                        value: SingingCharacter.Male,
-                        groupValue: _character,
-                        onChanged: (SingingCharacter value) {
-                          sex = 'M';
-                          setState(
-                            () {
-                              _character = value;
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text('Female'),
-                      leading: Radio(
-                        value: SingingCharacter.Female,
-                        groupValue: _character,
-                        onChanged: (SingingCharacter value) {
-                          sex = 'F';
-                          setState(
-                            () {
-                              _character = value;
-                            },
-                          );
-                        },
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                          child: Text('Male'),
+                        ),
+                        Radio(
+                          activeColor: Colors.deepOrange[400],
+                          value: SingingCharacter.Male,
+                          groupValue: _character,
+                          onChanged: (SingingCharacter value) {
+                            sex = 'M';
+                            print(sex);
+                            setState(
+                              () {
+                                _character = value;
+                              },
+                            );
+                          },
+                        ),
+                        Text('Female'),
+                        Radio(
+                          activeColor: Colors.green[600],
+                          value: SingingCharacter.Female,
+                          groupValue: _character,
+                          onChanged: (SingingCharacter value) {
+                            sex = 'F';
+                            print(sex);
+                            setState(
+                              () {
+                                _character = value;
+                              },
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8),
@@ -151,7 +160,7 @@ class _registerState extends State<register> {
                             flagDB = true;
                           } else if (dropdownValue == 'Customer') {
                             flagTF = false;
-                            flagDB = true;
+                            flagDB = false;
                           }
                         });
                       },
@@ -209,11 +218,33 @@ class _registerState extends State<register> {
                 setState(() {
                   showSpinner = true;
                 });
+                if (flagDB) {
+                  _firestore.collection('Sellers').add({
+                    'FirstName': fname,
+                    'LastName': lname,
+                    'Phone': phone,
+                    'Sex': sex,
+                    'Email': email,
+                    'Password': pass,
+                    'CompanyName': companyName,
+                    'TaxCard': tax
+                  });
+                } else {
+                  _firestore.collection('Customers').add({
+                    'FirstName': fname,
+                    'LastName': lname,
+                    'Phone': phone,
+                    'Sex': sex,
+                    'Email': email,
+                    'Password': pass,
+                  });
+                }
                 try {
                   final newuser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: pass);
                   if (newuser != null) {
                     //Did it change?
+                    cust.firstName = fname;
                     Navigator.pushNamed(context, loggedinhome.id);
                   }
                   setState(() {

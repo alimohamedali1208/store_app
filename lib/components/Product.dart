@@ -50,7 +50,6 @@ class _ProductState extends State<Product> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
         itemCount: product_list.length,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
@@ -80,51 +79,60 @@ class Single_product extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Colors.black,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      elevation: 5.0,
       child: Hero(
         tag: prod_name,
         child: Material(
-            child: InkWell(
-          onTap: () {
-            return Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => new ProductDetails(
-                  // passing the values via constructor
-                  product_detail_name: prod_name,
-                  product_detail_new_price: prod_price,
-                  product_detail_old_price: prod_old_price,
-                  product_detail_picture: prod_picture,
+          child: InkWell(
+            onTap: () {
+              return Navigator.of(context).push(
+                new MaterialPageRoute(
+                  builder: (context) => new ProductDetails(
+                    // passing the values via constructor
+                    product_detail_name: prod_name,
+                    product_detail_new_price: prod_price,
+                    product_detail_old_price: prod_old_price,
+                    product_detail_picture: prod_picture,
+                  ),
+                ),
+              );
+            },
+            child: GridTile(
+              footer: Container(
+                color: Colors.white70,
+                child: ListTile(
+                  leading: Text(
+                    prod_name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  title: Text(
+                    "\$$prod_price",
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.w800),
+                  ),
+                  subtitle: Text(
+                    "\$$prod_old_price",
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w800,
+                        decoration: TextDecoration.lineThrough),
+                  ),
                 ),
               ),
-            );
-          },
-          child: GridTile(
-            footer: Container(
-              color: Colors.white70,
-              child: ListTile(
-                leading: Text(
-                  prod_name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                title: Text(
-                  "\$$prod_price",
-                  style:
-                      TextStyle(color: Colors.red, fontWeight: FontWeight.w800),
-                ),
-                subtitle: Text(
-                  "\$$prod_old_price",
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w800,
-                      decoration: TextDecoration.lineThrough),
-                ),
+              child: Image.asset(
+                prod_picture,
+                fit: BoxFit.cover,
               ),
-            ),
-            child: Image.asset(
-              prod_picture,
-              fit: BoxFit.cover,
             ),
           ),
-        )),
+        ),
       ),
     );
   }
