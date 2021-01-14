@@ -9,7 +9,7 @@ class UserSeller {
 
   get lastName => _lastName;
 
-  get pass => _pass;
+  get getPass => _pass;
 
   set pass(value) {
     _pass = value;

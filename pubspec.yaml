@@ -12,6 +12,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  email_validator: '^1.0.0'
   flutter:
     sdk: flutter
   carousel_pro: ^1.0.0

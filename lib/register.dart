@@ -17,8 +17,9 @@ class _registerState extends State<register> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   String fname, lname, phone, sex = 'M', email, pass, companyName, tax;
-  UserCustomer cust = UserCustomer();
-  UserSeller sell = UserSeller();
+  UserCustomer customer = new UserCustomer();
+  UserSeller seller = UserSeller();
+
   bool flagTF = false;
   bool flagDB = false;
   bool showSpinner = false;
@@ -244,7 +245,7 @@ class _registerState extends State<register> {
                       email: email, password: pass);
                   if (newuser != null) {
                     //Did it change?
-                    cust.firstName = fname;
+                    customer.firstName = fname;
                     Navigator.pushNamed(context, loggedinhome.id);
                   }
                   setState(() {

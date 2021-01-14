@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/loggedinhome.dart';
 import 'package:store_app/register.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:email_validator/email_validator.dart';
 
 class login extends StatefulWidget {
   @override
@@ -16,10 +17,58 @@ class _loginState extends State<login> {
   String email;
   String pass;
   bool showSpinner = false;
-  final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+  bool validate = false;
+  // Initially password is obscure
+  bool _obscureText = true;
+  final _loginFormKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  //Showing snackbar
+  void _showSnackbar(String msg) {
+    final snackbar = SnackBar(
+      content: Text(msg),
+      // duration: const Duration(seconds: 10),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  //toggling auto validate
+  void _toggleValidate() {
+    setState(() {
+      validate = !validate;
+    });
+  }
+
+  //toggling show\hide password
+  void _togglePassword() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  //validator methods
+  String validateEmail(String value) {
+    value = value.trim();
+    if (value.isEmpty) {
+      return "please provide an email";
+    } else if (!EmailValidator.validate(value)) {
+      return "Please enter a valid email";
+    }
+    return null;
+  }
+
+  String validatePassword(String value) {
+    value = value.trim();
+    if (value.isEmpty) {
+      return "please provide a password";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Login"),
@@ -33,34 +82,45 @@ class _loginState extends State<login> {
             Container(
               alignment: Alignment.center,
               child: Form(
+                key: _loginFormKey,
                 child: Column(
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        autovalidate: validate,
+                        validator: validateEmail,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           icon: Icon(Icons.email),
                           hintText: 'somone@something.com',
                           border: OutlineInputBorder(),
                         ),
-                        onChanged: (value) {
-                          email = value;
+                        onSaved: (value) {
+                          email = value.trim();
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          icon: Icon(Icons.vpn_key_sharp),
-                          hintText: 'you really need a hint for this?',
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          pass = value;
-                        },
+                      child: new Column(
+                        children: <Widget>[
+                          new TextFormField(
+                            autovalidate: validate,
+                            obscureText: _obscureText,
+                            validator: validatePassword,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Password',
+                                icon: Icon(Icons.vpn_key)),
+                            onSaved: (value) {
+                              pass = value.trim();
+                            },
+                          ),
+                          new FlatButton(
+                              onPressed: _togglePassword,
+                              child: new Text(_obscureText ? "Show" : "Hide"))
+                        ],
                       ),
                     ),
                     DropdownButton<String>(
@@ -122,23 +182,32 @@ class _loginState extends State<login> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                setState(() {
-                  showSpinner = true;
-                });
-                try {
-                  final newuser = await _auth.signInWithEmailAndPassword(
-                      email: email, password: pass);
-                  if (newuser != null) {
+                if (_loginFormKey.currentState.validate()) {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  _loginFormKey.currentState.save();
+                  try {
+                    final newuser = await _auth.signInWithEmailAndPassword(
+                        email: email, password: pass);
+                    if (newuser != null) {
+                      setState(() {
+                        showSpinner = false;
+                      });
+                      Navigator.pushNamed(context, loggedinhome.id);
+                    }
+                  } catch (e) {
+                    print(e);
                     setState(() {
                       showSpinner = false;
                     });
+                    _showSnackbar("Invalid email or password");
                   }
-                } catch (e) {
-                  print(e);
-                  //showSpinner = false;
-                  // Scaffold.of(context).showSnackBar(snackBar);
+                } else {
+                  _toggleValidate();
+                  _showSnackbar(
+                      "Something went wrong, check the errors above please");
                 }
-                Navigator.pushNamed(context, loggedinhome.id);
               },
               child: Text(
                 'Sign in',
