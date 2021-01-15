@@ -90,6 +90,7 @@ class _loginState extends State<login> {
                       child: TextFormField(
                         autovalidate: validate,
                         validator: validateEmail,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           icon: Icon(Icons.email),
