@@ -55,4 +55,6 @@ class UserSeller {
   set company(value) {
     _company = value;
   }
+
+  UserSeller();
 }

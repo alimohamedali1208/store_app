@@ -21,7 +21,8 @@ class _registerState extends State<register> {
   String fname, lname, phone, sex = 'M', email, pass, companyName, tax;
   UserCustomer customer = UserCustomer();
   UserSeller seller = UserSeller();
-  bool flagDB = false;
+  bool flagSellerDatabase = false;
+  bool flagSellerTextFields = false;
   bool showSpinner = false;
   bool validate = false;
   // Initially password is obscure
@@ -287,9 +288,11 @@ class _registerState extends State<register> {
                         setState(() {
                           dropdownValue = newValue;
                           if (dropdownValue == 'Seller') {
-                            flagDB = true;
+                            flagSellerTextFields = true;
+                            flagSellerDatabase = true;
                           } else if (dropdownValue == 'Customer') {
-                            flagDB = false;
+                            flagSellerTextFields = false;
+                            flagSellerDatabase = false;
                           }
                         });
                       },
@@ -305,8 +308,8 @@ class _registerState extends State<register> {
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         autovalidate: validate,
-                        enabled: flagDB,
-                        validator: validateCompanyName,
+                        enabled: flagSellerTextFields,
+                        // validator: validateCompanyName,
                         decoration: InputDecoration(
                           labelText: 'Company name:',
                           hintText: 'Sony',
@@ -321,8 +324,8 @@ class _registerState extends State<register> {
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         autovalidate: validate,
-                        enabled: flagDB,
-                        validator: validateTaxCard,
+                        enabled: flagSellerTextFields,
+                        // validator: validateTaxCard,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Tax Card:',
@@ -350,11 +353,12 @@ class _registerState extends State<register> {
               color: Colors.blueGrey[900],
               onPressed: () async {
                 if (_registerFormKey.currentState.validate()) {
+                  print("hello");
                   _registerFormKey.currentState.save();
                   setState(() {
                     showSpinner = true;
                   });
-                  if (flagDB) {
+                  if (flagSellerDatabase) {
                     _firestore.collection('Sellers').add({
                       'FirstName': fname,
                       'LastName': lname,
@@ -382,7 +386,7 @@ class _registerState extends State<register> {
                   try {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
-                    if (flagDB) {
+                    if (flagSellerDatabase) {
                       Navigator.pushNamed(context, sellerhome.id);
                     } else {
                       Navigator.pushNamed(context, loggedinhome.id);
