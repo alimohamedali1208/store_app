@@ -18,9 +18,8 @@ class _registerState extends State<register> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   String fname, lname, phone, sex = 'M', email, pass, companyName, tax;
-  UserCustomer customer = new UserCustomer();
+  UserCustomer customer = UserCustomer();
   UserSeller seller = UserSeller();
-  bool flagTF = false;
   bool flagDB = false;
   bool showSpinner = false;
   bool validate = false;
@@ -287,10 +286,8 @@ class _registerState extends State<register> {
                         setState(() {
                           dropdownValue = newValue;
                           if (dropdownValue == 'Seller') {
-                            flagTF = true;
                             flagDB = true;
                           } else if (dropdownValue == 'Customer') {
-                            flagTF = false;
                             flagDB = false;
                           }
                         });
@@ -307,7 +304,7 @@ class _registerState extends State<register> {
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         autovalidate: validate,
-                        enabled: flagTF,
+                        enabled: flagDB,
                         validator: validateCompanyName,
                         decoration: InputDecoration(
                           labelText: 'Company name:',
@@ -323,7 +320,7 @@ class _registerState extends State<register> {
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         autovalidate: validate,
-                        enabled: flagTF,
+                        enabled: flagDB,
                         validator: validateTaxCard,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -367,6 +364,8 @@ class _registerState extends State<register> {
                       'CompanyName': companyName,
                       'TaxCard': tax
                     });
+                    seller.firstName = fname;
+                    seller.lastName = lname;
                   } else {
                     _firestore.collection('Customers').add({
                       'FirstName': fname,
@@ -376,13 +375,15 @@ class _registerState extends State<register> {
                       'Email': email,
                       'Password': pass,
                     });
+                    customer.firstName = fname;
+                    customer.lastName = lname;
                   }
                   try {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
-                    if (newuser != null) {
-                      //Did it change?
-                      customer.firstName = fname;
+                    if (flagDB) {
+                      Navigator.pushNamed(context, loggedinhome.id);
+                    } else {
                       Navigator.pushNamed(context, loggedinhome.id);
                     }
                     setState(() {

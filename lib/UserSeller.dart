@@ -1,5 +1,12 @@
 class UserSeller {
-  String _firstName, _lastName, _phone, _sex, _email, _pass, _company, _tax;
+  static String _firstName = 'temp',
+      _lastName = 'temp',
+      _phone,
+      _sex,
+      _email,
+      _pass,
+      _company,
+      _tax;
 
   String get firstName => _firstName;
 

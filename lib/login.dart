@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:store_app/UserCustomer.dart';
+import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
 import 'package:store_app/register.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -12,8 +15,11 @@ class login extends StatefulWidget {
 
 class _loginState extends State<login> {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   String dropdownValue = 'Customer';
   bool flagDB = false;
+  UserCustomer customer = UserCustomer();
+  UserSeller seller = UserSeller();
   String email;
   String pass;
   bool showSpinner = false;
@@ -140,7 +146,7 @@ class _loginState extends State<login> {
                           if (dropdownValue == 'Seller') {
                             flagDB = true;
                           } else if (dropdownValue == 'Customer') {
-                            flagDB = true;
+                            flagDB = false;
                           }
                         });
                       },
@@ -191,11 +197,41 @@ class _loginState extends State<login> {
                   try {
                     final newuser = await _auth.signInWithEmailAndPassword(
                         email: email, password: pass);
-                    if (newuser != null) {
-                      setState(() {
-                        showSpinner = false;
-                      });
-                      Navigator.pushNamed(context, loggedinhome.id);
+                    //If user was a seller
+                    if (flagDB) {
+                      final userName =
+                          await _firestore.collection('Sellers').get();
+                      for (var usern in userName.docs) {
+                        final fname = usern.get('FirstName');
+                        final lname = usern.get('LastName');
+                        final email = usern.get('Email');
+                        if (email == _auth.currentUser.email) {
+                          seller.firstName = fname;
+                          seller.lastName = lname;
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        Navigator.pushNamed(context, loggedinhome.id);
+                      }
+                    }
+                    // User was a customer
+                    else {
+                      final userName =
+                          await _firestore.collection('Customers').get();
+                      for (var usern in userName.docs) {
+                        final fname = usern.get('FirstName');
+                        final lname = usern.get('LastName');
+                        final email = usern.get('Email');
+                        if (email == _auth.currentUser.email) {
+                          customer.firstName = fname;
+                          customer.lastName = lname;
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        Navigator.pushNamed(context, loggedinhome.id);
+                      }
                     }
                   } catch (e) {
                     print(e);

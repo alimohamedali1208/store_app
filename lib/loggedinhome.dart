@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:store_app/Cart.dart';
 import 'package:store_app/Home.dart';
+import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
+
+UserCustomer customer = UserCustomer();
 
 class loggedinhome extends StatefulWidget {
   static String id = 'LHome';
@@ -58,7 +62,7 @@ class _loggedinhomeState extends State<loggedinhome> {
           children: <Widget>[
             //header
             new UserAccountsDrawerHeader(
-              accountName: Text('Ali'),
+              accountName: Text(customer.firstName + ' ' + customer.lastName),
               accountEmail: Text(_auth.currentUser.email),
               currentAccountPicture: GestureDetector(
                 child: new CircleAvatar(

@@ -1,5 +1,10 @@
 class UserCustomer {
-  String _firstName, _lastName, _phone, _sex, _email, _pass;
+  static String _firstName = 'temp',
+      _lastName = 'temp',
+      _phone,
+      _sex,
+      _email,
+      _pass;
 
   String get firstName => _firstName;
 
