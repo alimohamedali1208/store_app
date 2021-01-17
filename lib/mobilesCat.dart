@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/ProductDetails.dart';
 
-import '../ProductDetails.dart';
-
-class Product extends StatefulWidget {
+class mobilesCategory extends StatefulWidget {
   @override
-  _ProductState createState() => _ProductState();
+  _mobilesCategory createState() => _mobilesCategory();
 }
 
-class _ProductState extends State<Product> {
+class _mobilesCategory extends State<mobilesCategory> {
   var product_list = [
     {
       "name": "iphone 12",

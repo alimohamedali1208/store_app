@@ -18,7 +18,7 @@ class _loginState extends State<login> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   String dropdownValue = 'Customer';
-  bool flagDB = false;
+  bool flagSeller = false;
   bool flagCS = false;
   UserCustomer customer = UserCustomer();
   UserSeller seller = UserSeller();
@@ -146,9 +146,9 @@ class _loginState extends State<login> {
                         setState(() {
                           dropdownValue = newValue;
                           if (dropdownValue == 'Seller') {
-                            flagDB = true;
+                            flagSeller = true;
                           } else if (dropdownValue == 'Customer') {
-                            flagDB = false;
+                            flagSeller = false;
                           }
                         });
                       },
@@ -198,11 +198,10 @@ class _loginState extends State<login> {
                   _loginFormKey.currentState.save();
                   try {
                     //If user was a seller
-                    if (flagDB) {
-                      print('Start of seller route');
-                      final userName =
+                    if (flagSeller) {
+                      final DBRow =
                           await _firestore.collection('Sellers').get();
-                      for (var usern in userName.docs) {
+                      for (var usern in DBRow.docs) {
                         final firstname = usern.get('FirstName');
                         final lastname = usern.get('LastName');
                         final email = usern.get('Email');
@@ -210,17 +209,12 @@ class _loginState extends State<login> {
                           seller.firstName = firstname;
                           seller.lastName = lastname;
                         }
-                        print('end of seller');
-                        setState(() {
-                          showSpinner = false;
-                        });
                       }
-                      print('seller route my name is ' + seller.firstName);
                       if (seller.firstName == 'temp') {
                         setState(() {
                           showSpinner = false;
                         });
-                        _showSnackbar("Invalid email or passwordseller");
+                        _showSnackbar("Invalid email or password");
                       } else {
                         setState(() {
                           showSpinner = false;
@@ -232,7 +226,6 @@ class _loginState extends State<login> {
                     }
                     // User was a customer
                     else {
-                      print('Start of customer route');
                       final userName =
                           await _firestore.collection('Customers').get();
                       for (var usern in userName.docs) {
@@ -243,14 +236,12 @@ class _loginState extends State<login> {
                           customer.firstName = firstname;
                           customer.lastName = lastname;
                         }
-                        print('end of customer route');
                       }
-                      print('customer route my name is ' + customer.firstName);
                       if (customer.firstName == 'temp') {
                         setState(() {
                           showSpinner = false;
                         });
-                        _showSnackbar("Invalid email or passwordcustomer");
+                        _showSnackbar("Invalid email or password");
                       } else {
                         setState(() {
                           showSpinner = false;

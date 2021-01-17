@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:store_app/Cart.dart';
@@ -145,7 +143,6 @@ class _HomeState extends State<Home> {
           new Padding(padding: const EdgeInsets.all(14)),
           Text('Recentproducts'),
           Container(
-            height: 320.0,
             child: Product(),
           )
         ],
