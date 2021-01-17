@@ -18,6 +18,32 @@ class loggedinhome extends StatefulWidget {
 class _loggedinhomeState extends State<loggedinhome> {
   final _auth = FirebaseAuth.instance;
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to sign out?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () {
+                  _auth.signOut();
+                  Navigator.pushNamed(context, Home.id);
+                  customer.firstName = 'temp';
+                  customer.lastName = 'temp';
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget image_carusel = new Container(
@@ -40,129 +66,133 @@ class _loggedinhomeState extends State<loggedinhome> {
         dotBgColor: Colors.transparent,
       ),
     );
-    return Scaffold(
-      appBar: new AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.blueGrey[900],
-        title: Text("El Wekala"),
-        actions: <Widget>[
-          new IconButton(
-              icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
-          new IconButton(
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-              onPressed: () {
-                return Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Cart()));
-              }),
-        ],
-      ),
-      drawer: new Drawer(
-        child: ListView(
-          children: <Widget>[
-            //header
-            new UserAccountsDrawerHeader(
-              accountName: Text(customer.firstName + ' ' + customer.lastName),
-              accountEmail: Text(_auth.currentUser.email),
-              currentAccountPicture: GestureDetector(
-                child: new CircleAvatar(
-                    backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.person, color: Colors.white)),
-              ),
-              decoration: new BoxDecoration(color: Colors.blueGrey[900]),
-            ),
-
-            //body
-
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text('Home Page'),
-                leading: Icon(Icons.home, color: Colors.blueGrey[900]),
-              ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text('My Account'),
-                leading: Icon(Icons.person, color: Colors.blueGrey[900]),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                return Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Cart()));
-              },
-              child: ListTile(
-                title: Text('My Orders'),
-                leading:
-                    Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
-              ),
-            ),
-
-            InkWell(
-              child: ListTile(
-                onTap: () {},
-                title: Text('Categories'),
-                leading: Icon(Icons.category, color: Colors.blueGrey[900]),
-              ),
-            ),
-
-            InkWell(
-              child: ListTile(
-                onTap: () {},
-                title: Text('Favorites'),
-                leading: Icon(Icons.favorite, color: Colors.blueGrey[900]),
-              ),
-            ),
-            Divider(color: Colors.black),
-            InkWell(
-              child: ListTile(
-                onTap: () {},
-                title: Text('Settings'),
-                leading: Icon(Icons.settings, color: Colors.blueGrey[900]),
-              ),
-            ),
-            InkWell(
-              child: ListTile(
-                onTap: () {},
-                title: Text('Help'),
-                leading: Icon(Icons.help, color: Colors.blueGrey[900]),
-              ),
-            ),
-            InkWell(
-              child: ListTile(
-                onTap: () {
-                  _auth.signOut();
-                  Navigator.pushNamed(context, Home.id);
-                  customer.firstName = 'temp';
-                  customer.lastName = 'temp';
-                },
-                title: Text('Log out'),
-                leading: Icon(Icons.logout, color: Colors.blueGrey[900]),
-              ),
-            ),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: new AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.blueGrey[900],
+          title: Text("El Wekala"),
+          actions: <Widget>[
+            new IconButton(
+                icon: Icon(Icons.search, color: Colors.white),
+                onPressed: () {}),
+            new IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  return Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Cart()));
+                }),
           ],
         ),
-      ),
-      body: ListView(
-        children: <Widget>[
-          // carusel list
-          image_carusel,
-          // padding
-          new Padding(padding: const EdgeInsets.all(8.0)),
-          Text('Categories'),
-          // horizontal list
+        drawer: new Drawer(
+          child: ListView(
+            children: <Widget>[
+              //header
+              new UserAccountsDrawerHeader(
+                accountName: Text(customer.firstName + ' ' + customer.lastName),
+                accountEmail: Text(_auth.currentUser.email),
+                currentAccountPicture: GestureDetector(
+                  child: new CircleAvatar(
+                      backgroundColor: Colors.blueGrey,
+                      child: Icon(Icons.person, color: Colors.white)),
+                ),
+                decoration: new BoxDecoration(color: Colors.blueGrey[900]),
+              ),
 
-          Horizontal(),
-          // grid view list
+              //body
 
-          new Padding(padding: const EdgeInsets.all(14)),
-          Text('Recentproducts'),
-          Container(
-            height: 320.0,
-            child: Product(),
-          )
-        ],
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  title: Text('Home Page'),
+                  leading: Icon(Icons.home, color: Colors.blueGrey[900]),
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  title: Text('My Account'),
+                  leading: Icon(Icons.person, color: Colors.blueGrey[900]),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  return Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Cart()));
+                },
+                child: ListTile(
+                  title: Text('My Orders'),
+                  leading:
+                      Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
+                ),
+              ),
+
+              InkWell(
+                child: ListTile(
+                  onTap: () {},
+                  title: Text('Categories'),
+                  leading: Icon(Icons.category, color: Colors.blueGrey[900]),
+                ),
+              ),
+
+              InkWell(
+                child: ListTile(
+                  onTap: () {},
+                  title: Text('Favorites'),
+                  leading: Icon(Icons.favorite, color: Colors.blueGrey[900]),
+                ),
+              ),
+              Divider(color: Colors.black),
+              InkWell(
+                child: ListTile(
+                  onTap: () {},
+                  title: Text('Settings'),
+                  leading: Icon(Icons.settings, color: Colors.blueGrey[900]),
+                ),
+              ),
+              InkWell(
+                child: ListTile(
+                  onTap: () {},
+                  title: Text('Help'),
+                  leading: Icon(Icons.help, color: Colors.blueGrey[900]),
+                ),
+              ),
+              InkWell(
+                child: ListTile(
+                  onTap: () {
+                    _auth.signOut();
+                    Navigator.pushNamed(context, Home.id);
+                    customer.firstName = 'temp';
+                    customer.lastName = 'temp';
+                  },
+                  title: Text('Log out'),
+                  leading: Icon(Icons.logout, color: Colors.blueGrey[900]),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: ListView(
+          children: <Widget>[
+            // carusel list
+            image_carusel,
+            // padding
+            new Padding(padding: const EdgeInsets.all(8.0)),
+            Text('Categories'),
+            // horizontal list
+
+            Horizontal(),
+            // grid view list
+
+            new Padding(padding: const EdgeInsets.all(14)),
+            Text('Recentproducts'),
+            Container(
+              height: 320.0,
+              child: Product(),
+            )
+          ],
+        ),
       ),
     );
   }
