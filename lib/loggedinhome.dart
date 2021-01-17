@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -135,6 +134,8 @@ class _loggedinhomeState extends State<loggedinhome> {
                 onTap: () {
                   _auth.signOut();
                   Navigator.pushNamed(context, Home.id);
+                  customer.firstName = 'temp';
+                  customer.lastName = 'temp';
                 },
                 title: Text('Log out'),
                 leading: Icon(Icons.logout, color: Colors.blueGrey[900]),

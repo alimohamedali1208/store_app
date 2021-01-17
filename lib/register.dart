@@ -6,6 +6,7 @@ import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:store_app/sellerhome.dart';
 
 class register extends StatefulWidget {
   @override
@@ -382,7 +383,7 @@ class _registerState extends State<register> {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
                     if (flagDB) {
-                      Navigator.pushNamed(context, loggedinhome.id);
+                      Navigator.pushNamed(context, sellerhome.id);
                     } else {
                       Navigator.pushNamed(context, loggedinhome.id);
                     }

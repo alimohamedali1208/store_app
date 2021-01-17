@@ -7,6 +7,7 @@ import 'package:store_app/loggedinhome.dart';
 import 'package:store_app/register.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:store_app/sellerhome.dart';
 
 class login extends StatefulWidget {
   @override
@@ -18,9 +19,10 @@ class _loginState extends State<login> {
   final _firestore = FirebaseFirestore.instance;
   String dropdownValue = 'Customer';
   bool flagDB = false;
+  bool flagCS = false;
   UserCustomer customer = UserCustomer();
   UserSeller seller = UserSeller();
-  String email;
+  String Email;
   String pass;
   bool showSpinner = false;
   bool validate = false;
@@ -104,7 +106,7 @@ class _loginState extends State<login> {
                           border: OutlineInputBorder(),
                         ),
                         onSaved: (value) {
-                          email = value.trim();
+                          Email = value.trim();
                         },
                       ),
                     ),
@@ -195,41 +197,66 @@ class _loginState extends State<login> {
                   });
                   _loginFormKey.currentState.save();
                   try {
-                    final newuser = await _auth.signInWithEmailAndPassword(
-                        email: email, password: pass);
                     //If user was a seller
                     if (flagDB) {
+                      print('Start of seller route');
                       final userName =
                           await _firestore.collection('Sellers').get();
                       for (var usern in userName.docs) {
-                        final fname = usern.get('FirstName');
-                        final lname = usern.get('LastName');
+                        final firstname = usern.get('FirstName');
+                        final lastname = usern.get('LastName');
                         final email = usern.get('Email');
-                        if (email == _auth.currentUser.email) {
-                          seller.firstName = fname;
-                          seller.lastName = lname;
+                        if (email == Email) {
+                          seller.firstName = firstname;
+                          seller.lastName = lastname;
                         }
+                        print('end of seller');
                         setState(() {
                           showSpinner = false;
                         });
-                        Navigator.pushNamed(context, loggedinhome.id);
+                      }
+                      print('seller route my name is ' + seller.firstName);
+                      if (seller.firstName == 'temp') {
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        _showSnackbar("Invalid email or passwordseller");
+                      } else {
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        final newuser = await _auth.signInWithEmailAndPassword(
+                            email: Email, password: pass);
+                        Navigator.pushNamed(context, sellerhome.id);
                       }
                     }
                     // User was a customer
                     else {
+                      print('Start of customer route');
                       final userName =
                           await _firestore.collection('Customers').get();
                       for (var usern in userName.docs) {
-                        final fname = usern.get('FirstName');
-                        final lname = usern.get('LastName');
+                        final firstname = usern.get('FirstName');
+                        final lastname = usern.get('LastName');
                         final email = usern.get('Email');
-                        if (email == _auth.currentUser.email) {
-                          customer.firstName = fname;
-                          customer.lastName = lname;
+                        if (email == Email) {
+                          customer.firstName = firstname;
+                          customer.lastName = lastname;
                         }
+                        print('end of customer route');
+                      }
+                      print('customer route my name is ' + customer.firstName);
+                      if (customer.firstName == 'temp') {
                         setState(() {
                           showSpinner = false;
                         });
+                        _showSnackbar("Invalid email or passwordcustomer");
+                      } else {
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        final newuser = await _auth.signInWithEmailAndPassword(
+                            email: Email, password: pass);
                         Navigator.pushNamed(context, loggedinhome.id);
                       }
                     }
