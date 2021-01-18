@@ -16,76 +16,80 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   var queryResultSet = [];
   var tempSearchStore = [];
   initiateSearch(value) {
+    print('start of function');
     if (value.length == 0) {
       setState(() {
-        queryResultSet=[];
-        tempSearchStore=[];
+        queryResultSet = [];
+        tempSearchStore = [];
       });
     }
-    var capitalizedValue=value.substring(0,1).toUpperCase()+value.substring(1);
-    if(queryResultSet.length==0&& value.length==1){
-      SearchService().searchByName(value).then((QuerySnapshot docs){
-        for(int i=0;i<docs.docs.length;++i){
-          queryResultSet.add(docs.docs[i].data);
+    var capitalizedValue =
+        value.substring(0, 1).toUpperCase() + value.substring(1);
+    print('Here is the value:');
+    print(capitalizedValue);
+    if (queryResultSet.length == 0 && value.length == 1) {
+      print('inside if condition');
+      SearchService().searchByName(value).then((QuerySnapshot docs) {
+        for (int i = 0; i < docs.docs.length; ++i) {
+          queryResultSet.add(docs.docs[i].data());
+          print('Here is doc' + docs.docs[i].data().toString());
+        }
+      });
+    } else {
+      print('inside else condition');
+      tempSearchStore = [];
+      queryResultSet.forEach((element) {
+        if (element['brand'].startsWith(capitalizedValue)) {
+          setState(() {
+            tempSearchStore.add(element);
+          });
         }
       });
     }
-    else {
-        tempSearchStore=[];
-        queryResultSet.forEach((element) {
-          if(element['searchKey'].startsWith(capitalizedValue)){
-            setState(() {
-              tempSearchStore.add(element);
-            });
-          }
-        });
-      }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('fireStore Search'),
+        title: Text('Products Search'),
       ),
       body: ListView(
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                onChanged: (val){
-                  initiateSearch(val);
-                },
-                decoration: InputDecoration(
-                  prefixIcon: IconButton (
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              onChanged: (val) {
+                initiateSearch(val);
+              },
+              decoration: InputDecoration(
+                  prefixIcon: IconButton(
                     color: Colors.black,
                     icon: Icon(Icons.arrow_back),
                     iconSize: 20.0,
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  contentPadding:EdgeInsets.only(left: 25.0),
-                  hintText:'Search By Name',
+                  contentPadding: EdgeInsets.only(left: 25.0),
+                  hintText: 'Search By Name',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0)
-                  )
-                ),
-              ),
+                      borderRadius: BorderRadius.circular(4.0))),
+            ),
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(
+            height: 10.0,
+          ),
           GridView.count(
-            padding: EdgeInsets.only(left: 10.0,right: 10.0) ,
-            crossAxisCount: 2,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
-            primary: false,
-            shrinkWrap: true,
-            children: tempSearchStore.map((element) {
-              return buileResultCard(element);
-            }).toList()
-          )
-
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              crossAxisCount: 2,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+              primary: false,
+              shrinkWrap: true,
+              children: tempSearchStore.map((element) {
+                return buileResultCard(element);
+              }).toList())
         ],
       ),
     );
@@ -97,7 +101,8 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
       elevation: 2.0,
       child: Container(
         child: Center(
-          child: Text(element['searchKey'],
+          child: Text(
+            element['brand'],
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,

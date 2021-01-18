@@ -78,7 +78,7 @@ class Single_product extends StatelessWidget {
               );
             },
             child: GridTile(
-              child: Text('shit'),
+              child: Text('Place holder'),
               footer: Container(
                 color: Colors.white70,
                 child: ListTile(
