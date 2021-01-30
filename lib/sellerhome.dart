@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/Home.dart';
+import 'package:store_app/SellerAddMobile.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:store_app/components/Product.dart';
 import 'package:store_app/components/SellerProducts.dart';
@@ -53,7 +54,13 @@ class _sellerhomeState extends State<sellerhome> {
             backgroundColor: Colors.blueGrey[900],
             actions: <Widget>[
               new IconButton(
-                  icon: Icon(Icons.add, color: Colors.white), onPressed: () {}),
+                  icon: Icon(Icons.add, color: Colors.white),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SellerAddMobile()));
+                  }),
             ],
           ),
           drawer: Drawer(
