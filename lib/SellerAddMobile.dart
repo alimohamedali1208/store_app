@@ -313,7 +313,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                     'Quantity': quantity,
                     'Rating': 0
                   });
-                  Navigator.pushNamed(context, sellerhome.id);
+                  Navigator.pop(context);
                 }
               },
               child: Text(
