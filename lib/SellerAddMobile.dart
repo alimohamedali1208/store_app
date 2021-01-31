@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:store_app/UserSeller.dart';
+import 'package:store_app/sellerhome.dart';
 
 class SellerAddMobile extends StatefulWidget {
   @override
@@ -9,6 +11,8 @@ class SellerAddMobile extends StatefulWidget {
 }
 
 class _SellerAddMobileState extends State<SellerAddMobile> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   var _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
@@ -21,7 +25,6 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
       searchKey,
       screenSize,
       quantity,
-      seller,
       storage;
   String ddBrand;
   String ddOS;
@@ -294,6 +297,23 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
                   print("name $name brand $ddBrand battery $battery os $ddOS");
+                  _firestore.collection('mobiles').add({
+                    'SearchKey': name.substring(0, 1),
+                    'Seller Email': _auth.currentUser.email,
+                    'Brand Name': ddBrand,
+                    'Product Name': name,
+                    'Battery': battery,
+                    'Camera': camera,
+                    'Storage': storage,
+                    'Screen Size': screenSize,
+                    'Memory': memory,
+                    'OS': ddOS,
+                    'Description': description,
+                    'Price': price,
+                    'Quantity': quantity,
+                    'Rating': 0
+                  });
+                  Navigator.pushNamed(context, sellerhome.id);
                 }
               },
               child: Text(

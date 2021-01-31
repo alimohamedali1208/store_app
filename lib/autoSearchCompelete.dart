@@ -39,7 +39,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
       print('inside else condition');
       tempSearchStore = [];
       queryResultSet.forEach((element) {
-        if (element['brand'].startsWith(capitalizedValue)) {
+        if (element['Brand Name'].startsWith(capitalizedValue)) {
           setState(() {
             tempSearchStore.add(element);
           });
@@ -102,7 +102,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
       child: Container(
         child: Center(
           child: Text(
-            element['brand'],
+            element['Product Name'],
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,

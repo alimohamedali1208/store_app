@@ -99,27 +99,6 @@ class SingleCartProduct extends StatelessWidget {
             ),
           ],
         ),
-        //==============================
-        //   trailing: Container(
-        //     child: Column(
-        //       children: <Widget>[
-        //         IconButton(
-        //           icon: Icon(
-        //             Icons.arrow_drop_up,
-        //           ),
-        //           onPressed: () {},
-        //         ),
-        //         Text("$cart_prod_qty"),
-        //         IconButton(
-        //           icon: Icon(
-        //             Icons.arrow_drop_down,
-        //           ),
-        //           onPressed: () {},
-        //         )
-        //       ],
-        //     ),
-        //   ),
-        //   //============================
       ),
     );
   }
