@@ -26,8 +26,8 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
       screenSize,
       quantity,
       storage;
-  String ddBrand;
-  String ddOS;
+  String ddBrand = 'Apple';
+  String ddOS = 'IOS';
 
   double price;
 
@@ -69,7 +69,9 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
-                Icon(Icons.camera_alt),
+                Icon(
+                  Icons.camera_alt,
+                ),
                 Container(
                   child: _image == null
                       ? Text('No image selected.')
@@ -102,6 +104,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -116,6 +119,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -146,6 +150,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -217,64 +222,75 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                       },
                     ),
                   ),
-                  DropdownButton<String>(
-                    hint: Text('Operating system'),
-                    value: ddOS,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 10,
-                    elevation: 10,
-                    style: TextStyle(color: Colors.black),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.black,
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Operating system'),
+                    SizedBox(
+                      width: 20,
                     ),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        ddOS = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'IOS',
-                      'Android',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                  DropdownButton<String>(
-                    hint: Text('Brand'),
-                    value: ddBrand,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 10,
-                    elevation: 10,
-                    style: TextStyle(color: Colors.black),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.black,
+                    DropdownButton<String>(
+                      value: ddOS,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddOS = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'IOS',
+                        'Android',
+                        'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        ddBrand = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'Apple',
-                      'Samsung',
-                      'Huawei',
-                      'Nokia',
-                      'Sony',
-                      'HTC',
-                      'Lenovo',
-                      'SICO Technology',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Brand'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddBrand,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddBrand = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Apple',
+                        'Samsung',
+                        'Huawei',
+                        'Nokia',
+                        'Sony',
+                        'HTC',
+                        'Lenovo',
+                        'SICO Technology',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
                 ],
               ),
             ),
@@ -284,6 +300,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
+        backgroundColor: Colors.blueGrey[900],
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
@@ -296,7 +313,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
               onPressed: () async {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
-                  print("name $name brand $ddBrand battery $battery os $ddOS");
+
                   _firestore.collection('mobiles').add({
                     'SearchKey': name.substring(0, 1),
                     'Seller Email': _auth.currentUser.email,
@@ -314,6 +331,8 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                     'Rating': 0
                   });
                   Navigator.pop(context);
+                } else {
+                  _toggleValidate();
                 }
               },
               child: Text(

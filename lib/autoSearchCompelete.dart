@@ -52,7 +52,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Products Search'),
+        centerTitle: true,
+        title: Text('Search'),
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: ListView(
         children: <Widget>[
