@@ -17,6 +17,7 @@ class _sellerhomeState extends State<sellerhome> {
   UserSeller seller = UserSeller();
   String name;
   int price;
+  String picURL;
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -130,11 +131,15 @@ class _sellerhomeState extends State<sellerhome> {
             final products = snapshot.data.docs;
             List<SingleProduct> productsview = [];
             for (var product in products) {
-              final productname = product.data()['name'];
-              final productprice = product.data()['price'].toString();
+              final productname = product.data()['Name'];
+              final productprice = product.data()['Price'].toString();
+              final productimg = product.data()['imgURL'];
 
               final productview = SingleProduct(
-                  productName: productname, productPrice: productprice);
+                productName: productname,
+                productPrice: productprice,
+                productImg: productimg,
+              );
               productsview.add(productview);
             }
             return ListView(
@@ -150,16 +155,17 @@ class _sellerhomeState extends State<sellerhome> {
 class SingleProduct extends StatelessWidget {
   final String productName;
   final String productPrice;
+  final String productImg;
 
-  SingleProduct({this.productName, this.productPrice});
+  SingleProduct({this.productName, this.productPrice, this.productImg});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         //    ======= the leading image section =======
-        leading: Image.asset(
-          "images/iphone12.jpg",
+        leading: Image.network(
+          productImg,
           width: 80,
           height: 80,
         ),

@@ -1,9 +1,11 @@
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:store_app/UserSeller.dart';
-import 'package:store_app/sellerhome.dart';
 
 class SellerAddMobile extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class SellerAddMobile extends StatefulWidget {
 class _SellerAddMobileState extends State<SellerAddMobile> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  var _image;
+  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -28,6 +30,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
       storage;
   String ddBrand = 'Apple';
   String ddOS = 'IOS';
+  String picURL;
 
   double price;
 
@@ -37,6 +40,21 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
     setState(() {
       _image = pickedFile;
     });
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_image.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$name');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print('done $value'),
+        );
+    await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+    _firestore
+        .collection('SellerProduct')
+        .add({'Name': name, 'Price': price, 'imgURL': picURL});
   }
 
   //toggling auto validate
@@ -313,7 +331,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
               onPressed: () async {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
-
+                  uploadImageToFirebase(context);
                   _firestore.collection('mobiles').add({
                     'SearchKey': name.substring(0, 1),
                     'Seller Email': _auth.currentUser.email,
@@ -330,6 +348,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                     'Quantity': quantity,
                     'Rating': 0
                   });
+
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();
