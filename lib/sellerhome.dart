@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/Home.dart';
-import 'package:store_app/SellerAddMobile.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:store_app/addCategory.dart';
 
 class sellerhome extends StatefulWidget {
   static String id = 'sellerHome';
@@ -52,17 +52,15 @@ class _sellerhomeState extends State<sellerhome> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Seller Home"),
+          title: Text(seller.firstName),
           centerTitle: true,
           backgroundColor: Colors.blueGrey[900],
           actions: <Widget>[
             new IconButton(
                 icon: Icon(Icons.add, color: Colors.white),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SellerAddMobile()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => addCategory()));
                 }),
           ],
         ),

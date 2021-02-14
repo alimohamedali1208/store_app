@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,31 +6,22 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class SellerAddMobile extends StatefulWidget {
+class addHomeAppliances extends StatefulWidget {
   @override
-  _SellerAddMobileState createState() => _SellerAddMobileState();
+  _addHomeAppliancesState createState() => _addHomeAppliancesState();
 }
 
-class _SellerAddMobileState extends State<SellerAddMobile> {
+class _addHomeAppliancesState extends State<addHomeAppliances> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String camera,
-      battery,
-      description,
-      memory,
-      name,
-      searchKey,
-      screenSize,
-      quantity,
-      storage;
-  String ddBrand = 'Apple';
-  String ddOS = 'IOS';
-  String picURL;
+  String description, name, searchKey, Size, quantity;
 
+  String ddBrand = 'Samsung';
+  String picURL;
   double price;
 
   //Getting the image
@@ -77,7 +67,7 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a mobile"),
+        title: Text("Add a Home Appliance"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
@@ -110,42 +100,12 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
-                        labelText: 'phone name',
+                        labelText: 'Device name',
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
                         name = value.trim();
                         searchKey = name.substring(0, 1);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Battery size',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        battery = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Camera',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        camera = value.trim();
                       },
                     ),
                   ),
@@ -162,21 +122,6 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                       ),
                       onSaved: (value) {
                         description = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Phone ram',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        memory = value.trim() + " GB";
                       },
                     ),
                   ),
@@ -217,61 +162,14 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
-                        labelText: 'Screen size',
+                        labelText: 'Size',
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        screenSize = value.trim();
+                        Size = value.trim();
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Phone storage',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        storage = value.trim() + " GB";
-                      },
-                    ),
-                  ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Operating system'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddOS,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddOS = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'IOS',
-                        'Android',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ]),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text('Brand'),
                     SizedBox(
@@ -293,14 +191,14 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                         });
                       },
                       items: <String>[
-                        'Apple',
+                        'LG',
                         'Samsung',
-                        'Huawei',
-                        'Nokia',
-                        'Sony',
-                        'HTC',
-                        'Lenovo',
-                        'SICO Technology',
+                        'Carrier',
+                        'Sharp',
+                        'Beko',
+                        'Unionair',
+                        'Toshiba',
+                        'Zanusei',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -332,17 +230,12 @@ class _SellerAddMobileState extends State<SellerAddMobile> {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
                   uploadImageToFirebase(context);
-                  _firestore.collection('mobiles').add({
+                  _firestore.collection('HomeAppliances').add({
                     'SearchKey': name.substring(0, 1),
                     'Seller Email': _auth.currentUser.email,
                     'Brand Name': ddBrand,
                     'Product Name': name,
-                    'Battery': battery,
-                    'Camera': camera,
-                    'Storage': storage,
-                    'Screen Size': screenSize,
-                    'Memory': memory,
-                    'OS': ddOS,
+                    'Screen Size': Size,
                     'Description': description,
                     'Price': price,
                     'Quantity': quantity,
