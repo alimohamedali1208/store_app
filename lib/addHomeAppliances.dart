@@ -18,7 +18,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description, name, searchKey, Size, quantity;
+  String description, name, searchKey, width, weight, depth, quantity;
 
   String ddBrand = 'Samsung';
   String picURL;
@@ -112,6 +112,51 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Width',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        width = value.trim();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Depth',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        depth = value.trim();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Weight',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        weight = value.trim();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -152,21 +197,6 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       ),
                       onSaved: (value) {
                         quantity = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Size',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        Size = value.trim();
                       },
                     ),
                   ),
@@ -235,7 +265,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                     'Seller Email': _auth.currentUser.email,
                     'Brand Name': ddBrand,
                     'Product Name': name,
-                    'Screen Size': Size,
+                    'Screen Size': width,
                     'Description': description,
                     'Price': price,
                     'Quantity': quantity,

@@ -19,7 +19,10 @@ class _addJewelaryState extends State<addJewelary> {
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, searchKey, quantity;
+  String ddTargetedGroup = 'Adults';
+  String ddMetalType = 'Gold';
   String picURL;
+  double size;
 
   double price;
 
@@ -105,6 +108,85 @@ class _addJewelaryState extends State<addJewelary> {
                       onSaved: (value) {
                         name = value.trim();
                         searchKey = name.substring(0, 1);
+                      },
+                    ),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Targeted group'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddTargetedGroup,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddTargetedGroup = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Adults',
+                        'Children',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Metal Type'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddMetalType,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddMetalType = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Gold',
+                        'Silver',
+                        'Plastic',
+                        'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Size',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        size = double.parse(value.trim());
                       },
                     ),
                   ),

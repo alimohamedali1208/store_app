@@ -4,9 +4,9 @@ import 'package:store_app/addHomeAppliances.dart';
 import 'package:store_app/addJewelary.dart';
 import 'package:store_app/addMobile.dart';
 import 'package:store_app/addPCAccessories.dart';
-import 'file:///C:/Users/ahmed/StudioProjects/store_app/lib/addFashion.dart';
 
 import 'UserSeller.dart';
+import 'addFashion.dart';
 
 class addCategory extends StatefulWidget {
   @override
