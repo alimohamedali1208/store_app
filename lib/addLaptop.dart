@@ -6,12 +6,12 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class addMobile extends StatefulWidget {
+class addLaptop extends StatefulWidget {
   @override
-  _addMobileState createState() => _addMobileState();
+  _addLaptopState createState() => _addLaptopState();
 }
 
-class _addMobileState extends State<addMobile> {
+class _addLaptopState extends State<addLaptop> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   File _image;

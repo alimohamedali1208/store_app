@@ -5,6 +5,8 @@ import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/addCategory.dart';
 
+import 'SellerEditProfile.dart';
+
 class sellerhome extends StatefulWidget {
   static String id = 'sellerHome';
   @override
@@ -86,9 +88,14 @@ class _sellerhomeState extends State<sellerhome> {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SellerEditProfile()));
+                },
                 child: ListTile(
-                  title: Text('My Account'),
+                  title: Text('Edit Profile'),
                   leading: Icon(Icons.person, color: Colors.blueGrey[900]),
                 ),
               ),
