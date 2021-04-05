@@ -185,6 +185,25 @@ class SingleProduct extends StatelessWidget {
                 style: TextStyle(color: Colors.red),
               ),
             ),
+            Row(
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {},
+                  child: Text('Edit'),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: Text('Delete'),
+                  color: Colors.red,
+                  textColor: Colors.white,
+                ),
+              ],
+            )
           ],
         ),
       ),
