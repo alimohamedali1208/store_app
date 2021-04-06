@@ -16,7 +16,7 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addMobileFormKey = GlobalKey<FormState>();
+  final _addPcAccessoriesFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, searchKey, quantity, brand, accessoryType;
   String picURL;
@@ -40,9 +40,12 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore
-        .collection('SellerProduct')
-        .add({'Name': name, 'Price': price, 'imgURL': picURL, 'SellerID': _auth.currentUser.email});
+    _firestore.collection('SellerProduct').add({
+      'Name': name,
+      'Price': price,
+      'imgURL': picURL,
+      'SellerID': _auth.currentUser.email
+    });
   }
 
   //toggling auto validate
@@ -89,7 +92,7 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addMobileFormKey,
+              key: _addPcAccessoriesFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -201,8 +204,8 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addMobileFormKey.currentState.validate()) {
-                  _addMobileFormKey.currentState.save();
+                if (_addPcAccessoriesFormKey.currentState.validate()) {
+                  _addPcAccessoriesFormKey.currentState.save();
                   uploadImageToFirebase(context);
                   _firestore.collection('PCAccesory').add({
                     'SearchKey': name.substring(0, 1),

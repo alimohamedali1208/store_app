@@ -16,7 +16,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addMobileFormKey = GlobalKey<FormState>();
+  final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, searchKey, width, weight, depth, quantity;
 
@@ -42,9 +42,12 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore
-        .collection('SellerProduct')
-        .add({'Name': name, 'Price': price, 'imgURL': picURL, 'SellerID': _auth.currentUser.email});
+    _firestore.collection('SellerProduct').add({
+      'Name': name,
+      'Price': price,
+      'imgURL': picURL,
+      'SellerID': _auth.currentUser.email
+    });
   }
 
   //toggling auto validate
@@ -91,7 +94,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addMobileFormKey,
+              key: _addHomeAppliancesFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -257,8 +260,8 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addMobileFormKey.currentState.validate()) {
-                  _addMobileFormKey.currentState.save();
+                if (_addHomeAppliancesFormKey.currentState.validate()) {
+                  _addHomeAppliancesFormKey.currentState.save();
                   uploadImageToFirebase(context);
                   _firestore.collection('HomeAppliances').add({
                     'SearchKey': name.substring(0, 1),

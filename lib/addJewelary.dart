@@ -16,7 +16,7 @@ class _addJewelaryState extends State<addJewelary> {
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addMobileFormKey = GlobalKey<FormState>();
+  final _addJewelleryFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, searchKey, quantity;
   String ddTargetedGroup = 'Adults';
@@ -44,9 +44,12 @@ class _addJewelaryState extends State<addJewelary> {
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore
-        .collection('SellerProduct')
-        .add({'Name': name, 'Price': price, 'imgURL': picURL, 'SellerID': _auth.currentUser.email});
+    _firestore.collection('SellerProduct').add({
+      'Name': name,
+      'Price': price,
+      'imgURL': picURL,
+      'SellerID': _auth.currentUser.email
+    });
   }
 
   //toggling auto validate
@@ -93,7 +96,7 @@ class _addJewelaryState extends State<addJewelary> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addMobileFormKey,
+              key: _addJewelleryFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -256,8 +259,8 @@ class _addJewelaryState extends State<addJewelary> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addMobileFormKey.currentState.validate()) {
-                  _addMobileFormKey.currentState.save();
+                if (_addJewelleryFormKey.currentState.validate()) {
+                  _addJewelleryFormKey.currentState.save();
                   uploadImageToFirebase(context);
                   _firestore.collection('accessory').add({
                     'SearchKey': name.substring(0, 1),

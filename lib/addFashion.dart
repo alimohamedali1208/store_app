@@ -16,14 +16,26 @@ class _addFashionState extends State<addFashion> {
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addMobileFormKey = GlobalKey<FormState>();
+  final _addFashionFormKey = GlobalKey<FormState>();
+
+  //variables
   bool validate = false;
-  String description, name, searchKey, quantity;
+  String description, name, searchKey, size, quantity;
   String ddBrand = 'Adidas';
   String ddColor = 'red';
+  String ddtype = 'Shirt';
   String picURL;
-
   double price;
+
+  //for a future color picker
+  /*// create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+  // ValueChanged<Color> callback
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }*/
 
   //Getting the image
   Future getImage() async {
@@ -43,9 +55,12 @@ class _addFashionState extends State<addFashion> {
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore
-        .collection('SellerProduct')
-        .add({'Name': name, 'Price': price, 'imgURL': picURL, 'SellerID': _auth.currentUser.email});
+    _firestore.collection('SellerProduct').add({
+      'Name': name,
+      'Price': price,
+      'imgURL': picURL,
+      'SellerID': _auth.currentUser.email
+    });
   }
 
   //toggling auto validate
@@ -92,7 +107,7 @@ class _addFashionState extends State<addFashion> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addMobileFormKey,
+              key: _addFashionFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -107,6 +122,21 @@ class _addFashionState extends State<addFashion> {
                       onSaved: (value) {
                         name = value.trim();
                         searchKey = name.substring(0, 1);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Size',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        size = value.trim();
                       },
                     ),
                   ),
@@ -157,7 +187,43 @@ class _addFashionState extends State<addFashion> {
                     ),
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('color'),
+                    Text('Type'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddtype,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddtype = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Shirt',
+                        'Skirt',
+                        'Trousers',
+                        'Dress',
+                        'Jeans',
+                        'Shorts',
+                        'Other'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Color'),
                     SizedBox(
                       width: 20,
                     ),
@@ -248,8 +314,8 @@ class _addFashionState extends State<addFashion> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addMobileFormKey.currentState.validate()) {
-                  _addMobileFormKey.currentState.save();
+                if (_addFashionFormKey.currentState.validate()) {
+                  _addFashionFormKey.currentState.save();
                   uploadImageToFirebase(context);
                   _firestore.collection('fashion').add({
                     'SearchKey': name.substring(0, 1),
