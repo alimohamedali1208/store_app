@@ -46,7 +46,7 @@ class _addJewelaryState extends State<addJewelary> {
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
     _firestore
         .collection('SellerProduct')
-        .add({'Name': name, 'Price': price, 'imgURL': picURL});
+        .add({'Name': name, 'Price': price, 'imgURL': picURL, 'SellerID': _auth.currentUser.email});
   }
 
   //toggling auto validate
