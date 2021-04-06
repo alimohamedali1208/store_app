@@ -133,23 +133,26 @@ class _sellerhomeState extends State<sellerhome> {
           stream: _firestore.collection('SellerProduct').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Text('no products available');
-            final products = snapshot.data.docs;
-            List<SingleProduct> productsview = [];
-            for (var product in products) {
-              final productname = product.data()['Name'];
-              final productprice = product.data()['Price'].toString();
-              final productimg = product.data()['imgURL'];
-
-              final productview = SingleProduct(
-                productName: productname,
-                productPrice: productprice,
-                productImg: productimg,
+            else {
+              final products = snapshot.data.docs;
+              List<SingleProduct> productsview = [];
+              for (var product in products) {
+                if (_auth.currentUser.email == product.data()['SellerID']) {
+                  final productname = product.data()['Name'];
+                  final productprice = product.data()['Price'].toString();
+                  final productimg = product.data()['imgURL'];
+                  final productview = SingleProduct(
+                    productName: productname,
+                    productPrice: productprice,
+                    productImg: productimg,
+                  );
+                  productsview.add(productview);
+                }
+              }
+              return ListView(
+                children: productsview,
               );
-              productsview.add(productview);
             }
-            return ListView(
-              children: productsview,
-            );
           },
         ),
       ),
@@ -197,7 +200,9 @@ class SingleProduct extends StatelessWidget {
                   width: 10,
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                  //   FirebaseFirestore.instance.doc('BA').delete();
+                  },
                   child: Text('Delete'),
                   color: Colors.red,
                   textColor: Colors.white,

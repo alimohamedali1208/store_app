@@ -5,6 +5,7 @@ import 'package:store_app/addJewelary.dart';
 import 'package:store_app/addMobile.dart';
 import 'package:store_app/addPCAccessories.dart';
 import 'package:store_app/addFashion.dart';
+import 'addLaptop.dart';
 
 import 'UserSeller.dart';
 
@@ -79,7 +80,7 @@ class _addCategoryState extends State<addCategory> {
                   child: GestureDetector(
                     child: productCard(
                       img: 'images/dimond.jpg',
-                      categoryName: 'Jewelary',
+                      categoryName: 'Jewelry',
                     ),
                     onTap: () {
                       Navigator.push(
@@ -100,6 +101,20 @@ class _addCategoryState extends State<addCategory> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => addElectronics()));
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: productCard(
+                      img: 'images/Laptop_CAT.png',
+                      categoryName: 'Laptops',
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => addLaptop()));
                     },
                   ),
                 ),
@@ -136,7 +151,6 @@ class productCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(15),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
           Expanded(child: Image.asset(img)),
