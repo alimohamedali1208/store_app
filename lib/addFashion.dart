@@ -128,7 +128,6 @@ class _addFashionState extends State<addFashion> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
-                      keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
