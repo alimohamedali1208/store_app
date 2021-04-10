@@ -6,32 +6,23 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class addLaptop extends StatefulWidget {
+class addStorageDevice extends StatefulWidget {
   @override
-  _addLaptopState createState() => _addLaptopState();
+  _addStorageDeviceState createState() => _addStorageDeviceState();
 }
 
-class _addLaptopState extends State<addLaptop> {
+class _addStorageDeviceState extends State<addStorageDevice> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addLaptopFormKey = GlobalKey<FormState>();
+  final _addPcAccessoriesFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String CPU,
-      GPU,
-      battary,
-      description,
-      memory,
-      name,
-      searchKey,
-      screenSize,
-      quantity,
-      storage;
-  String ddBrand = 'HP';
-  String ddOS = 'Windows';
+  String description, name, searchKey, quantity, brand;
+  String ddAccessoryType = 'Flash drive';
+  String ddCapacity = '1 GB';
+  String ddBrand = 'Samsung';
   String picURL;
-
   double price;
 
   //Getting the image
@@ -80,7 +71,7 @@ class _addLaptopState extends State<addLaptop> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a laptop"),
+        title: Text("Add a Storage Device"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
@@ -104,7 +95,7 @@ class _addLaptopState extends State<addLaptop> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addLaptopFormKey,
+              key: _addPcAccessoriesFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -113,40 +104,12 @@ class _addLaptopState extends State<addLaptop> {
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
-                        labelText: 'Laptop name',
+                        labelText: 'Device name',
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
                         name = value.trim();
                         searchKey = name.substring(0, 1);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'GPU',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        GPU = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'CPU',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        CPU = value.trim();
                       },
                     ),
                   ),
@@ -163,21 +126,6 @@ class _addLaptopState extends State<addLaptop> {
                       ),
                       onSaved: (value) {
                         description = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Ram',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        memory = value.trim() + " GB";
                       },
                     ),
                   ),
@@ -211,58 +159,13 @@ class _addLaptopState extends State<addLaptop> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Screen size',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        screenSize = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Battery',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        battary = value.trim();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Storage',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        storage = value.trim() + " GB";
-                      },
-                    ),
-                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Operating system'),
+                    Text('Accessory type'),
                     SizedBox(
                       width: 20,
                     ),
                     DropdownButton<String>(
-                      value: ddOS,
+                      value: ddAccessoryType,
                       icon: Icon(Icons.arrow_downward),
                       iconSize: 10,
                       elevation: 10,
@@ -273,13 +176,53 @@ class _addLaptopState extends State<addLaptop> {
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          ddOS = newValue;
+                          ddAccessoryType = newValue;
                         });
                       },
                       items: <String>[
-                        'Windows',
-                        'Dos',
-                        'Other',
+                        'Flash drive',
+                        'Mass storage device',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Device capacity'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddCapacity,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddCapacity = newValue;
+                        });
+                      },
+                      items: <String>[
+                        '1 GB',
+                        '2 GB',
+                        '4 GB',
+                        '8 GB',
+                        '16 GB',
+                        '32 GB',
+                        '64 GB',
+                        '128 GB',
+                        '512 GB',
+                        '1 TB',
+                        '2 TB',
+                        '4 TB and up',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -309,16 +252,14 @@ class _addLaptopState extends State<addLaptop> {
                         });
                       },
                       items: <String>[
-                        'Asus',
                         'Samsung',
-                        'Dell',
-                        'HP',
-                        'Lenovo',
-                        'MSI',
-                        'Razer',
-                        'Acer',
-                        'Microsoft',
-                        'Other',
+                        'Sandisk',
+                        'Kingston',
+                        'Adata',
+                        'Western digital',
+                        'Seagate',
+                        'Transcend',
+                        'other',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -347,22 +288,15 @@ class _addLaptopState extends State<addLaptop> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addLaptopFormKey.currentState.validate()) {
-                  _addLaptopFormKey.currentState.save();
+                if (_addPcAccessoriesFormKey.currentState.validate()) {
+                  _addPcAccessoriesFormKey.currentState.save();
 
-                  //todo database insertion
+                  //todo database code ya Ammar
                   /*uploadImageToFirebase(context);
-                  _firestore.collection('mobiles').add({
+                  _firestore.collection('PCAccesory').add({
                     'SearchKey': name.substring(0, 1),
                     'Seller Email': _auth.currentUser.email,
-                    'Brand Name': ddBrand,
                     'Product Name': name,
-                    'Battery': GPU,
-                    'Camera': CPU,
-                    'Storage': storage,
-                    'Screen Size': screenSize,
-                    'Memory': memory,
-                    'OS': ddOS,
                     'Description': description,
                     'Price': price,
                     'Quantity': quantity,

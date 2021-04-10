@@ -132,7 +132,8 @@ class _sellerhomeState extends State<sellerhome> {
         body: StreamBuilder<QuerySnapshot>(
           stream: _firestore.collection('SellerProduct').snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return Text('no products available');
+            if (!snapshot.hasData)
+              return Text('no products available');
             else {
               final products = snapshot.data.docs;
               List<SingleProduct> productsview = [];
@@ -201,7 +202,7 @@ class SingleProduct extends StatelessWidget {
                 ),
                 FlatButton(
                   onPressed: () {
-                  //   FirebaseFirestore.instance.doc('BA').delete();
+                    //   FirebaseFirestore.instance.doc('BA').delete();
                   },
                   child: Text('Delete'),
                   color: Colors.red,

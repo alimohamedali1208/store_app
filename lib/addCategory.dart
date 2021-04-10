@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/ChoosePCAccessory.dart';
 import 'package:store_app/addElectronics.dart';
 import 'package:store_app/addHomeAppliances.dart';
 import 'package:store_app/addJewelary.dart';
@@ -66,7 +67,7 @@ class _addCategoryState extends State<addCategory> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => addPCAccessories()));
+                              builder: (context) => ChoosePCAccessory()));
                     },
                   ),
                 ),
@@ -111,10 +112,8 @@ class _addCategoryState extends State<addCategory> {
                       categoryName: 'Laptops',
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => addLaptop()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => addLaptop()));
                     },
                   ),
                 ),
