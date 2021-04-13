@@ -7,7 +7,6 @@ import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/autoSearchCompelete.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 UserCustomer customer = UserCustomer();
 
@@ -80,7 +79,9 @@ class _loggedinhomeState extends State<loggedinhome> {
                 icon: Icon(Icons.search, color: Colors.white),
                 onPressed: () {
                   return Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => autoSearchCompelete()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => autoSearchCompelete()));
                 }),
             new IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),

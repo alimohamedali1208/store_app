@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/ChooseElectronics.dart';
+import 'package:store_app/ChooseHomeAppliances.dart';
 import 'package:store_app/ChoosePCAccessory.dart';
-import 'package:store_app/addElectronics.dart';
-import 'package:store_app/addHomeAppliances.dart';
 import 'package:store_app/addJewelary.dart';
 import 'package:store_app/addMobile.dart';
-import 'package:store_app/addPCAccessories.dart';
 import 'package:store_app/addFashion.dart';
 import 'addLaptop.dart';
 
@@ -53,7 +52,7 @@ class _addCategoryState extends State<addCategory> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => addHomeAppliances()));
+                              builder: (context) => ChooseHomeAppliances()));
                     },
                   ),
                 ),
@@ -101,7 +100,7 @@ class _addCategoryState extends State<addCategory> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => addElectronics()));
+                              builder: (context) => ChooseElectronics()));
                     },
                   ),
                 ),

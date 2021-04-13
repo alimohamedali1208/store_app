@@ -25,6 +25,7 @@ class _addFashionState extends State<addFashion> {
   String ddColor = 'red';
   String ddtype = 'Shirt';
   String picURL;
+  String ddSize = 'S';
   double price;
 
   //for a future color picker
@@ -285,6 +286,44 @@ class _addFashionState extends State<addFashion> {
                         'LC Waikiki',
                         'TownTeam',
                         'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Size'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddSize,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddSize = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'S',
+                        'M',
+                        'L',
+                        'XL',
+                        'XXL',
+                        'XXXL',
+                        'XS',
+                        'XXS',
+                        'Other'
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,

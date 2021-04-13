@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/addElectronics.dart';
-import 'package:store_app/addHomeAppliances.dart';
-import 'package:store_app/addJewelary.dart';
-import 'package:store_app/addMobile.dart';
 import 'package:store_app/addPCAccessories.dart';
-import 'package:store_app/addFashion.dart';
 import 'package:store_app/addPrinter.dart';
 import 'package:store_app/addStorageDevice.dart';
-import 'addLaptop.dart';
 
 import 'UserSeller.dart';
 
@@ -23,7 +17,7 @@ class _ChoosePCAccessoryState extends State<ChoosePCAccessory> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(seller.firstName),
+        title: Text('PC Accessory'),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
@@ -35,7 +29,7 @@ class _ChoosePCAccessoryState extends State<ChoosePCAccessory> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/iphone12.jpg',
+                      img: 'images/usb.png',
                       categoryName: 'Storage Device',
                     ),
                     onTap: () {
@@ -49,7 +43,7 @@ class _ChoosePCAccessoryState extends State<ChoosePCAccessory> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/airconditionier.jpg',
+                      img: 'images/scanner.jpg',
                       categoryName: 'Printer',
                     ),
                     onTap: () {
@@ -63,7 +57,7 @@ class _ChoosePCAccessoryState extends State<ChoosePCAccessory> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/scanner.jpg',
+                      img: 'images/keyboard.png',
                       categoryName: 'Other',
                     ),
                     onTap: () {

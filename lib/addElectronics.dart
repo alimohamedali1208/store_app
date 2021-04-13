@@ -70,7 +70,7 @@ class _addElectronicsState extends State<addElectronics> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add an Electroonic Device"),
+        title: Text("Add an Electronic Device"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),

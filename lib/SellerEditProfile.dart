@@ -3,17 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
-import 'package:store_app/loggedinhome.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:store_app/sellerhome.dart';
 
 //  ABSOLUTELY DISGUSTING
 //           ||
 //           ||
 //           ||
 //           ▼▼
-
 
 class SellerEditProfile extends StatefulWidget {
   @override
