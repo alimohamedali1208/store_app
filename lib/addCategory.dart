@@ -5,6 +5,7 @@ import 'package:store_app/ChoosePCAccessory.dart';
 import 'package:store_app/addJewelary.dart';
 import 'package:store_app/addMobile.dart';
 import 'package:store_app/addFashion.dart';
+import 'ChooseCameras.dart';
 import 'addLaptop.dart';
 
 import 'UserSeller.dart';
@@ -67,6 +68,20 @@ class _addCategoryState extends State<addCategory> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ChoosePCAccessory()));
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    child: productCard(
+                      img: 'images/camera.jpg',
+                      categoryName: 'Cameras',
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChooseCameras()));
                     },
                   ),
                 ),
