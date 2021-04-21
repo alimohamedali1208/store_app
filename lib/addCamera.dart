@@ -338,6 +338,7 @@ class _addCameraState extends State<addCamera> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
+                //todo camera
                 if (_addCameraFormKey.currentState.validate()) {
                   _addCameraFormKey.currentState.save();
                   uploadImageToFirebase(context);

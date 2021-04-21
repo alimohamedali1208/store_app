@@ -194,6 +194,7 @@ class _addCameraAccessoryState extends State<addCameraAccessory> {
                       items: <String>[
                         'Tripod',
                         'Ring light',
+                        'Other',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -222,6 +223,7 @@ class _addCameraAccessoryState extends State<addCameraAccessory> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
+                //todo code database
                 if (_addCameraAccessoryFormKey.currentState.validate()) {
                   _addCameraAccessoryFormKey.currentState.save();
                   uploadImageToFirebase(context);
