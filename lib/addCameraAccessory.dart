@@ -6,30 +6,21 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class addCamera extends StatefulWidget {
+class addCameraAccessory extends StatefulWidget {
   @override
-  _addCameraState createState() => _addCameraState();
+  _addCameraAccessoryState createState() => _addCameraAccessoryState();
 }
 
-class _addCameraState extends State<addCamera> {
+class _addCameraAccessoryState extends State<addCameraAccessory> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _addCameraFormKey = GlobalKey<FormState>();
+  final _addCameraAccessoryFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description,
-      name,
-      searchKey,
-      megaPixel,
-      quantity,
-      opticalZoom,
-      screenSize;
-  String ddBrand = 'Canon';
-  String ddDigitalCameraType = 'Compact Camera';
-  String ddDisplayType = 'LCD';
+  String description, name, searchKey, quantity, brand;
   String picURL;
-
+  String ddAccessoryType = 'Tripod';
   double price;
 
   //Getting the image
@@ -78,7 +69,7 @@ class _addCameraState extends State<addCamera> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a Camera"),
+        title: Text("Add a PC Accessory"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
@@ -102,7 +93,7 @@ class _addCameraState extends State<addCamera> {
           Container(
             alignment: Alignment.center,
             child: Form(
-              key: _addCameraFormKey,
+              key: _addCameraAccessoryFormKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -117,6 +108,20 @@ class _addCameraState extends State<addCamera> {
                       onSaved: (value) {
                         name = value.trim();
                         searchKey = name.substring(0, 1);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      decoration: InputDecoration(
+                        labelText: 'Brand',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        brand = value.trim();
                       },
                     ),
                   ),
@@ -166,61 +171,13 @@ class _addCameraState extends State<addCamera> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Screen Size',
-                        hintText: "Size in inches",
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        screenSize = value.trim() + " inches";
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Megapixel',
-                        hintText: "Just provide the number, we'll add the 'Mp'",
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        megaPixel = value.trim() + "Mp";
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Optical Zoom',
-                        hintText: "Just provide the number, we'll add the 'x'",
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        megaPixel = value.trim() + "x";
-                      },
-                    ),
-                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
+                    Text('Accessory Type'),
                     SizedBox(
                       width: 20,
                     ),
                     DropdownButton<String>(
-                      value: ddBrand,
+                      value: ddAccessoryType,
                       icon: Icon(Icons.arrow_downward),
                       iconSize: 10,
                       elevation: 10,
@@ -231,85 +188,12 @@ class _addCameraState extends State<addCamera> {
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          ddBrand = newValue;
+                          ddAccessoryType = newValue;
                         });
                       },
                       items: <String>[
-                        'Canon',
-                        'Logitech',
-                        'Samsung',
-                        'Ugreen',
-                        'Sony',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Digital Camera Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddDigitalCameraType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddDigitalCameraType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Compact Camera',
-                        'Sir Camera',
-                        'Mirror Camera',
-                        'Long Zoom Camera',
-                        'Point And Shoot',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Display Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddDisplayType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddDisplayType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'LCD',
-                        'Analog',
-                        'Digital',
-                        'LED',
-                        'Other'
+                        'Tripod',
+                        'Ring light',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -338,13 +222,12 @@ class _addCameraState extends State<addCamera> {
             child: FlatButton(
               color: Colors.blueGrey[900],
               onPressed: () async {
-                if (_addCameraFormKey.currentState.validate()) {
-                  _addCameraFormKey.currentState.save();
+                if (_addCameraAccessoryFormKey.currentState.validate()) {
+                  _addCameraAccessoryFormKey.currentState.save();
                   uploadImageToFirebase(context);
-                  _firestore.collection('Electronic').add({
+                  _firestore.collection('PCAccesory').add({
                     'SearchKey': name.substring(0, 1),
                     'Seller Email': _auth.currentUser.email,
-                    'Brand Name': ddBrand,
                     'Product Name': name,
                     'Description': description,
                     'Price': price,

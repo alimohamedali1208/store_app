@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/addCamera.dart';
+import 'package:store_app/addCameraAccessory.dart';
 import 'package:store_app/addElectronics.dart';
 import 'package:store_app/addProjector.dart';
 
@@ -48,7 +49,7 @@ class _ChooseCamerasState extends State<ChooseCameras> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => addElectronics()));
+                              builder: (context) => addCameraAccessory()));
                     },
                   ),
                 ),
