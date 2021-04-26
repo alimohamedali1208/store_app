@@ -9,45 +9,9 @@ class autoSearchCompelete extends StatefulWidget {
 }
 
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
-  TextEditingController textEditingController = TextEditingController();
   final database = FirebaseFirestore.instance;
-  String searchString;
-
-  var queryResultSet = [];
-  var tempSearchStore = [];
-  initiateSearch(value) {
-    print('start of function');
-    if (value.length == 0) {
-      setState(() {
-        queryResultSet = [];
-        tempSearchStore = [];
-      });
-    }
-    var capitalizedValue =
-        value.substring(0, 1).toUpperCase() + value.substring(1);
-    print('Here is the value:');
-    print(capitalizedValue);
-    if (queryResultSet.length == 0 && value.length == 1) {
-      print('inside if condition');
-      SearchService().searchByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.docs.length; ++i) {
-          queryResultSet.add(docs.docs[i].data());
-          print('Here is doc' + docs.docs[i].data().toString());
-        }
-      });
-    } else {
-      print('inside else condition');
-      tempSearchStore = [];
-      queryResultSet.forEach((element) {
-        if (element['Brand Name'].startsWith(capitalizedValue)) {
-          setState(() {
-            tempSearchStore.add(element);
-          });
-        }
-      });
-    }
-  }
-
+  String searchString ='';
+  final TextEditingController _addNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,130 +20,99 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
         title: Text('Search'),
         backgroundColor: Colors.blueGrey[900],
       ),
-      body: ListView(
+      body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              onChanged: (val) {
-                initiateSearch(val);
-              },
-              decoration: InputDecoration(
-                  prefixIcon: IconButton(
-                    color: Colors.black,
-                    icon: Icon(Icons.arrow_back),
-                    iconSize: 20.0,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  contentPadding: EdgeInsets.only(left: 25.0),
-                  hintText: 'Search By Name',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4.0))),
+          Row(
+            children: [
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: TextField(
+                  controller: _addNameController,
+                ),
+              )),
+              ElevatedButton(
+                  onPressed: () {
+                    addToDatabase(_addNameController.text);
+                  },
+                  child: Text("Add"))
+            ],
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                TextField(
+                  onChanged: (val) {
+                    setState(() {
+                      searchString = val.toLowerCase().trim();
+                    });
+                  },
+                  decoration: InputDecoration(
+                      prefixIcon: IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.arrow_back),
+                        iconSize: 20.0,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      contentPadding: EdgeInsets.only(left: 25.0),
+                      hintText: 'Search By Name',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0))),
+                ),
+                Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                  stream:FirebaseFirestore.instance
+                          .collectionGroup('Products')
+                          .where('searchIndex', arrayContains: searchString)
+                          .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError)
+                      return Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        return new ListView(
+                          children: snapshot.data.docs
+                              .map((DocumentSnapshot document) {
+                            return new ListTile(
+                              title: new Text(document['name']),
+                            );
+                          }).toList(),
+                        );
+                    }
+                  },
+                )),
+              ],
             ),
           ),
-          SizedBox(
-            height: 10.0,
-          ),
-          GridView.count(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-              primary: false,
-              shrinkWrap: true,
-              children: tempSearchStore.map((element) {
-                return buileResultCard(element);
-              }).toList())
         ],
       ),
     );
   }
 
-  Widget buileResultCard(element) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-        child: Center(
-          child: Text(
-            element['Product Name'],
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ),
-    );
+  void addToDatabase(String name) {
+    List<String> splitlist = name.split(" ");
+    List<String> indexList = [];
+    int firstNameLength = splitlist[0].length-1;
+    int j = firstNameLength+2;
+
+    for (int i = 0; i < splitlist.length; i++) {
+      for (int y = 1; y < splitlist[i].length + 1; y++) {
+        indexList.add(splitlist[i].substring(0, y).toLowerCase());
+      }
+    }
+      for (j; j < name.length + 1; j++)
+        indexList.add(name.substring(0,j).toLowerCase());
+      
+    print(indexList);
+
+    FirebaseFirestore.instance
+        .collection('ProductsCollection')
+        .doc('Mobiles')
+        .collection('Products')
+        .add({'name': name, 'searchIndex': indexList});
   }
 }
-
-// return Scaffold(
-// body: Column(
-// children: <Widget>[
-// Expanded(
-// child: Column(
-// children: <Widget>[
-// Padding(
-// padding: const EdgeInsets.all(15.0),
-// child: Container(
-// child: TextField(
-// onChanged: (val) {
-// setState(() {
-// searchString = val.toLowerCase();
-// });
-// },
-// controller: textEditingController,
-// decoration: InputDecoration(
-// suffixIcon: IconButton(
-// icon: Icon(Icons.clear),
-// onPressed: () => textEditingController.clear(),
-// ),
-// hintText: 'search names here',
-// hintStyle:
-// TextStyle(fontFamily: 'Arial', color: Colors.black)),
-// ),
-// ),
-// ),
-// Expanded(
-// child: StreamBuilder<QuerySnapshot>(
-// stream: (searchString == null || searchString.trim() == '')
-// ? FirebaseFirestore.instance
-//     .collection('Sellers')
-// .snapshots()
-//     : FirebaseFirestore.instance
-//     .collection('Sellers')
-// .where('FirstName', arrayContains: searchString)
-// .snapshots(),
-// builder: (context, snapshot) {
-// if (snapshot.hasError) {
-// return Text('we got error ${snapshot.error}');
-// }
-// switch (snapshot.connectionState) {
-// case ConnectionState.waiting:
-// return SizedBox(
-// child: Center(child: Text('waiting')));
-//
-// case ConnectionState.none:
-// return Text('no such a data');
-//
-// case ConnectionState.done:
-// return Text('we are done');
-//
-// default:
-// return new ListView(
-// children: snapshot.data.docs
-//     .map((DocumentSnapshot document) {
-// return new ListTile(
-// title: Text(document['Sellers']));
-// }).toList(),
-// );
-// }
-// })),
-// ],
-// ))
-// ],
-// ));

@@ -20,7 +20,7 @@ class _addLaptopState extends State<addLaptop> {
   bool validate = false;
   String CPU,
       GPU,
-      battary,
+      battery,
       description,
       memory,
       name,
@@ -45,16 +45,28 @@ class _addLaptopState extends State<addLaptop> {
   Future uploadImageToFirebase(BuildContext context) async {
     String fileName = basename(_image.path);
     Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$name');
+        FirebaseStorage.instance.ref().child('ProductImage/Laptops/$name');
     UploadTask uploadTask = firebaseStorageRef.putFile(_image);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     taskSnapshot.ref.getDownloadURL().then(
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore.collection('SellerProduct').add({
+    _firestore.collection('ProductsCollection').doc('Products').collection('Laptops').add({
       'Name': name,
       'Price': price,
+      'CPU':CPU,
+      'GPU':GPU,
+      'Battery':battery,
+      'Description':description,
+      'Memory':memory,
+      'ScreenSize':screenSize,
+      'Quantity':quantity,
+      'Storage':storage,
+      'Brand':ddBrand,
+      'SearchKey':searchKey,
+      'OS':ddOS,
+      'Rating':0,
       'imgURL': picURL,
       'SellerID': _auth.currentUser.email
     });
@@ -237,7 +249,7 @@ class _addLaptopState extends State<addLaptop> {
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        battary = value.trim();
+                        battery = value.trim();
                       },
                     ),
                   ),
@@ -349,26 +361,7 @@ class _addLaptopState extends State<addLaptop> {
               onPressed: () async {
                 if (_addLaptopFormKey.currentState.validate()) {
                   _addLaptopFormKey.currentState.save();
-
-                  //todo database insertion
-                  /*uploadImageToFirebase(context);
-                  _firestore.collection('mobiles').add({
-                    'SearchKey': name.substring(0, 1),
-                    'Seller Email': _auth.currentUser.email,
-                    'Brand Name': ddBrand,
-                    'Product Name': name,
-                    'Battery': GPU,
-                    'Camera': CPU,
-                    'Storage': storage,
-                    'Screen Size': screenSize,
-                    'Memory': memory,
-                    'OS': ddOS,
-                    'Description': description,
-                    'Price': price,
-                    'Quantity': quantity,
-                    'Rating': 0
-                  });*/
-
+                  uploadImageToFirebase(context);
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();

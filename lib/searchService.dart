@@ -4,7 +4,7 @@ class SearchService {
   searchByName(String searchField) {
     print('searchbyname');
     return FirebaseFirestore.instance
-        .collection('mobiles')
+        .collectionGroup('Products')
         .where('SearchKey',
             isEqualTo: searchField.substring(0, 1).toUpperCase())
         .get();
