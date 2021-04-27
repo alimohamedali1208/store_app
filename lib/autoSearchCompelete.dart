@@ -21,73 +21,57 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
         backgroundColor: Colors.blueGrey[900],
       ),
       body: Column(
-        children: <Widget>[
-          Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextField(
-                  controller: _addNameController,
-                ),
-              )),
-              ElevatedButton(
-                  onPressed: () {
-                    addToDatabase(_addNameController.text);
-                  },
-                  child: Text("Add"))
-            ],
-          ),
+        children: [
           Expanded(
-            child: Column(
-              children: [
-                TextField(
-                  onChanged: (val) {
-                    setState(() {
-                      searchString = val.toLowerCase().trim();
-                    });
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: IconButton(
-                        color: Colors.black,
-                        icon: Icon(Icons.arrow_back),
-                        iconSize: 20.0,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      contentPadding: EdgeInsets.only(left: 25.0),
-                      hintText: 'Search By Name',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4.0))),
-                ),
-                Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                  stream:FirebaseFirestore.instance
-                          .collectionGroup('Products')
-                          .where('searchIndex', arrayContains: searchString)
-                          .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError)
-                      return Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(child: CircularProgressIndicator());
-                      default:
-                        return new ListView(
-                          children: snapshot.data.docs
-                              .map((DocumentSnapshot document) {
-                            return new ListTile(
-                              title: new Text(document['name']),
+                child: Column(
+                  children: [
+                    TextField(
+                      onChanged: (val) {
+                        setState(() {
+                          searchString = val.toLowerCase().trim();
+                        });
+                      },
+                      decoration: InputDecoration(
+                          prefixIcon: IconButton(
+                            color: Colors.black,
+                            icon: Icon(Icons.arrow_back),
+                            iconSize: 20.0,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          contentPadding: EdgeInsets.only(left: 25.0),
+                          hintText: 'Search By Name',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0))),
+                    ),
+                    Expanded(
+                        child: StreamBuilder<QuerySnapshot>(
+                      stream:FirebaseFirestore.instance
+                              .collectionGroup('Products')
+                              .where('searchIndex', arrayContains: searchString)
+                              .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return Center(child: CircularProgressIndicator());
+                          default:
+                            return new ListView(
+                              children: snapshot.data.docs
+                                  .map((DocumentSnapshot document) {
+                                return new ListTile(
+                                  title: new Text(document['name']),
+                                );
+                              }).toList(),
                             );
-                          }).toList(),
-                        );
-                    }
-                  },
-                )),
-              ],
-            ),
-          ),
+                        }
+                      },
+                    )),
+                  ],
+                ),
+              ),
         ],
       ),
     );

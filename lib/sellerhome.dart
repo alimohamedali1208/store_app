@@ -130,7 +130,7 @@ class _sellerhomeState extends State<sellerhome> {
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection('SellerProduct').snapshots(),
+          stream: _firestore.collectionGroup('Products').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Text('no products available');
@@ -138,7 +138,7 @@ class _sellerhomeState extends State<sellerhome> {
               final products = snapshot.data.docs;
               List<SingleProduct> productsview = [];
               for (var product in products) {
-                if (_auth.currentUser.email == product.data()['SellerID']) {
+                if (_auth.currentUser.uid == product.data()['SellerID']) {
                   final productname = product.data()['Name'];
                   final productprice = product.data()['Price'].toString();
                   final productimg = product.data()['imgURL'];
