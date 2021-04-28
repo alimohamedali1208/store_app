@@ -139,13 +139,17 @@ class _sellerhomeState extends State<sellerhome> {
               List<SingleProduct> productsview = [];
               for (var product in products) {
                 if (_auth.currentUser.uid == product.data()['SellerID']) {
-                  final productname = product.data()['Name'];
+                  final productname = product.data()['Product Name'];
                   final productprice = product.data()['Price'].toString();
                   final productimg = product.data()['imgURL'];
+                  final producttype = product.data()['type'];
+                  final productid = product.id;
                   final productview = SingleProduct(
                     productName: productname,
                     productPrice: productprice,
                     productImg: productimg,
+                    productType: producttype,
+                    productID: productid,
                   );
                   productsview.add(productview);
                 }
@@ -165,16 +169,17 @@ class SingleProduct extends StatelessWidget {
   final String productName;
   final String productPrice;
   final String productImg;
+  final String productType;
+  final String productID;
 
-  SingleProduct({this.productName, this.productPrice, this.productImg});
-
+  SingleProduct({this.productName, this.productPrice, this.productImg, this.productID, this.productType});
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         //    ======= the leading image section =======
         leading: Image.network(
-          productImg,
+          (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
           width: 80,
           height: 80,
         ),
@@ -202,7 +207,7 @@ class SingleProduct extends StatelessWidget {
                 ),
                 FlatButton(
                   onPressed: () {
-                    //   FirebaseFirestore.instance.doc('BA').delete();
+                       FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
                   },
                   child: Text('Delete'),
                   color: Colors.red,

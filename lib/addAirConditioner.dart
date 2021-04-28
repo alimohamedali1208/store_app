@@ -26,6 +26,9 @@ class _addAirConditionerState extends State<addAirConditioner> {
   String ddColor = 'white';
   String ddType = 'Split System';
   String ddHPower = '0.50';
+  String productID;
+  List<String> indexList = [];
+
   //Getting the image
   Future getImage() async {
     var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -35,20 +38,34 @@ class _addAirConditionerState extends State<addAirConditioner> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    _firestore.collection('ProductsCollection').doc('AirConditioner').collection('Products').add({
+      'Seller Email': _auth.currentUser.email,
+      'Brand Name': ddBrand,
+      'Product Name': name,
+      'Screen Size': width,
+      'Description': description,
+      'Price': price,
+      'Quantity': quantity,
+      'Rating': 0,
+      'SellerID': _auth.currentUser.uid,
+      'type': 'AirConditioner',
+      'searchIndex': indexList
+    }).then((value) async {
+      productID = value.id;
     String fileName = basename(_image.path);
     Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$name');
+        FirebaseStorage.instance.ref().child('ProductImage/AirConditioner/$productID/$name');
     UploadTask uploadTask = firebaseStorageRef.putFile(_image);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     taskSnapshot.ref.getDownloadURL().then(
           (value) => print('done $value'),
         );
     await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore.collection('SellerProduct').add({
-      'Name': name,
-      'Price': price,
-      'imgURL': picURL,
-      'SellerID': _auth.currentUser.email
+    _firestore.collection('ProductsCollection')
+        .doc('AirConditioner')
+        .collection('Products')
+        .doc(productID)
+        .update({'imgURL': picURL});
     });
   }
 
@@ -367,18 +384,19 @@ class _addAirConditionerState extends State<addAirConditioner> {
               onPressed: () async {
                 if (_addHomeAppliancesFormKey.currentState.validate()) {
                   _addHomeAppliancesFormKey.currentState.save();
+                  List<String> splitlist = name.split(" ");
+                  int j = splitlist[0].length + 1;
+
+                  for (int i = 0; i < splitlist.length; i++) {
+                    for (int y = 1; y < splitlist[i].length + 1; y++) {
+                      indexList.add(splitlist[i].substring(0, y).toLowerCase());
+                    }
+                  }
+                  for (j; j < name.length + 1; j++)
+                    indexList.add(name.substring(0, j).toLowerCase());
+                  print(indexList);
                   uploadImageToFirebase(context);
-                  _firestore.collection('fridge').add({
-                    'SearchKey': name.substring(0, 1),
-                    'Seller Email': _auth.currentUser.email,
-                    'Brand Name': ddBrand,
-                    'Product Name': name,
-                    'Screen Size': width,
-                    'Description': description,
-                    'Price': price,
-                    'Quantity': quantity,
-                    'Rating': 0
-                  });
+                  
 
                   Navigator.pop(context);
                 } else {

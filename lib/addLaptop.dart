@@ -38,6 +38,14 @@ class _addLaptopState extends State<addLaptop> {
 
   double price;
 
+  void _showSnackbar(String msg) {
+    final snackbar = SnackBar(
+      content: Text(msg),
+      // duration: const Duration(seconds: 10),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
   //Getting the image
   Future getImage() async {
     var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -52,7 +60,7 @@ class _addLaptopState extends State<addLaptop> {
         .doc('Laptops')
         .collection('Products')
         .add({
-      'Name': name,
+      'Product Name': name,
       'Price': price,
       'CPU': CPU,
       'GPU': GPU,
@@ -66,6 +74,7 @@ class _addLaptopState extends State<addLaptop> {
       'OS': ddOS,
       'Rating': 0,
       'SellerID': _auth.currentUser.uid,
+      'type': 'Laptops',
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
@@ -375,9 +384,6 @@ class _addLaptopState extends State<addLaptop> {
               color: Colors.blueGrey[900],
               onPressed: () async {
                 if (_addLaptopFormKey.currentState.validate()) {
-                  setState(() {
-                    showSpinner = true;
-                  });
                   _addLaptopFormKey.currentState.save();
                   List<String> splitlist = name.split(" ");
                   int j = splitlist[0].length + 1;
@@ -391,7 +397,9 @@ class _addLaptopState extends State<addLaptop> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  Navigator.pop(context);
+                  _showSnackbar("Your product is being uploaded now");
+                 // Navigator.pop(context);
+
                 } else {
                   _toggleValidate();
                 }

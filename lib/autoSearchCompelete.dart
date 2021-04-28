@@ -62,7 +62,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               children: snapshot.data.docs
                                   .map((DocumentSnapshot document) {
                                 return new ListTile(
-                                  title: new Text(document['name']),
+                                  title: new Text(document['Product Name']),
                                 );
                               }).toList(),
                             );
@@ -77,26 +77,4 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
     );
   }
 
-  void addToDatabase(String name) {
-    List<String> splitlist = name.split(" ");
-    List<String> indexList = [];
-    int firstNameLength = splitlist[0].length-1;
-    int j = firstNameLength+2;
-
-    for (int i = 0; i < splitlist.length; i++) {
-      for (int y = 1; y < splitlist[i].length + 1; y++) {
-        indexList.add(splitlist[i].substring(0, y).toLowerCase());
-      }
-    }
-      for (j; j < name.length + 1; j++)
-        indexList.add(name.substring(0,j).toLowerCase());
-      
-    print(indexList);
-
-    FirebaseFirestore.instance
-        .collection('ProductsCollection')
-        .doc('Mobiles')
-        .collection('Products')
-        .add({'name': name, 'searchIndex': indexList});
-  }
 }
