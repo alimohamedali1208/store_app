@@ -22,6 +22,7 @@ class _addPrinterState extends State<addPrinter> {
   String ddPrinterType = 'Inkjet printer';
   String ddColor = 'Black';
   String ddBrand = 'Samsung';
+  String ddPaperType = 'A3';
   String picURL;
   double price;
 
@@ -216,6 +217,38 @@ class _addPrinterState extends State<addPrinter> {
                         'White',
                         'Multicolor',
                         'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Paper Type'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    DropdownButton<String>(
+                      value: ddPaperType,
+                      icon: Icon(Icons.arrow_downward),
+                      iconSize: 10,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddPaperType = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'A3',
+                        'A4',
+                        'A5',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
