@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -23,6 +22,8 @@ class _addStorageDeviceState extends State<addStorageDevice> {
   String ddCapacity = '1 GB';
   String ddBrand = 'Samsung';
   String picURL;
+  String productID;
+  List<String> indexList = [];
   double price;
 
   //Getting the image
@@ -34,20 +35,37 @@ class _addStorageDeviceState extends State<addStorageDevice> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    String fileName = basename(_image.path);
-    Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$name');
-    UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    taskSnapshot.ref.getDownloadURL().then(
-          (value) => print('done $value'),
-        );
-    await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore.collection('SellerProduct').add({
-      'Name': name,
+    _firestore.collection('ProductsCollection').doc('StorageDevices').collection('Products').add({
+      'Brand Name': ddBrand,
+      'Product Name': name,
+      'CreatedAt': Timestamp.now(),
+      'Description': description,
+      'Storage Type': ddAccessoryType,
+      'Capacity': ddCapacity,
       'Price': price,
-      'imgURL': picURL,
-      'SellerID': _auth.currentUser.email
+      'Quantity': quantity,
+      'Rating': 0,
+      'SellerID': _auth.currentUser.uid,
+      'Seller Email': _auth.currentUser.email,
+      'type': 'StorageDevices',
+      'searchIndex': indexList,
+    }).then((value) async {
+      productID = value.id;
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('ProductImage/StorageDevices/$productID/$name');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      taskSnapshot.ref.getDownloadURL().then(
+            (value) => print('done $value'),
+      );
+      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+      _firestore
+          .collection('ProductsCollection')
+          .doc('StorageDevices')
+          .collection('Products')
+          .doc(productID)
+          .update({'imgURL': picURL});
     });
   }
 
@@ -109,7 +127,6 @@ class _addStorageDeviceState extends State<addStorageDevice> {
                       ),
                       onSaved: (value) {
                         name = value.trim();
-                        searchKey = name.substring(0, 1);
                       },
                     ),
                   ),
@@ -290,18 +307,17 @@ class _addStorageDeviceState extends State<addStorageDevice> {
               onPressed: () async {
                 if (_addPcAccessoriesFormKey.currentState.validate()) {
                   _addPcAccessoriesFormKey.currentState.save();
+                  List<String> splitlist = name.split(" ");
+                  int j = splitlist[0].length + 1;
 
-                  //todo database code ya Ammar
-                  /*uploadImageToFirebase(context);
-                  _firestore.collection('PCAccesory').add({
-                    'SearchKey': name.substring(0, 1),
-                    'Seller Email': _auth.currentUser.email,
-                    'Product Name': name,
-                    'Description': description,
-                    'Price': price,
-                    'Quantity': quantity,
-                    'Rating': 0
-                  });*/
+                  for (int i = 0; i < splitlist.length; i++) {
+                    for (int y = 1; y < splitlist[i].length + 1; y++) {
+                      indexList.add(splitlist[i].substring(0, y).toLowerCase());
+                    }
+                  }
+                  for (j; j < name.length + 1; j++)
+                    indexList.add(name.substring(0, j).toLowerCase());
+                  uploadImageToFirebase(context);
 
                   Navigator.pop(context);
                 } else {

@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -35,16 +33,7 @@ class _addLaptopState extends State<addLaptop> {
   String picURL;
   String productID;
   List<String> indexList = [];
-
   double price;
-
-  void _showSnackbar(String msg) {
-    final snackbar = SnackBar(
-      content: Text(msg),
-      // duration: const Duration(seconds: 10),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackbar);
-  }
 
   //Getting the image
   Future getImage() async {
@@ -60,25 +49,26 @@ class _addLaptopState extends State<addLaptop> {
         .doc('Laptops')
         .collection('Products')
         .add({
+      'Brand': ddBrand,
       'Product Name': name,
-      'Price': price,
+      'CreatedAt': Timestamp.now(),
+      'Description': description,
       'CPU': CPU,
       'GPU': GPU,
       'Battery': battery,
-      'Description': description,
       'Memory': memory,
       'ScreenSize': screenSize,
-      'Quantity': quantity,
       'Storage': storage,
-      'Brand': ddBrand,
       'OS': ddOS,
+      'Price': price,
+      'Quantity': quantity,
       'Rating': 0,
       'SellerID': _auth.currentUser.uid,
+      'Seller Email':_auth.currentUser.email,
       'type': 'Laptops',
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-      String fileName = basename(_image.path);
       Reference firebaseStorageRef = FirebaseStorage.instance
           .ref()
           .child('ProductImage/Laptops/$productID/$name');
@@ -397,8 +387,7 @@ class _addLaptopState extends State<addLaptop> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  _showSnackbar("Your product is being uploaded now");
-                 // Navigator.pop(context);
+                  Navigator.pop(context);
 
                 } else {
                   _toggleValidate();

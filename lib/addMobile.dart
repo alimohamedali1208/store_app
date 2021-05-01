@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -44,25 +43,25 @@ class _addMobileState extends State<addMobile> {
 
   Future uploadImageToFirebase(BuildContext context) async {
     _firestore.collection('ProductsCollection').doc('Mobiles').collection('Products').add({
-      'Seller Email': _auth.currentUser.email,
       'Brand Name': ddBrand,
       'Product Name': name,
+      'CreatedAt': Timestamp.now(),
+      'Description': description,
       'Battery': battery,
       'Camera': camera,
       'Storage': storage,
       'Screen Size': screenSize,
       'Memory': memory,
       'OS': ddOS,
-      'Description': description,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
       'SellerID': _auth.currentUser.uid,
+      'Seller Email': _auth.currentUser.email,
       'type': 'Mobiles',
       'searchIndex': indexList,
     }).then((value) async {
       productID = value.id;
-      String fileName = basename(_image.path);
       Reference firebaseStorageRef = FirebaseStorage.instance
           .ref()
           .child('ProductImage/Mobiles/$productID/$name');
@@ -365,7 +364,6 @@ class _addMobileState extends State<addMobile> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  print(indexList);
                   uploadImageToFirebase(context);
 
                   Navigator.pop(context);

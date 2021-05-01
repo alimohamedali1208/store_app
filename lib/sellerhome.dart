@@ -4,7 +4,7 @@ import 'package:store_app/Home.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/addCategory.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'SellerEditProfile.dart';
 
 class sellerhome extends StatefulWidget {
@@ -206,8 +206,12 @@ class SingleProduct extends StatelessWidget {
                   width: 10,
                 ),
                 FlatButton(
-                  onPressed: () {
-                       FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
+                  onPressed: () async{
+                      await FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
+                       //val firebaseStorageRef = FirebaseStorage.instance.ref();
+                       Reference firebaseStorageRef = FirebaseStorage.instance
+                           .ref();
+                           firebaseStorageRef.child("ProductImage/$productType/$productID/$productName").delete().whenComplete(() => print('delelet success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,
