@@ -172,7 +172,12 @@ class SingleProduct extends StatelessWidget {
   final String productType;
   final String productID;
 
-  SingleProduct({this.productName, this.productPrice, this.productImg, this.productID, this.productType});
+  SingleProduct(
+      {this.productName,
+      this.productPrice,
+      this.productImg,
+      this.productID,
+      this.productType});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -198,7 +203,7 @@ class SingleProduct extends StatelessWidget {
             Container(
               alignment: Alignment.topLeft,
               child: Text(
-                "\$${productPrice}",
+                "${productPrice} EGP",
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -214,12 +219,21 @@ class SingleProduct extends StatelessWidget {
                   width: 10,
                 ),
                 FlatButton(
-                  onPressed: () async{
-                      await FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
-                       //val firebaseStorageRef = FirebaseStorage.instance.ref();
-                       Reference firebaseStorageRef = FirebaseStorage.instance
-                           .ref();
-                           firebaseStorageRef.child("ProductImage/$productType/$productID/$productName").delete().whenComplete(() => print('delelet success'));
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
+                        .collection('ProductsCollection')
+                        .doc(productType)
+                        .collection('Products')
+                        .doc(productID)
+                        .delete();
+                    //val firebaseStorageRef = FirebaseStorage.instance.ref();
+                    Reference firebaseStorageRef =
+                        FirebaseStorage.instance.ref();
+                    firebaseStorageRef
+                        .child(
+                            "ProductImage/$productType/$productID/$productName")
+                        .delete()
+                        .whenComplete(() => print('delelet success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,

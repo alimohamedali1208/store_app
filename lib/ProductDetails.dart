@@ -13,7 +13,11 @@ class ProductDetails extends StatefulWidget {
   const ProductDetails(
       {this.product_detail_name,
       this.product_detail_new_price,
-      this.product_detail_picture,this.product_detail_desc,this.product_detail_brand,this.product_detail_quantity,this.product_detail_seller});
+      this.product_detail_picture,
+      this.product_detail_desc,
+      this.product_detail_brand,
+      this.product_detail_quantity,
+      this.product_detail_seller});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -57,17 +61,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                   title: new Row(
                     children: <Widget>[
                       Expanded(
-                        child: new Text("${widget.product_detail_new_price} EGP",
-                            style: TextStyle(
-                              color: Colors.red,
-                            )),
+                        child:
+                            new Text("${widget.product_detail_new_price} EGP",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                )),
                       ),
                       Expanded(
-                          child: new Text("Seller: ${widget.product_detail_seller}",
+                          child: new Text(
+                        "Seller: ${widget.product_detail_seller}",
                         style: TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w800,
-                            decoration: TextDecoration.lineThrough),
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w800,
+                        ),
                       )),
                     ],
                   ),
