@@ -403,7 +403,6 @@ class _addLaptopState extends State<addLaptop> {
                           ],
                         );
                       });
-                  Navigator.of(context).pop(context);
 
                 } else {
                   _toggleValidate();
