@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,12 +17,13 @@ class _addJewelaryState extends State<addJewelary> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addJewelleryFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description, name, searchKey, quantity;
+  String description, name, quantity;
   String ddTargetedGroup = 'Adults';
   String ddMetalType = 'Gold';
   String picURL;
   double size;
-
+  String productID;
+  List<String> indexList = [];
   double price;
 
   //Getting the image
@@ -35,20 +35,35 @@ class _addJewelaryState extends State<addJewelary> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    String fileName = basename(_image.path);
-    Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$name');
-    UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    taskSnapshot.ref.getDownloadURL().then(
-          (value) => print('done $value'),
-        );
-    await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore.collection('SellerProduct').add({
-      'Name': name,
+    _firestore.collection('ProductsCollection').doc('Jewelry').collection('Products').add({
+      //'Brand Name': ddBrand,
+      'Product Name': name,
+      'CreatedAt': Timestamp.now(),
+      'Description': description,
+      'Target Group':ddTargetedGroup,
+      'Metal Type':ddMetalType,
       'Price': price,
-      'imgURL': picURL,
-      'SellerID': _auth.currentUser.email
+      'Quantity': quantity,
+      'Rating': 0,
+      'SellerID': _auth.currentUser.uid,
+      'Seller Email': _auth.currentUser.email,
+      'type': 'Jewelry',
+      'searchIndex': indexList
+    }).then((value) async {
+      productID = value.id;
+      Reference firebaseStorageRef =
+      FirebaseStorage.instance.ref().child('ProductImage/Jewelry/$productID/$name');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      taskSnapshot.ref.getDownloadURL().then(
+            (value) => print('done $value'),
+      );
+      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+      _firestore.collection('ProductsCollection')
+          .doc('Jewelry')
+          .collection('Products')
+          .doc(productID)
+          .update({'imgURL': picURL});
     });
   }
 
@@ -110,7 +125,6 @@ class _addJewelaryState extends State<addJewelary> {
                       ),
                       onSaved: (value) {
                         name = value.trim();
-                        searchKey = name.substring(0, 1);
                       },
                     ),
                   ),
@@ -261,16 +275,17 @@ class _addJewelaryState extends State<addJewelary> {
               onPressed: () async {
                 if (_addJewelleryFormKey.currentState.validate()) {
                   _addJewelleryFormKey.currentState.save();
+                  List<String> splitlist = name.split(" ");
+                  int j = splitlist[0].length + 1;
+
+                  for (int i = 0; i < splitlist.length; i++) {
+                    for (int y = 1; y < splitlist[i].length + 1; y++) {
+                      indexList.add(splitlist[i].substring(0, y).toLowerCase());
+                    }
+                  }
+                  for (j; j < name.length + 1; j++)
+                    indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
-                  _firestore.collection('accessory').add({
-                    'SearchKey': name.substring(0, 1),
-                    'Seller Email': _auth.currentUser.email,
-                    'Product Name': name,
-                    'Description': description,
-                    'Price': price,
-                    'Quantity': quantity,
-                    'Rating': 0
-                  });
 
                   Navigator.pop(context);
                 } else {

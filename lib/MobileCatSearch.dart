@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/ProductDetails.dart';
 
-class autoSearchCompelete extends StatefulWidget {
+class mobileCatSearch extends StatefulWidget {
   @override
-  _autoSearchCompeleteState createState() => _autoSearchCompeleteState();
+  _mobileCatSearchState createState() => _mobileCatSearchState();
 }
 
-class _autoSearchCompeleteState extends State<autoSearchCompelete> {
+class _mobileCatSearchState extends State<mobileCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   @override
@@ -46,48 +46,48 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                 ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collectionGroup('Products')
-                      .where('searchIndex', arrayContains: searchString)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError)
-                      return Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(child: CircularProgressIndicator());
-                      default:
-                        final products = snapshot.data.docs;
-                        List<SingleProduct> productsview = [];
-                        for (var product in products) {
-                          final productname = product.data()['Product Name'];
-                          final productprice = product.data()['Price'].toString();
-                          final productimg = product.data()['imgURL'];
-                          final producttype = product.data()['type'];
-                          final productdesc = product.data()['Description'];
-                          final productbrand = product.data()['Brand Name'];
-                          final productquantity = product.data()['Quantity'];
-                          final productseller = product.data()['Seller Email'];
-                          final productid = product.id;
-                          final productview = SingleProduct(
-                            productName: productname,
-                            productPrice: productprice,
-                            productImg: productimg,
-                            productType: producttype,
-                            productDesc: productdesc,
-                            productBrand: productbrand,
-                            productQuantity: productquantity,
-                            productSeller: productseller,
-                            productID: productid,
-                          );
-                          productsview.add(productview);
+                      stream: FirebaseFirestore.instance
+                          .collection('ProductsCollection').doc('Mobiles').collection('Products')
+                          .where('searchIndex', arrayContains: searchString)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return Center(child: CircularProgressIndicator());
+                          default:
+                            final products = snapshot.data.docs;
+                            List<SingleProduct> productsview = [];
+                            for (var product in products) {
+                              final productname = product.data()['Product Name'];
+                              final productprice = product.data()['Price'].toString();
+                              final productimg = product.data()['imgURL'];
+                              final producttype = product.data()['type'];
+                              final productdesc = product.data()['Description'];
+                              final productbrand = product.data()['Brand Name'];
+                              final productquantity = product.data()['Quantity'];
+                              final productseller = product.data()['Seller Email'];
+                              final productid = product.id;
+                              final productview = SingleProduct(
+                                productName: productname,
+                                productPrice: productprice,
+                                productImg: productimg,
+                                productType: producttype,
+                                productDesc: productdesc,
+                                productBrand: productbrand,
+                                productQuantity: productquantity,
+                                productSeller: productseller,
+                                productID: productid,
+                              );
+                              productsview.add(productview);
+                            }
+                            return ListView(
+                              children: productsview,
+                            );
                         }
-                        return ListView(
-                          children: productsview,
-                        );
-                    }
-                  },
-                )),
+                      },
+                    )),
               ],
             ),
           ),
@@ -111,10 +111,10 @@ class SingleProduct extends StatefulWidget {
 
   SingleProduct(
       {this.productName,
-      this.productPrice,
-      this.productImg,
-      this.productID,
-      this.productType,this.productDesc,this.productBrand,this.productQuantity,this.productSeller});
+        this.productPrice,
+        this.productImg,
+        this.productID,
+        this.productType,this.productDesc,this.productBrand,this.productQuantity,this.productSeller});
 
   @override
   _SingleProductState createState() => _SingleProductState();

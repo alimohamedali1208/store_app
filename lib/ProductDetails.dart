@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 class ProductDetails extends StatefulWidget {
   final product_detail_name;
   final product_detail_new_price;
-  final product_detail_old_price;
+  //final product_detail_old_price;
   final product_detail_picture;
+  final String product_detail_desc;
+  final String product_detail_brand;
+  final String product_detail_quantity;
+  final String product_detail_seller;
 
   const ProductDetails(
       {this.product_detail_name,
       this.product_detail_new_price,
-      this.product_detail_old_price,
-      this.product_detail_picture});
+      this.product_detail_picture,this.product_detail_desc,this.product_detail_brand,this.product_detail_quantity,this.product_detail_seller});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -36,7 +39,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: GridTile(
               child: Container(
                 color: Colors.white70,
-                child: Image.asset(widget.product_detail_picture),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'images/PlaceHolder.gif',
+                  image: (widget.product_detail_picture == null)
+                      ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                      : widget.product_detail_picture,
+                ),
               ),
               footer: new Container(
                 color: Colors.white,
@@ -49,14 +57,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                   title: new Row(
                     children: <Widget>[
                       Expanded(
-                        child: new Text("\$${widget.product_detail_new_price}",
+                        child: new Text("${widget.product_detail_new_price} EGP",
                             style: TextStyle(
                               color: Colors.red,
                             )),
                       ),
                       Expanded(
-                          child: new Text(
-                        "\$${widget.product_detail_old_price}",
+                          child: new Text("Seller: ${widget.product_detail_seller}",
                         style: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.w800,
@@ -164,14 +171,14 @@ class _ProductDetailsState extends State<ProductDetails> {
           Divider(color: Colors.black87),
           new ListTile(
             title: new Text("Product Details"),
-            subtitle: new Text("Product Description"),
+            subtitle: new Text(widget.product_detail_desc),
           ),
           new Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
                 child: new Text(
-                  "product Name",
+                  "Product Name",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -187,13 +194,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
                 child: new Text(
-                  "product Brand",
+                  "Product Brand",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: Text("the Brand Field"),
+                child: Text(widget.product_detail_brand),
               )
             ],
           ),

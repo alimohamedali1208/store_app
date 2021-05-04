@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,7 +17,7 @@ class _addAirConditionerState extends State<addAirConditioner> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description, name, searchKey, width, weight, depth, quantity;
+  String description, name, width, weight, depth, quantity;
 
   String ddBrand = 'Samsung';
   String picURL;
@@ -39,20 +38,25 @@ class _addAirConditionerState extends State<addAirConditioner> {
 
   Future uploadImageToFirebase(BuildContext context) async {
     _firestore.collection('ProductsCollection').doc('AirConditioner').collection('Products').add({
-      'Seller Email': _auth.currentUser.email,
       'Brand Name': ddBrand,
       'Product Name': name,
-      'Screen Size': width,
+      'CreatedAt': Timestamp.now(),
       'Description': description,
+      'Width': width,
+      'Depth': depth,
+      'Weight': weight,
+      'Color': ddColor,
+      'Horse Power':ddHPower,
+      'Conditioner Type':ddType,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
       'SellerID': _auth.currentUser.uid,
+      'Seller Email': _auth.currentUser.email,
       'type': 'AirConditioner',
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-    String fileName = basename(_image.path);
     Reference firebaseStorageRef =
         FirebaseStorage.instance.ref().child('ProductImage/AirConditioner/$productID/$name');
     UploadTask uploadTask = firebaseStorageRef.putFile(_image);
@@ -127,7 +131,6 @@ class _addAirConditionerState extends State<addAirConditioner> {
                       ),
                       onSaved: (value) {
                         name = value.trim();
-                        searchKey = name.substring(0, 1);
                       },
                     ),
                   ),
@@ -394,7 +397,6 @@ class _addAirConditionerState extends State<addAirConditioner> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  print(indexList);
                   uploadImageToFirebase(context);
                   
 

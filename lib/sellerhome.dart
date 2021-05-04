@@ -4,7 +4,7 @@ import 'package:store_app/Home.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/addCategory.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'SellerEditProfile.dart';
 
 class sellerhome extends StatefulWidget {
@@ -178,11 +178,19 @@ class SingleProduct extends StatelessWidget {
     return Card(
       child: ListTile(
         //    ======= the leading image section =======
-        leading: Image.network(
-          (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
-          width: 80,
+        leading: FadeInImage.assetNetwork(
+          placeholder: 'images/PlaceHolder.gif',
+          image: (productImg == null)
+              ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+              : productImg,
           height: 80,
+          width: 80,
         ),
+        // Image.network(
+        //   (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
+        //   width: 80,
+        //   height: 80,
+        // ),
         title: Text(productName),
         subtitle: Column(
           children: <Widget>[
@@ -206,8 +214,12 @@ class SingleProduct extends StatelessWidget {
                   width: 10,
                 ),
                 FlatButton(
-                  onPressed: () {
-                       FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
+                  onPressed: () async{
+                      await FirebaseFirestore.instance.collection('ProductsCollection').doc(productType).collection('Products').doc(productID).delete();
+                       //val firebaseStorageRef = FirebaseStorage.instance.ref();
+                       Reference firebaseStorageRef = FirebaseStorage.instance
+                           .ref();
+                           firebaseStorageRef.child("ProductImage/$productType/$productID/$productName").delete().whenComplete(() => print('delelet success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,
