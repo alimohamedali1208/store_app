@@ -178,11 +178,19 @@ class SingleProduct extends StatelessWidget {
     return Card(
       child: ListTile(
         //    ======= the leading image section =======
-        leading: Image.network(
-          (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
-          width: 80,
+        leading: FadeInImage.assetNetwork(
+          placeholder: 'images/PlaceHolder.gif',
+          image: (productImg == null)
+              ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+              : productImg,
           height: 80,
+          width: 80,
         ),
+        // Image.network(
+        //   (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
+        //   width: 80,
+        //   height: 80,
+        // ),
         title: Text(productName),
         subtitle: Column(
           children: <Widget>[

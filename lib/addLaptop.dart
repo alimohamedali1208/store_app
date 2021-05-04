@@ -49,7 +49,7 @@ class _addLaptopState extends State<addLaptop> {
         .doc('Laptops')
         .collection('Products')
         .add({
-      'Brand': ddBrand,
+      'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
       'Description': description,
@@ -387,7 +387,23 @@ class _addLaptopState extends State<addLaptop> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return new AlertDialog(
+                          title: new Text("Upload"),
+                          content: new Text("Your product is being uploaded right now"),
+                          actions: <Widget>[
+                            new MaterialButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(context);
+                              },
+                              child: new Text("Close"),
+                            )
+                          ],
+                        );
+                      });
+                  Navigator.of(context).pop(context);
 
                 } else {
                   _toggleValidate();
