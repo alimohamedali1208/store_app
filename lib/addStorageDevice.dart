@@ -35,7 +35,11 @@ class _addStorageDeviceState extends State<addStorageDevice> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('StorageDevices').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('StorageDevices')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -58,7 +62,7 @@ class _addStorageDeviceState extends State<addStorageDevice> {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
       _firestore
           .collection('ProductsCollection')
@@ -176,115 +180,124 @@ class _addStorageDeviceState extends State<addStorageDevice> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Accessory type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddAccessoryType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddAccessoryType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Flash drive',
-                        'Mass storage device',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddAccessoryType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Accessory Type",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddAccessoryType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Flash drive',
+                          'Mass storage device',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Device capacity'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddCapacity,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddCapacity = newValue;
-                        });
-                      },
-                      items: <String>[
-                        '1 GB',
-                        '2 GB',
-                        '4 GB',
-                        '8 GB',
-                        '16 GB',
-                        '32 GB',
-                        '64 GB',
-                        '128 GB',
-                        '512 GB',
-                        '1 TB',
-                        '2 TB',
-                        '4 TB and up',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddCapacity,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Device Capacity",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddCapacity = newValue;
+                          });
+                        },
+                        items: <String>[
+                          '1 GB',
+                          '2 GB',
+                          '4 GB',
+                          '8 GB',
+                          '16 GB',
+                          '32 GB',
+                          '64 GB',
+                          '128 GB',
+                          '512 GB',
+                          '1 TB',
+                          '2 TB',
+                          '4 TB and up',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Samsung',
-                        'Sandisk',
-                        'Kingston',
-                        'Adata',
-                        'Western digital',
-                        'Seagate',
-                        'Transcend',
-                        'other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Samsung',
+                          'Sandisk',
+                          'Kingston',
+                          'Adata',
+                          'Western digital',
+                          'Seagate',
+                          'Transcend',
+                          'other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(
+                    height: 90,
+                  ),
                 ],
               ),
             ),

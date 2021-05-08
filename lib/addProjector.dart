@@ -34,7 +34,11 @@ class _addProjectorState extends State<addProjector> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('Projectors').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('Projectors')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -56,7 +60,7 @@ class _addProjectorState extends State<addProjector> {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
       _firestore
           .collection('ProductsCollection')
@@ -174,77 +178,82 @@ class _addProjectorState extends State<addProjector> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'LED',
-                        'DIP',
-                        'LCD',
-                        'CRT',
-                        'SXRD',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Type",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'LED',
+                          'DIP',
+                          'LCD',
+                          'CRT',
+                          'SXRD',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Unic',
-                        'Cyber',
-                        'Viewsonic',
-                        'Optoma',
-                        'Benq',
-                        'Sony',
-                        'Epson',
-                        'other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Unic',
+                          'Cyber',
+                          'Viewsonic',
+                          'Optoma',
+                          'Benq',
+                          'Sony',
+                          'Epson',
+                          'other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(height: 90)
                 ],
               ),
             ),

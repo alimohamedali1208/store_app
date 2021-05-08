@@ -32,12 +32,16 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('OtherPC').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('OtherPC')
+        .collection('Products')
+        .add({
       'Brand Name': brand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
       'Description': description,
-      'Accessory Type':accessoryType,
+      'Accessory Type': accessoryType,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
@@ -54,7 +58,7 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
       _firestore
           .collection('ProductsCollection')
@@ -200,6 +204,7 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
                       },
                     ),
                   ),
+                  SizedBox(height: 80)
                 ],
               ),
             ),

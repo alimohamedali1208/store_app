@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 class addMobile extends StatefulWidget {
   @override
@@ -28,6 +29,8 @@ class _addMobileState extends State<addMobile> {
       storage;
   String ddBrand = 'Apple';
   String ddOS = 'IOS';
+  String ddRamCapacity = 'GB';
+  String ddStorageCapacity = 'GB';
   String picURL;
   String productID;
   List<String> indexList = [];
@@ -42,7 +45,11 @@ class _addMobileState extends State<addMobile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('Mobiles').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('Mobiles')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -69,7 +76,7 @@ class _addMobileState extends State<addMobile> {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
       _firestore
           .collection('ProductsCollection')
@@ -102,7 +109,7 @@ class _addMobileState extends State<addMobile> {
       appBar: AppBar(
         title: Text("Add a mobile"),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
       ),
       body: ListView(
         children: <Widget>[
@@ -189,18 +196,48 @@ class _addMobileState extends State<addMobile> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Phone ram',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        memory = value.trim() + " GB";
-                      },
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              autovalidate: validate,
+                              validator: validateEmpty,
+                              decoration: InputDecoration(
+                                labelText: 'Ram',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (String value) {
+                                memory = value.trim();
+                              },
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.all(5),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  value: ddRamCapacity,
+                                  items: ['GB', 'MB', 'TB']
+                                      .map((String unit) =>
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
+                                      .toList(),
+                                  onChanged: (value) => setState(() {
+                                        ddRamCapacity = value;
+                                      })),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Padding(
@@ -249,89 +286,126 @@ class _addMobileState extends State<addMobile> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Phone storage',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        storage = value.trim() + " GB";
-                      },
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              autovalidate: validate,
+                              validator: validateEmpty,
+                              decoration: InputDecoration(
+                                labelText: 'Phone Storage',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (String value) {
+                                storage = value.trim();
+                              },
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.all(5),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  value: ddStorageCapacity,
+                                  items: ['GB', 'MB', 'TB']
+                                      .map((String unit) =>
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
+                                      .toList(),
+                                  onChanged: (value) => setState(() {
+                                        ddStorageCapacity = value;
+                                      })),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Operating system'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddOS,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddOS = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'IOS',
-                        'Android',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddOS,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Operating System",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddOS = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'IOS',
+                          'Android',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Apple',
-                        'Samsung',
-                        'Huawei',
-                        'Nokia',
-                        'Sony',
-                        'HTC',
-                        'Lenovo',
-                        'SICO Technology',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Apple',
+                          'Samsung',
+                          'Huawei',
+                          'Nokia',
+                          'Sony',
+                          'HTC',
+                          'Lenovo',
+                          'SICO Technology',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(
+                    height: 90,
+                  ),
                 ],
               ),
             ),
@@ -341,7 +415,7 @@ class _addMobileState extends State<addMobile> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
@@ -350,7 +424,7 @@ class _addMobileState extends State<addMobile> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
               onPressed: () async {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();

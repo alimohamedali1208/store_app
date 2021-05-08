@@ -17,12 +17,7 @@ class _addCameraState extends State<addCamera> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addCameraFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description,
-      name,
-      megaPixel,
-      quantity,
-      opticalZoom,
-      screenSize;
+  String description, name, megaPixel, quantity, opticalZoom, screenSize;
   String ddBrand = 'Canon';
   String ddDigitalCameraType = 'Compact Camera';
   String ddDisplayType = 'LCD';
@@ -41,16 +36,20 @@ class _addCameraState extends State<addCamera> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('Cameras').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('Cameras')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
       'Description': description,
-      'Mega Pixel':megaPixel,
-      'Optical Zoom':opticalZoom,
-      'Screen Size':screenSize,
-      'Screen Type':ddDisplayType,
-      'Camera Type':ddDigitalCameraType,
+      'Mega Pixel': megaPixel,
+      'Optical Zoom': opticalZoom,
+      'Screen Size': screenSize,
+      'Screen Type': ddDisplayType,
+      'Camera Type': ddDigitalCameraType,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
@@ -60,15 +59,17 @@ class _addCameraState extends State<addCamera> {
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-      Reference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('ProductImage/Cameras/$productID/$name');
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('ProductImage/Cameras/$productID/$name');
       UploadTask uploadTask = firebaseStorageRef.putFile(_image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore.collection('ProductsCollection')
+      _firestore
+          .collection('ProductsCollection')
           .doc('Cameras')
           .collection('Products')
           .doc(productID)
@@ -231,110 +232,117 @@ class _addCameraState extends State<addCamera> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Canon',
-                        'Logitech',
-                        'Samsung',
-                        'Ugreen',
-                        'Sony',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Canon',
+                          'Logitech',
+                          'Samsung',
+                          'Ugreen',
+                          'Sony',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Digital Camera Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddDigitalCameraType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddDigitalCameraType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Compact Camera',
-                        'Sir Camera',
-                        'Mirror Camera',
-                        'Long Zoom Camera',
-                        'Point And Shoot',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddDigitalCameraType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Digital Camera Type",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddDigitalCameraType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Compact Camera',
+                          'Sir Camera',
+                          'Mirror Camera',
+                          'Long Zoom Camera',
+                          'Point And Shoot',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Display Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddDisplayType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddDisplayType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'LCD',
-                        'Analog',
-                        'Digital',
-                        'LED',
-                        'Other'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddDisplayType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Display Type",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddDisplayType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'LCD',
+                          'Analog',
+                          'Digital',
+                          'LED',
+                          'Other'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(height: 90)
                 ],
               ),
             ),

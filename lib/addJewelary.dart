@@ -35,13 +35,17 @@ class _addJewelaryState extends State<addJewelary> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('Jewelry').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('Jewelry')
+        .collection('Products')
+        .add({
       //'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
       'Description': description,
-      'Target Group':ddTargetedGroup,
-      'Metal Type':ddMetalType,
+      'Target Group': ddTargetedGroup,
+      'Metal Type': ddMetalType,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
@@ -51,15 +55,17 @@ class _addJewelaryState extends State<addJewelary> {
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-      Reference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('ProductImage/Jewelry/$productID/$name');
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('ProductImage/Jewelry/$productID/$name');
       UploadTask uploadTask = firebaseStorageRef.putFile(_image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore.collection('ProductsCollection')
+      _firestore
+          .collection('ProductsCollection')
           .doc('Jewelry')
           .collection('Products')
           .doc(productID)
@@ -128,70 +134,74 @@ class _addJewelaryState extends State<addJewelary> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Targeted group'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddTargetedGroup,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddTargetedGroup = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Adults',
-                        'Children',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddTargetedGroup,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Targeted Group",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddTargetedGroup = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Adults',
+                          'Children',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Metal Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddMetalType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddMetalType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Gold',
-                        'Silver',
-                        'Plastic',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddMetalType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Operating System",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddMetalType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Gold',
+                          'Silver',
+                          'Plastic',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(

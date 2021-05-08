@@ -34,7 +34,11 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('OtherHome').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('OtherHome')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -51,15 +55,17 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-      Reference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('ProductImage/OtherHome/$productID/$name');
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('ProductImage/OtherHome/$productID/$name');
       UploadTask uploadTask = firebaseStorageRef.putFile(_image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore.collection('ProductsCollection')
+      _firestore
+          .collection('ProductsCollection')
           .doc('OtherHome')
           .collection('Products')
           .doc(productID)
@@ -219,43 +225,47 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'LG',
-                        'Samsung',
-                        'Carrier',
-                        'Sharp',
-                        'Beko',
-                        'Unionair',
-                        'Toshiba',
-                        'Zanusei',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Samsung',
+                          'LG',
+                          'Carrier',
+                          'Sharp',
+                          'Beko',
+                          'Unionair',
+                          'Toshiba',
+                          'Zanusei',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(height: 90),
                 ],
               ),
             ),

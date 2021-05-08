@@ -30,6 +30,8 @@ class _addLaptopState extends State<addLaptop> {
       storage;
   String ddBrand = 'HP';
   String ddOS = 'Windows';
+  String ddRamCapacity = 'GB';
+  String ddStorageCapacity = 'GB';
   String picURL;
   String productID;
   List<String> indexList = [];
@@ -64,7 +66,7 @@ class _addLaptopState extends State<addLaptop> {
       'Quantity': quantity,
       'Rating': 0,
       'SellerID': _auth.currentUser.uid,
-      'Seller Email':_auth.currentUser.email,
+      'Seller Email': _auth.currentUser.email,
       'type': 'Laptops',
       'searchIndex': indexList
     }).then((value) async {
@@ -193,18 +195,48 @@ class _addLaptopState extends State<addLaptop> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Ram',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        memory = value.trim() + " GB";
-                      },
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              autovalidate: validate,
+                              validator: validateEmpty,
+                              decoration: InputDecoration(
+                                labelText: 'Ram',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (String value) {
+                                memory = value.trim();
+                              },
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.all(5),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  value: ddRamCapacity,
+                                  items: ['GB', 'MB', 'TB']
+                                      .map((String unit) =>
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
+                                      .toList(),
+                                  onChanged: (value) => setState(() {
+                                        ddRamCapacity = value;
+                                      })),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Padding(
@@ -268,91 +300,128 @@ class _addLaptopState extends State<addLaptop> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      autovalidate: validate,
-                      validator: validateEmpty,
-                      decoration: InputDecoration(
-                        labelText: 'Storage',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSaved: (value) {
-                        storage = value.trim() + " GB";
-                      },
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                            flex: 2,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              autovalidate: validate,
+                              validator: validateEmpty,
+                              decoration: InputDecoration(
+                                labelText: 'Storage',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (String value) {
+                                storage = value.trim();
+                              },
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.all(5),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  value: ddStorageCapacity,
+                                  items: ['GB', 'MB', 'TB']
+                                      .map((String unit) =>
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
+                                      .toList(),
+                                  onChanged: (value) => setState(() {
+                                        ddStorageCapacity = value;
+                                      })),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Operating system'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddOS,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddOS = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Windows',
-                        'Dos',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddOS,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Operating System",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddOS = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Windows',
+                          'DOS',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Asus',
-                        'Samsung',
-                        'Dell',
-                        'HP',
-                        'Lenovo',
-                        'MSI',
-                        'Razer',
-                        'Acer',
-                        'Microsoft',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Asus',
+                          'Samsung',
+                          'Dell',
+                          'HP',
+                          'Lenovo',
+                          'MSI',
+                          'Razer',
+                          'Acer',
+                          'Microsoft',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(
+                    height: 90,
+                  ),
                 ],
               ),
             ),
@@ -392,7 +461,8 @@ class _addLaptopState extends State<addLaptop> {
                       builder: (context) {
                         return new AlertDialog(
                           title: new Text("Upload"),
-                          content: new Text("Your product is being uploaded right now"),
+                          content: new Text(
+                              "Your product is being uploaded right now"),
                           actions: <Widget>[
                             new MaterialButton(
                               onPressed: () {
@@ -403,7 +473,6 @@ class _addLaptopState extends State<addLaptop> {
                           ],
                         );
                       });
-
                 } else {
                   _toggleValidate();
                 }

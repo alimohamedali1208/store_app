@@ -22,7 +22,7 @@ class _addAirConditionerState extends State<addAirConditioner> {
   String ddBrand = 'Samsung';
   String picURL;
   double price;
-  String ddColor = 'white';
+  String ddColor = 'White';
   String ddType = 'Split System';
   String ddHPower = '0.50';
   String productID;
@@ -37,7 +37,11 @@ class _addAirConditionerState extends State<addAirConditioner> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('AirConditioner').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('AirConditioner')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -46,8 +50,8 @@ class _addAirConditionerState extends State<addAirConditioner> {
       'Depth': depth,
       'Weight': weight,
       'Color': ddColor,
-      'Horse Power':ddHPower,
-      'Conditioner Type':ddType,
+      'Horse Power': ddHPower,
+      'Conditioner Type': ddType,
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
@@ -57,19 +61,21 @@ class _addAirConditionerState extends State<addAirConditioner> {
       'searchIndex': indexList
     }).then((value) async {
       productID = value.id;
-    Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('ProductImage/AirConditioner/$productID/$name');
-    UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    taskSnapshot.ref.getDownloadURL().then(
-          (value) => print('done $value'),
-        );
-    await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-    _firestore.collection('ProductsCollection')
-        .doc('AirConditioner')
-        .collection('Products')
-        .doc(productID)
-        .update({'imgURL': picURL});
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('ProductImage/AirConditioner/$productID/$name');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      taskSnapshot.ref.getDownloadURL().then(
+            (value) => print('done $value'),
+          );
+      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+      _firestore
+          .collection('ProductsCollection')
+          .doc('AirConditioner')
+          .collection('Products')
+          .doc(productID)
+          .update({'imgURL': picURL});
     });
   }
 
@@ -225,146 +231,158 @@ class _addAirConditionerState extends State<addAirConditioner> {
                       },
                     ),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Brand'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddBrand,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddBrand = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'LG',
-                        'Samsung',
-                        'Carrier',
-                        'Sharp',
-                        'Beko',
-                        'Unionair',
-                        'Toshiba',
-                        'Zanusei',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Samsung',
+                          'LG',
+                          'Carrier',
+                          'Sharp',
+                          'Beko',
+                          'Unionair',
+                          'Toshiba',
+                          'Zanusei',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Color'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddColor,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddColor = newValue;
-                        });
-                      },
-                      items: <String>['white', 'black', 'Other']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddColor,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Color",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddColor = newValue;
+                          });
+                        },
+                        items: <String>['White', 'Black', 'Other']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Type'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddType,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'Split System',
-                        'Portable',
-                        'Cassette',
-                        'Dessert Conditioner',
-                        'Other'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddType,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Type",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Split System',
+                          'Portable',
+                          'Cassette',
+                          'Dessert Conditioner',
+                          'Other'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Horse Power'),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    DropdownButton<String>(
-                      value: ddHPower,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddHPower = newValue;
-                        });
-                      },
-                      items: <String>[
-                        '0.50',
-                        '1.00',
-                        '1.25',
-                        '1.50',
-                        '1.75',
-                        '2.00',
-                        '2.50',
-                        '3.00',
-                        '3.50',
-                        '4.00',
-                        'Other'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                        value: ddHPower,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Horse Power",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddHPower = newValue;
+                          });
+                        },
+                        items: <String>[
+                          '0.50',
+                          '1.00',
+                          '1.25',
+                          '1.50',
+                          '1.75',
+                          '2.00',
+                          '2.50',
+                          '3.00',
+                          '3.50',
+                          '4.00',
+                          'Other'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
-                  ]),
+                  ),
+                  SizedBox(
+                    height: 90,
+                  ),
                 ],
               ),
             ),
@@ -398,7 +416,6 @@ class _addAirConditionerState extends State<addAirConditioner> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
-                  
 
                   Navigator.pop(context);
                 } else {
