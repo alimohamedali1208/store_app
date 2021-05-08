@@ -63,24 +63,33 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: new AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.blueGrey[900],
-          title: Text("El Wekala"),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: () {
-                  return Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => autoSearchCompelete()));
-                }),
-            IconButton(
-                icon: Icon(Icons.account_circle_sharp),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => login()));
-                }),
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: AppBar(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+              ),
+            ),
+            backgroundColor: Color(0xFF731800),
+            title: Text("El Wekala"),
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.search, color: Colors.white),
+                  onPressed: () {
+                    return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => autoSearchCompelete()));
+                  }),
+              IconButton(
+                  icon: Icon(Icons.account_circle_sharp),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => login()));
+                  }),
+            ],
+          ),
         ),
         drawer: Drawer(
           child: ListView(
@@ -91,10 +100,15 @@ class _HomeState extends State<Home> {
                 accountEmail: Text(''),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
-                      backgroundColor: Colors.blueGrey,
+                      backgroundColor: Colors.black12,
                       child: Icon(Icons.person, color: Colors.white)),
                 ),
-                decoration: new BoxDecoration(color: Colors.blueGrey[900]),
+                decoration: new BoxDecoration(
+                  color: Color(0xFF731800),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
               ),
 
               //body
@@ -103,25 +117,14 @@ class _HomeState extends State<Home> {
                 onTap: () {},
                 child: ListTile(
                   title: Text('Home Page'),
-                  leading: Icon(Icons.home, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.home, color: Colors.black),
                 ),
               ),
               InkWell(
                 onTap: () {},
                 child: ListTile(
                   title: Text('My Account'),
-                  leading: Icon(Icons.person, color: Colors.blueGrey[900]),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  return Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Cart()));
-                },
-                child: ListTile(
-                  title: Text('My Orders'),
-                  leading:
-                      Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.person, color: Colors.black),
                 ),
               ),
 
@@ -129,7 +132,7 @@ class _HomeState extends State<Home> {
                 child: ListTile(
                   onTap: () {},
                   title: Text('Categories'),
-                  leading: Icon(Icons.category, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.category, color: Colors.black),
                 ),
               ),
 
@@ -137,7 +140,7 @@ class _HomeState extends State<Home> {
                 child: ListTile(
                   onTap: () {},
                   title: Text('Favorites'),
-                  leading: Icon(Icons.favorite, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.favorite, color: Colors.black),
                 ),
               ),
               Divider(color: Colors.black),
@@ -145,14 +148,14 @@ class _HomeState extends State<Home> {
                 child: ListTile(
                   onTap: () {},
                   title: Text('Settings'),
-                  leading: Icon(Icons.settings, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.settings, color: Colors.black),
                 ),
               ),
               InkWell(
                 child: ListTile(
                   onTap: () {},
                   title: Text('Help'),
-                  leading: Icon(Icons.help, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.help, color: Colors.black),
                 ),
               ),
             ],

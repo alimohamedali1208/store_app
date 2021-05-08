@@ -14,10 +14,23 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Search'),
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Search"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: Column(
         children: [
@@ -61,7 +74,8 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productname = product.data()['Product Name'];
-                          final productprice = product.data()['Price'].toString();
+                          final productprice =
+                              product.data()['Price'].toString();
                           final productimg = product.data()['imgURL'];
                           final producttype = product.data()['type'];
                           final productdesc = product.data()['Description'];
@@ -108,13 +122,16 @@ class SingleProduct extends StatefulWidget {
   final String productQuantity;
   final String productSeller;
 
-
   SingleProduct(
       {this.productName,
       this.productPrice,
       this.productImg,
       this.productID,
-      this.productType,this.productDesc,this.productBrand,this.productQuantity,this.productSeller});
+      this.productType,
+      this.productDesc,
+      this.productBrand,
+      this.productQuantity,
+      this.productSeller});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -126,20 +143,22 @@ class _SingleProductState extends State<SingleProduct> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: (){Navigator.of(context).push(
-          new MaterialPageRoute(
-            builder: (context) =>  ProductDetails(
-              // passing the values via constructor
-              product_detail_name: widget.productName,
-              product_detail_new_price: widget.productPrice,
-              product_detail_picture: widget.productImg,
-              product_detail_desc: widget.productDesc,
-              product_detail_brand: widget.productBrand,
-              product_detail_quantity: widget.productQuantity,
-              product_detail_seller: widget.productSeller,
+        onTap: () {
+          Navigator.of(context).push(
+            new MaterialPageRoute(
+              builder: (context) => ProductDetails(
+                // passing the values via constructor
+                product_detail_name: widget.productName,
+                product_detail_new_price: widget.productPrice,
+                product_detail_picture: widget.productImg,
+                product_detail_desc: widget.productDesc,
+                product_detail_brand: widget.productBrand,
+                product_detail_quantity: widget.productQuantity,
+                product_detail_seller: widget.productSeller,
+              ),
             ),
-          ),
-        );},
+          );
+        },
         child: ListTile(
           //    ======= the leading image section =======
           leading: FadeInImage.assetNetwork(
@@ -164,16 +183,28 @@ class _SingleProductState extends State<SingleProduct> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  IconButton(icon:(isPressed)?Icon(Icons.favorite):Icon(Icons.favorite_outline),tooltip: 'Add to favorites',color: Colors.red, onPressed: (){setState(() {
-                    if(isPressed)
-                      isPressed=false;
-                    else
-                      isPressed=true;
-                  });}),
+                  IconButton(
+                      icon: (isPressed)
+                          ? Icon(Icons.favorite)
+                          : Icon(Icons.favorite_outline),
+                      tooltip: 'Add to favorites',
+                      color: Colors.red,
+                      onPressed: () {
+                        setState(() {
+                          if (isPressed)
+                            isPressed = false;
+                          else
+                            isPressed = true;
+                        });
+                      }),
                   SizedBox(
                     width: 10,
                   ),
-                  IconButton(icon: const Icon(Icons.add_shopping_cart_outlined),tooltip: 'Add to cart',color: Colors.black, onPressed: (){}),
+                  IconButton(
+                      icon: const Icon(Icons.add_shopping_cart_outlined),
+                      tooltip: 'Add to cart',
+                      color: Colors.black,
+                      onPressed: () {}),
                 ],
               )
             ],

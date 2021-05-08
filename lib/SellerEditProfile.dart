@@ -143,138 +143,159 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text("Edit Profile"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Edit Profile"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: ListView(
           children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              child: Form(
-                key: _sellerEditProfileFormKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateName,
-                        enabled: flagSellerTextFields,
-                        initialValue: seller.firstName,
-                        decoration: InputDecoration(
-                          labelText: 'First Name:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          fname = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateName,
-                        enabled: flagSellerTextFields,
-                        initialValue: seller.lastName,
-                        decoration: InputDecoration(
-                          labelText: 'Last Name:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          lname = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validatePhone,
-                        enabled: flagSellerTextFields,
-                        initialValue: seller.phone,
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: 'Phone:',
-                          hintText: '017775000',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          phone = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateEmail,
-                        enabled: flagSellerTextFields,
-                        initialValue: seller.email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'somone@something.com',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          email = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        enabled: flagSellerTextFields,
-                        initialValue: seller.company,
-                        validator: validateCompanyName,
-                        decoration: InputDecoration(
-                          labelText: 'Company name:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          companyName = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        initialValue: seller.tax,
-                        enabled: flagSellerTextFields,
-                        validator: validateTaxCard,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Tax Card:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          tax = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FlatButton(
-                        color: Colors.blueGrey[900],
-                        onPressed: () {
-                          setState(() {
-                            flagSellerTextFields = true;
-                          });
-                        },
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                alignment: Alignment.center,
+                child: Form(
+                  key: _sellerEditProfileFormKey,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateName,
+                          enabled: flagSellerTextFields,
+                          initialValue: seller.firstName,
+                          decoration: InputDecoration(
+                            labelText: 'First Name:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            fname = value.trim();
+                          },
                         ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateName,
+                          enabled: flagSellerTextFields,
+                          initialValue: seller.lastName,
+                          decoration: InputDecoration(
+                            labelText: 'Last Name:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            lname = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validatePhone,
+                          enabled: flagSellerTextFields,
+                          initialValue: seller.phone,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: 'Phone:',
+                            hintText: '017775000',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            phone = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateEmail,
+                          enabled: flagSellerTextFields,
+                          initialValue: seller.email,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            hintText: 'somone@something.com',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            email = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          enabled: flagSellerTextFields,
+                          initialValue: seller.company,
+                          validator: validateCompanyName,
+                          decoration: InputDecoration(
+                            labelText: 'Company name:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            companyName = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          initialValue: seller.tax,
+                          enabled: flagSellerTextFields,
+                          validator: validateTaxCard,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Tax Card:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            tax = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlatButton(
+                          color: Color(0xFF731800),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30),
+                            top: Radius.circular(30),
+                          )),
+                          onPressed: () {
+                            setState(() {
+                              flagSellerTextFields = true;
+                            });
+                          },
+                          child: Text(
+                            'Edit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -287,7 +308,12 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
               onPressed: () async {
                 if (_sellerEditProfileFormKey.currentState.validate()) {
                   _sellerEditProfileFormKey.currentState.save();

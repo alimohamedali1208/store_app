@@ -16,10 +16,23 @@ class _ChoosePCAccessoryState extends State<ChoosePCAccessory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('PC Accessory'),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("PC Accessories"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: Row(
         children: [

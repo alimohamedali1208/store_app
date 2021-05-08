@@ -139,209 +139,225 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text("SignUp"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Sign Up"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          )),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: ListView(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              child: Form(
-                key: _registerFormKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateName,
-                        decoration: InputDecoration(
-                          labelText: 'First Name:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          fname = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateName,
-                        decoration: InputDecoration(
-                          labelText: 'Last Name:',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          lname = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validatePhone,
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: 'Phone:',
-                          hintText: '017775000',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          phone = value.trim();
-                        },
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-                          child: Text('Male'),
-                        ),
-                        Radio(
-                          activeColor: Colors.deepOrange[400],
-                          value: SingingCharacter.Male,
-                          groupValue: _character,
-                          onChanged: (SingingCharacter value) {
-                            sex = 'M';
-                            print(sex);
-                            setState(
-                              () {
-                                _character = value;
-                              },
-                            );
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                child: Form(
+                  key: _registerFormKey,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateName,
+                          decoration: InputDecoration(
+                            labelText: 'First Name:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            fname = value.trim();
                           },
                         ),
-                        Text('Female'),
-                        Radio(
-                          activeColor: Colors.green[600],
-                          value: SingingCharacter.Female,
-                          groupValue: _character,
-                          onChanged: (SingingCharacter value) {
-                            sex = 'F';
-                            print(sex);
-                            setState(
-                              () {
-                                _character = value;
-                              },
-                            );
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateName,
+                          decoration: InputDecoration(
+                            labelText: 'Last Name:',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            lname = value.trim();
                           },
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateEmail,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'somone@something.com',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          email = value.trim();
-                        },
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validatePhone,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: 'Phone:',
+                            hintText: '017775000',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            phone = value.trim();
+                          },
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextFormField(
-                            autovalidate: validate,
-                            validator: validatePassword,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              hintText: 'you really need a hint for this?',
-                              border: OutlineInputBorder(),
-                            ),
-                            onSaved: (value) {
-                              pass = value.trim();
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                            child: Text('Male'),
+                          ),
+                          Radio(
+                            activeColor: Colors.deepOrange[400],
+                            value: SingingCharacter.Male,
+                            groupValue: _character,
+                            onChanged: (SingingCharacter value) {
+                              sex = 'M';
+                              print(sex);
+                              setState(
+                                () {
+                                  _character = value;
+                                },
+                              );
                             },
                           ),
-                          new FlatButton(
-                              onPressed: _togglePassword,
-                              child: new Text(_obscureText ? "Show" : "Hide"))
+                          Text('Female'),
+                          Radio(
+                            activeColor: Colors.green[600],
+                            value: SingingCharacter.Female,
+                            groupValue: _character,
+                            onChanged: (SingingCharacter value) {
+                              sex = 'F';
+                              print(sex);
+                              setState(
+                                () {
+                                  _character = value;
+                                },
+                              );
+                            },
+                          ),
                         ],
                       ),
-                    ),
-                    DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                          if (dropdownValue == 'Seller') {
-                            flagSellerTextFields = true;
-                            flagSellerDatabase = true;
-                          } else if (dropdownValue == 'Customer') {
-                            flagSellerTextFields = false;
-                            flagSellerDatabase = false;
-                          }
-                        });
-                      },
-                      items: <String>['Customer', 'Seller']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        enabled: flagSellerTextFields,
-                        // validator: validateCompanyName,
-                        decoration: InputDecoration(
-                          labelText: 'Company name:',
-                          hintText: 'Sony',
-                          border: OutlineInputBorder(),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            hintText: 'somone@something.com',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            email = value.trim();
+                          },
                         ),
-                        onSaved: (value) {
-                          companyName = value.trim();
-                        },
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        enabled: flagSellerTextFields,
-                        // validator: validateTaxCard,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Tax Card:',
-                          hintText: '15321',
-                          border: OutlineInputBorder(),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              autovalidate: validate,
+                              validator: validatePassword,
+                              obscureText: _obscureText,
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                                hintText: 'you really need a hint for this?',
+                                border: OutlineInputBorder(),
+                              ),
+                              onSaved: (value) {
+                                pass = value.trim();
+                              },
+                            ),
+                            new FlatButton(
+                                onPressed: _togglePassword,
+                                child: new Text(_obscureText ? "Show" : "Hide"))
+                          ],
                         ),
-                        onSaved: (value) {
-                          tax = value.trim();
-                        },
                       ),
-                    ),
-                  ],
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          elevation: 10,
+                          style: TextStyle(color: Colors.black),
+                          underline: Container(
+                            height: 1,
+                            color: Colors.black,
+                          ),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                              if (dropdownValue == 'Seller') {
+                                flagSellerTextFields = true;
+                                flagSellerDatabase = true;
+                              } else if (dropdownValue == 'Customer') {
+                                flagSellerTextFields = false;
+                                flagSellerDatabase = false;
+                              }
+                            });
+                          },
+                          items: <String>['Customer', 'Seller']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          enabled: flagSellerTextFields,
+                          // validator: validateCompanyName,
+                          decoration: InputDecoration(
+                            labelText: 'Company name:',
+                            hintText: 'Sony',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            companyName = value.trim();
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          enabled: flagSellerTextFields,
+                          // validator: validateTaxCard,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Tax Card:',
+                            hintText: '15321',
+                            border: OutlineInputBorder(),
+                          ),
+                          onSaved: (value) {
+                            tax = value.trim();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -350,7 +366,16 @@ class _registerState extends State<register> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              color: Color(0xFF731800),
+              child: Text(
+                'Sign up',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_registerFormKey.currentState.validate()) {
                   print("hello");
@@ -407,10 +432,6 @@ class _registerState extends State<register> {
                       "Something went wrong, check the warnings above and try again");
                 }
               },
-              child: Text(
-                'Sign up',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

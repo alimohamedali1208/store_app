@@ -1,3 +1,4 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/Home.dart';
@@ -53,18 +54,37 @@ class _sellerhomeState extends State<sellerhome> {
       onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text(seller.firstName),
-          centerTitle: true,
-          backgroundColor: Colors.blueGrey[900],
-          actions: <Widget>[
-            new IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => addCategory()));
-                }),
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: AppBar(
+            title: Column(
+              children: [
+                SizedBox(height: 30),
+                Text(seller.firstName),
+              ],
+            ),
+            centerTitle: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+              ),
+            ),
+            backgroundColor: Color(0xFF731800),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                    icon: Icon(Icons.add, color: Colors.white),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => addCategory()));
+                    }),
+              ),
+            ],
+          ),
         ),
         drawer: Drawer(
           child: ListView(
@@ -74,17 +94,21 @@ class _sellerhomeState extends State<sellerhome> {
                 accountEmail: Text(_auth.currentUser.email),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
-                    backgroundColor: Colors.blueGrey,
+                    backgroundColor: Colors.black12,
                     child: Icon(Icons.person, color: Colors.white),
                   ),
                 ),
-                decoration: new BoxDecoration(color: Colors.blueGrey[900]),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
+                    color: Color(0xFF731800)),
               ),
               InkWell(
                 onTap: () {},
                 child: ListTile(
                   title: Text('Home Page'),
-                  leading: Icon(Icons.home, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.home, color: Colors.black),
                 ),
               ),
               InkWell(
@@ -96,14 +120,14 @@ class _sellerhomeState extends State<sellerhome> {
                 },
                 child: ListTile(
                   title: Text('Edit Profile'),
-                  leading: Icon(Icons.person, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.person, color: Colors.black),
                 ),
               ),
               InkWell(
                 child: ListTile(
                   onTap: () {},
                   title: Text('Edit Products'),
-                  leading: Icon(Icons.help, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.help, color: Colors.black),
                 ),
               ),
               Divider(color: Colors.black),
@@ -111,7 +135,7 @@ class _sellerhomeState extends State<sellerhome> {
                 child: ListTile(
                   onTap: () {},
                   title: Text('Settings'),
-                  leading: Icon(Icons.settings, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.settings, color: Colors.black),
                 ),
               ),
               InkWell(
@@ -123,7 +147,7 @@ class _sellerhomeState extends State<sellerhome> {
                     seller.firstName = 'temp';
                   },
                   title: Text('Log out'),
-                  leading: Icon(Icons.logout, color: Colors.blueGrey[900]),
+                  leading: Icon(Icons.logout, color: Colors.black),
                 ),
               ),
             ],
@@ -159,6 +183,11 @@ class _sellerhomeState extends State<sellerhome> {
               );
             }
           },
+        ),
+        bottomNavigationBar: ConvexButton.fab(
+          icon: Icons.home,
+          color: Colors.white,
+          backgroundColor: Color(0xFF731800),
         ),
       ),
     );

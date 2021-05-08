@@ -88,10 +88,23 @@ class _addElectronicsState extends State<addElectronics> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Add an Electronic Device"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Add an Electronic Device"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -225,7 +238,7 @@ class _addElectronicsState extends State<addElectronics> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
@@ -234,7 +247,16 @@ class _addElectronicsState extends State<addElectronics> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              child: Text(
+                'Add product',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_addElectronicsFormKey.currentState.validate()) {
                   _addElectronicsFormKey.currentState.save();
@@ -255,10 +277,6 @@ class _addElectronicsState extends State<addElectronics> {
                   _toggleValidate();
                 }
               },
-              child: Text(
-                'Add product',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

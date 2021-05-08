@@ -78,105 +78,126 @@ class _loginState extends State<login> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Login"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Login"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Stack(
           children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              child: Form(
-                key: _loginFormKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        autovalidate: validate,
-                        validator: validateEmail,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          icon: Icon(Icons.email),
-                          hintText: 'somone@something.com',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          Email = value.trim();
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new TextFormField(
-                            autovalidate: validate,
-                            obscureText: _obscureText,
-                            validator: validatePassword,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Password',
-                                icon: Icon(Icons.vpn_key)),
-                            onSaved: (value) {
-                              pass = value.trim();
-                            },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.center,
+                child: Form(
+                  key: _loginFormKey,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          autovalidate: validate,
+                          validator: validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(Icons.email),
+                            hintText: 'somone@something.com',
+                            border: OutlineInputBorder(),
                           ),
-                          new FlatButton(
-                              onPressed: _togglePassword,
-                              child: new Text(_obscureText ? "Show" : "Hide"))
-                        ],
-                      ),
-                    ),
-                    DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 10,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                          if (dropdownValue == 'Seller') {
-                            flagSeller = true;
-                          } else if (dropdownValue == 'Customer') {
-                            flagSeller = false;
-                          }
-                        });
-                      },
-                      items: <String>['Customer', 'Seller']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FlatButton(
-                        color: Colors.blueGrey[900],
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => register()));
-                        },
-                        child: Text(
-                          'New user?, Sign up here',
-                          style: TextStyle(color: Colors.white),
+                          onSaved: (value) {
+                            Email = value.trim();
+                          },
                         ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Column(
+                          children: <Widget>[
+                            new TextFormField(
+                              autovalidate: validate,
+                              obscureText: _obscureText,
+                              validator: validatePassword,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Password',
+                                  icon: Icon(Icons.vpn_key)),
+                              onSaved: (value) {
+                                pass = value.trim();
+                              },
+                            ),
+                            new FlatButton(
+                                onPressed: _togglePassword,
+                                child: new Text(_obscureText ? "Show" : "Hide"))
+                          ],
+                        ),
+                      ),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          elevation: 10,
+                          style: TextStyle(color: Colors.black),
+                          underline: Container(
+                            height: 1,
+                            color: Colors.black,
+                          ),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                              if (dropdownValue == 'Seller') {
+                                flagSeller = true;
+                              } else if (dropdownValue == 'Customer') {
+                                flagSeller = false;
+                              }
+                            });
+                          },
+                          items: <String>['Customer', 'Seller']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30),
+                            top: Radius.circular(30),
+                          )),
+                          color: Color(0xFF731800),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => register()));
+                          },
+                          child: Text(
+                            'New user? Sign up here',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -189,7 +210,16 @@ class _loginState extends State<login> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              color: Color(0xFF731800),
+              child: Text(
+                'Sign in',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_loginFormKey.currentState.validate()) {
                   setState(() {
@@ -264,10 +294,6 @@ class _loginState extends State<login> {
                       "Something went wrong, check the errors above please");
                 }
               },
-              child: Text(
-                'Sign in',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

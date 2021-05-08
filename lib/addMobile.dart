@@ -106,10 +106,23 @@ class _addMobileState extends State<addMobile> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Add a mobile"),
-        centerTitle: true,
-        backgroundColor: Color(0xFF731800),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Add a Mobile"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -425,6 +438,15 @@ class _addMobileState extends State<addMobile> {
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
               color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              child: Text(
+                'Add product',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
@@ -445,10 +467,6 @@ class _addMobileState extends State<addMobile> {
                   _toggleValidate();
                 }
               },
-              child: Text(
-                'Add product',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

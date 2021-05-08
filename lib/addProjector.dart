@@ -90,10 +90,23 @@ class _addProjectorState extends State<addProjector> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Add a PC Accessory"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Add a Projector"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -263,7 +276,7 @@ class _addProjectorState extends State<addProjector> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
@@ -272,7 +285,16 @@ class _addProjectorState extends State<addProjector> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              child: Text(
+                'Add product',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_addPcAccessoriesFormKey.currentState.validate()) {
                   _addPcAccessoriesFormKey.currentState.save();
@@ -293,10 +315,6 @@ class _addProjectorState extends State<addProjector> {
                   _toggleValidate();
                 }
               },
-              child: Text(
-                'Add product',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

@@ -281,7 +281,16 @@ class _addJewelaryState extends State<addJewelary> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              child: Text(
+                'Add product',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_addJewelleryFormKey.currentState.validate()) {
                   _addJewelleryFormKey.currentState.save();
@@ -302,10 +311,6 @@ class _addJewelaryState extends State<addJewelary> {
                   _toggleValidate();
                 }
               },
-              child: Text(
-                'Add product',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),

@@ -101,10 +101,23 @@ class _addTVState extends State<addTV> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Add TV"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Add a TV"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -456,7 +469,7 @@ class _addTVState extends State<addTV> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
@@ -465,7 +478,16 @@ class _addTVState extends State<addTV> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              color: Colors.blueGrey[900],
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
+              child: Text(
+                'Add product',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 if (_addHomeAppliancesFormKey.currentState.validate()) {
                   _addHomeAppliancesFormKey.currentState.save();
@@ -486,10 +508,6 @@ class _addTVState extends State<addTV> {
                   _toggleValidate();
                 }
               },
-              child: Text(
-                'Add product',
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ),
