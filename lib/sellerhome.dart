@@ -70,20 +70,7 @@ class _sellerhomeState extends State<sellerhome> {
               ),
             ),
             backgroundColor: Color(0xFF731800),
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                    icon: Icon(Icons.add, color: Colors.white),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => addCategory()));
-                    }),
-              ),
-            ],
+            actions: <Widget>[],
           ),
         ),
         drawer: Drawer(
@@ -185,10 +172,13 @@ class _sellerhomeState extends State<sellerhome> {
           },
         ),
         bottomNavigationBar: ConvexButton.fab(
-          icon: Icons.home,
-          color: Colors.white,
-          backgroundColor: Color(0xFF731800),
-        ),
+            icon: Icons.add,
+            color: Colors.white,
+            backgroundColor: Color(0xFF731800),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addCategory()));
+            }),
       ),
     );
   }
