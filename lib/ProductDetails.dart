@@ -29,8 +29,15 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: new AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.blueGrey[900],
-        title: Text("El Wekala"),
+        backgroundColor: Colors.transparent,
+        title: Text(widget.product_detail_name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            )),
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
         actions: <Widget>[
           new IconButton(
               icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),

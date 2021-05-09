@@ -92,10 +92,23 @@ class _addJewelaryState extends State<addJewelary> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Add an Accessory"),
-        centerTitle: true,
-        backgroundColor: Colors.blueGrey[900],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Column(
+            children: [
+              SizedBox(height: 20),
+              Text("Add an Accessory"),
+            ],
+          ),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          backgroundColor: Color(0xFF731800),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -180,7 +193,7 @@ class _addJewelaryState extends State<addJewelary> {
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
-                          labelText: "Operating System",
+                          labelText: "Metal Type",
                         ),
                         validator: validateEmpty,
                         onChanged: (String newValue) {
@@ -272,7 +285,7 @@ class _addJewelaryState extends State<addJewelary> {
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF731800),
         child: Icon(Icons.add_a_photo),
       ),
       bottomNavigationBar: Padding(
