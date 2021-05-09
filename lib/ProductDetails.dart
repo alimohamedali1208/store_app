@@ -24,12 +24,13 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  bool isPressed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey[300],
         title: Text(widget.product_detail_name,
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -39,201 +40,155 @@ class _ProductDetailsState extends State<ProductDetails> {
           color: Colors.black,
         ),
         actions: <Widget>[
-          new IconButton(
-              icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.search, color: Colors.black), onPressed: () {}),
         ],
       ),
-      body: new ListView(
-        children: <Widget>[
-          new Container(
-            height: 300,
-            child: GridTile(
+      /*widget.product_detail_name,
+      ${widget.product_detail_new_price} EGP
+      ${widget.product_detail_seller}
+      * */
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+        ),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              height: 250,
               child: Container(
                 color: Colors.white70,
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'images/PlaceHolder.gif',
-                  image: (widget.product_detail_picture == null)
-                      ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                      : widget.product_detail_picture,
-                ),
-              ),
-              footer: new Container(
-                color: Colors.white,
-                child: ListTile(
-                  leading: new Text(
-                    widget.product_detail_name,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
-                  title: new Row(
-                    children: <Widget>[
-                      Expanded(
-                        child:
-                            new Text("${widget.product_detail_new_price} EGP",
-                                style: TextStyle(
-                                  color: Colors.red,
-                                )),
-                      ),
-                      Expanded(
-                          child: new Text(
-                        "Seller: ${widget.product_detail_seller}",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      )),
-                    ],
+                child: PhysicalModel(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: Colors.grey[300],
+                  shape: BoxShape.rectangle,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'images/PlaceHolder.gif',
+                    image: (widget.product_detail_picture == null)
+                        ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                        : widget.product_detail_picture,
                   ),
                 ),
               ),
             ),
-          ),
-          Row(
-            children: <Widget>[
-//======== color button ==========
-              Expanded(
-                  child: MaterialButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return new AlertDialog(
-                          title: new Text("Color"),
-                          content: new Text("Choose The Color"),
-                          actions: <Widget>[
-                            new MaterialButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(context);
-                              },
-                              child: new Text("Close"),
-                            )
-                          ],
-                        );
-                      });
-                },
-                color: Colors.grey,
-                textColor: Colors.black,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: new Text("Color",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )),
+            Container(
+              height: 400,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 10),
+                    child: Text(
+                      widget.product_detail_name,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
-                    Expanded(child: new Icon(Icons.arrow_drop_down)),
-                  ],
-                ),
-              )),
-              // ========== the qty button =========
-              Expanded(
-                  child: MaterialButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return new AlertDialog(
-                          title: new Text("Quantity"),
-                          content: new Text("Choose The Quantity"),
-                          actions: <Widget>[
-                            new MaterialButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(context);
-                              },
-                              child: new Text("Close"),
-                            )
-                          ],
-                        );
-                      });
-                },
-                color: Colors.grey,
-                textColor: Colors.black,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: new Text("Quantity",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFFFE6E6),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10))),
+                      child: IconButton(
+                          alignment: Alignment.center,
+                          icon: (isPressed)
+                              ? Icon(Icons.favorite)
+                              : Icon(Icons.favorite_outline),
+                          tooltip: 'Add to favorites',
+                          color: Colors.red,
+                          onPressed: () {
+                            setState(() {
+                              if (isPressed)
+                                isPressed = false;
+                              else
+                                isPressed = true;
+                            });
+                          }),
                     ),
-                    Expanded(child: new Icon(Icons.arrow_drop_down)),
-                  ],
-                ),
-              )),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {},
-                  color: Colors.grey,
-                  textColor: Colors.black,
-                  child: new Text("Buy Now",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 10.0, right: 60, top: 10),
+                    child: Text(widget.product_detail_desc),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    height: 199,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[400],
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0, top: 10),
+                          child: Text(
+                            "Seller: ${widget.product_detail_seller}",
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0, top: 10),
+                          child: Text(
+                            "price ",
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40.0, top: 1),
+                          child: Text(
+                            "${widget.product_detail_new_price} EGP",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                            child: FlatButton(
+                          color: Color(0xFF731800),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(10),
+                            top: Radius.circular(10),
+                          )),
+                          onPressed: () {},
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 80.0, right: 80),
+                            child: Text(
+                              "Add to Cart",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              new IconButton(
-                  icon: Icon(Icons.add_shopping_cart), onPressed: () {}),
-              new IconButton(
-                  icon: Icon(Icons.favorite_border), onPressed: () {})
-            ],
-          ),
-          Divider(color: Colors.black87),
-          new ListTile(
-            title: new Text("Product Details"),
-            subtitle: new Text(widget.product_detail_desc),
-          ),
-          new Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
-                  "Product Name",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Text(widget.product_detail_name),
-              )
-            ],
-          ),
-//          the brand
-          new Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
-                  "Product Brand",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Text(widget.product_detail_brand),
-              )
-            ],
-          ),
-//             filtering the product
-          new Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
-                  "product filtering",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Text("product condition or filtering"),
-              )
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
