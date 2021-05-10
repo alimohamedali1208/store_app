@@ -66,57 +66,66 @@ class _ProductDetailsState extends State<ProductDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
+                Flexible(
+                  flex: 5,
                   child: Container(
-                    color: Colors.white70,
-                    child: PhysicalModel(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Colors.grey[300],
-                      shape: BoxShape.rectangle,
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'images/PlaceHolder.gif',
-                        image: (widget.product_detail_picture == null)
-                            ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                            : widget.product_detail_picture,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Container(
+                      color: Colors.white70,
+                      child: PhysicalModel(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: Colors.grey[300],
+                        shape: BoxShape.rectangle,
+                        child: FadeInImage.assetNetwork(
+                          height: 250,
+                          width: 250,
+                          placeholder: 'images/PlaceHolder.gif',
+                          image: (widget.product_detail_picture == null)
+                              ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                              : widget.product_detail_picture,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.8),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 4), // changes position of shadow
-                          ),
-                        ],
-                        color: Color(0xFFFFE6E6),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10))),
-                    child: IconButton(
-                        alignment: Alignment.center,
-                        icon: (isPressed)
-                            ? Icon(Icons.favorite)
-                            : Icon(Icons.favorite_outline),
-                        tooltip: 'Add to favorites',
-                        color: Colors.red,
-                        onPressed: () {
-                          setState(() {
-                            if (isPressed)
-                              isPressed = false;
-                            else
-                              isPressed = true;
-                          });
-                        }),
+                Flexible(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.8),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 4), // changes position of shadow
+                            ),
+                          ],
+                          color: Color(0xFFFFE6E6),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10))),
+                      child: IconButton(
+                          alignment: Alignment.center,
+                          icon: (isPressed)
+                              ? Icon(Icons.favorite)
+                              : Icon(Icons.favorite_outline),
+                          tooltip: 'Add to favorites',
+                          color: Colors.red,
+                          onPressed: () {
+                            setState(() {
+                              if (isPressed)
+                                isPressed = false;
+                              else
+                                isPressed = true;
+                            });
+                          }),
+                    ),
                   ),
                 ),
               ],
@@ -184,7 +193,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("4.5"),
+                                  Text(
+                                    "4.5",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Icon(
                                     Icons.star_outlined,
                                     color: Colors.yellow,
