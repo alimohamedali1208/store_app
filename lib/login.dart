@@ -98,110 +98,113 @@ class _loginState extends State<login> {
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.center,
-                child: Form(
-                  key: _loginFormKey,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          autovalidate: validate,
-                          validator: validateEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            icon: Icon(Icons.email),
-                            hintText: 'somone@something.com',
-                            border: OutlineInputBorder(),
-                          ),
-                          onSaved: (value) {
-                            Email = value.trim();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: new Column(
-                          children: <Widget>[
-                            new TextFormField(
-                              autovalidate: validate,
-                              obscureText: _obscureText,
-                              validator: validatePassword,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Password',
-                                  icon: Icon(Icons.vpn_key)),
-                              onSaved: (value) {
-                                pass = value.trim();
-                              },
+        child: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Form(
+                    key: _loginFormKey,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            autovalidate: validate,
+                            validator: validateEmail,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              icon: Icon(Icons.email),
+                              hintText: 'somone@something.com',
+                              border: OutlineInputBorder(),
                             ),
-                            new FlatButton(
-                                onPressed: _togglePassword,
-                                child: new Text(_obscureText ? "Show" : "Hide"))
-                          ],
-                        ),
-                      ),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          elevation: 10,
-                          style: TextStyle(color: Colors.black),
-                          underline: Container(
-                            height: 1,
-                            color: Colors.black,
-                          ),
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                              if (dropdownValue == 'Seller') {
-                                flagSeller = true;
-                              } else if (dropdownValue == 'Customer') {
-                                flagSeller = false;
-                              }
-                            });
-                          },
-                          items: <String>['Customer', 'Seller']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(30),
-                            top: Radius.circular(30),
-                          )),
-                          color: Color(0xFF731800),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => register()));
-                          },
-                          child: Text(
-                            'New user? Sign up here',
-                            style: TextStyle(color: Colors.white),
+                            onSaved: (value) {
+                              Email = value.trim();
+                            },
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new TextFormField(
+                                autovalidate: validate,
+                                obscureText: _obscureText,
+                                validator: validatePassword,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Password',
+                                    icon: Icon(Icons.vpn_key)),
+                                onSaved: (value) {
+                                  pass = value.trim();
+                                },
+                              ),
+                              new FlatButton(
+                                  onPressed: _togglePassword,
+                                  child:
+                                      new Text(_obscureText ? "Show" : "Hide"))
+                            ],
+                          ),
+                        ),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            elevation: 10,
+                            style: TextStyle(color: Colors.black),
+                            underline: Container(
+                              height: 1,
+                              color: Colors.black,
+                            ),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownValue = newValue;
+                                if (dropdownValue == 'Seller') {
+                                  flagSeller = true;
+                                } else if (dropdownValue == 'Customer') {
+                                  flagSeller = false;
+                                }
+                              });
+                            },
+                            items: <String>['Customer', 'Seller']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(30),
+                              top: Radius.circular(30),
+                            )),
+                            color: Color(0xFF731800),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => register()));
+                            },
+                            child: Text(
+                              'New user? Sign up here',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(

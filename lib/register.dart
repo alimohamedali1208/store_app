@@ -168,33 +168,48 @@ class _registerState extends State<register> {
                   key: _registerFormKey,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: TextFormField(
-                          autovalidate: validate,
-                          validator: validateName,
-                          decoration: InputDecoration(
-                            labelText: 'First Name:',
-                            border: OutlineInputBorder(),
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: TextFormField(
+                                autovalidate: validate,
+                                validator: validateName,
+                                decoration: InputDecoration(
+                                  labelText: 'First Name',
+                                  border: OutlineInputBorder(),
+                                ),
+                                onSaved: (value) {
+                                  fname = value.trim();
+                                },
+                              ),
+                            ),
                           ),
-                          onSaved: (value) {
-                            fname = value.trim();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: TextFormField(
-                          autovalidate: validate,
-                          validator: validateName,
-                          decoration: InputDecoration(
-                            labelText: 'Last Name:',
-                            border: OutlineInputBorder(),
+                          Flexible(
+                              flex: 1,
+                              child: SizedBox(
+                                width: 10,
+                              )),
+                          Flexible(
+                            flex: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: TextFormField(
+                                autovalidate: validate,
+                                validator: validateName,
+                                decoration: InputDecoration(
+                                  labelText: 'Last Name',
+                                  border: OutlineInputBorder(),
+                                ),
+                                onSaved: (value) {
+                                  lname = value.trim();
+                                },
+                              ),
+                            ),
                           ),
-                          onSaved: (value) {
-                            lname = value.trim();
-                          },
-                        ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8),
@@ -203,7 +218,7 @@ class _registerState extends State<register> {
                           validator: validatePhone,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            labelText: 'Phone:',
+                            labelText: 'Phone',
                             hintText: '017775000',
                             border: OutlineInputBorder(),
                           ),
@@ -326,7 +341,7 @@ class _registerState extends State<register> {
                           enabled: flagSellerTextFields,
                           // validator: validateCompanyName,
                           decoration: InputDecoration(
-                            labelText: 'Company name:',
+                            labelText: 'Company name',
                             hintText: 'Sony',
                             border: OutlineInputBorder(),
                           ),
@@ -343,7 +358,7 @@ class _registerState extends State<register> {
                           // validator: validateTaxCard,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            labelText: 'Tax Card:',
+                            labelText: 'Tax Card',
                             hintText: '15321',
                             border: OutlineInputBorder(),
                           ),
