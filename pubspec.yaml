@@ -41,12 +41,14 @@ flutter_native_splash:
   android: true
 
 flutter:
-
-
   uses-material-design: true
-
   assets:
     - images/
+  fonts:
+    - family: Zanzabar
+      fonts:
+        - asset: fonts/Zanzabar D.otf
+          weight: 700
 
 
   # To add custom fonts to your application, add a fonts section here,

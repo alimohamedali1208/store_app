@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/addCamera.dart';
 import 'package:store_app/addCameraAccessory.dart';
-import 'package:store_app/addElectronics.dart';
-import 'package:store_app/addProjector.dart';
 
 import 'UserSeller.dart';
 

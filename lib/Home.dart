@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/services.dart';
-import 'package:store_app/Cart.dart';
 import 'autoSearchCompelete.dart';
 import 'login.dart';
 // my own imports
@@ -72,7 +71,11 @@ class _HomeState extends State<Home> {
               ),
             ),
             backgroundColor: Color(0xFF731800),
-            title: Text("El Wekala"),
+            //todo : I'm gonna leave for you which letters to Capitalise, resize, centering, and color for the apptitle
+            title: Text(
+              "El Wekala",
+              style: TextStyle(fontFamily: 'Zanzabar'),
+            ),
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.search, color: Colors.white),
