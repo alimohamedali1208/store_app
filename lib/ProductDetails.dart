@@ -221,22 +221,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                             left: 10.0, right: 60, top: 10),
                         child: Text(widget.product_detail_desc),
                       ),
-                      Divider(
+                      /*Divider(
                         thickness: 1,
                         color: Colors.grey,
-                      ),
+                      ),*/
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10.0, top: 10, bottom: 10),
-                        child: Text(
-                          "Sold by ${widget.product_detail_seller}",
-                          style: Theme.of(context).textTheme.bodyText1,
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10.0, top: 10, bottom: 10),
+                            child: Text(
+                              "Sold by ${widget.product_detail_seller}",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
                         ),
                       ),
-                      Divider(
+                      /* Divider(
                         thickness: 1,
                         color: Colors.grey,
-                      ),
+                      ),*/
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0, top: 10),
                         child: Text(
