@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70),
+          preferredSize: Size.fromHeight(65),
           child: AppBar(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -71,10 +71,14 @@ class _HomeState extends State<Home> {
               ),
             ),
             backgroundColor: Color(0xFF731800),
-            //todo : I'm gonna leave for you which letters to Capitalise, resize, centering, and color for the apptitle
-            title: Text(
-              "ElweKalA",
-              style: TextStyle(fontFamily: 'Zanzabar', fontSize: 35),
+            title: Column(
+              children: [
+                SizedBox(height: 5),
+                Text(
+                  "ElweKalA",
+                  style: TextStyle(fontFamily: 'Zanzabar', fontSize: 30),
+                ),
+              ],
             ),
             actions: <Widget>[
               IconButton(

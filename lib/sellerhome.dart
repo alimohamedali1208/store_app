@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/EditPages/editLaptops.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -210,11 +211,6 @@ class SingleProduct extends StatelessWidget {
           height: 80,
           width: 80,
         ),
-        // Image.network(
-        //   (productImg == null)? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a" : productImg,
-        //   width: 80,
-        //   height: 80,
-        // ),
         title: Text(productName),
         subtitle: Column(
           children: <Widget>[
@@ -229,7 +225,10 @@ class SingleProduct extends StatelessWidget {
             Row(
               children: <Widget>[
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => editLaptops()));
+                  },
                   child: Text('Edit'),
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -245,7 +244,6 @@ class SingleProduct extends StatelessWidget {
                         .collection('Products')
                         .doc(productID)
                         .delete();
-                    //val firebaseStorageRef = FirebaseStorage.instance.ref();
                     Reference firebaseStorageRef =
                         FirebaseStorage.instance.ref();
                     firebaseStorageRef

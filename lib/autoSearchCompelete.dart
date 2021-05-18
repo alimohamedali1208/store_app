@@ -15,11 +15,11 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: Size.fromHeight(65.0),
         child: AppBar(
           title: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 5),
               Text("Search"),
             ],
           ),
@@ -37,6 +37,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
           Expanded(
             child: Column(
               children: [
+                SizedBox(height: 10),
                 TextField(
                   onChanged: (val) {
                     setState(() {
