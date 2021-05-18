@@ -4,7 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:store_app/EditPages/editAirConditioner.dart';
 import 'package:store_app/EditPages/editCameraAccessory.dart';
 import 'package:store_app/EditPages/editCameras.dart';
-import 'package:store_app/EditPages/editLaptops.dart';
+import 'package:store_app/EditPages/editElectronics.dart';
+import 'package:store_app/EditPages/editFashion.dart';
+import 'package:store_app/EditPages/editFridge.dart';
+import 'package:store_app/EditPages/editHomeAppliances.dart';
+import 'package:store_app/EditPages/editJewelary.dart';
+import 'package:store_app/EditPages/editLaptop.dart';
+import 'package:store_app/EditPages/editMobile.dart';
+import 'package:store_app/EditPages/editPCAccessories.dart';
+import 'package:store_app/EditPages/editPrinter.dart';
+import 'package:store_app/EditPages/editProjector.dart';
+import 'package:store_app/EditPages/editStorageDevice.dart';
+import 'package:store_app/EditPages/editTV.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -255,6 +266,59 @@ class SingleProduct extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => editCameraAccessory()));
+                    } else if (productType == 'OtherElectronics') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editElectronics()));
+                    } else if (productType == 'Fashion') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editFashion()));
+                    } else if (productType == 'Fridges') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editFridge()));
+                    } else if (productType == 'Jewelry') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editJewelary()));
+                    } else if (productType == 'Mobiles') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editMobile()));
+                    } else if (productType == 'OtherHome') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editHomeAppliances()));
+                    } else if (productType == 'OtherPC') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editPCAccessories()));
+                    } else if (productType == 'Printers') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editPrinter()));
+                    } else if (productType == 'Projectors') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editProjector()));
+                    } else if (productType == 'StorageDevice') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editStorageDevice()));
+                    } else if (productType == 'TV') {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => editTV()));
                     }
                   },
                   child: Text('Edit'),
