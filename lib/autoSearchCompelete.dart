@@ -11,36 +11,83 @@ class autoSearchCompelete extends StatefulWidget {
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
+  String ddSearchCategory = 'Choose Category';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(65.0),
+        preferredSize: Size(double.infinity, 110),
         child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 5),
-              TextField(
-
-                onChanged: (val) {
-                  setState(() {
-                    searchString = val.toLowerCase().trim();
-                  });
-                },
-                decoration: InputDecoration(
+          automaticallyImplyLeading: false,
+          flexibleSpace: Padding(
+            padding:EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  textCapitalization: TextCapitalization.none,
+                  autofocus: false,
+                  style: TextStyle(fontSize: 16),
+                  cursorColor: Colors.blue[900],
+                  onChanged: (val) {
+                    setState(() {
+                      searchString = val.toLowerCase().trim();
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    filled: true,
+                    fillColor: Colors.white70,
+                    prefixIcon: IconButton(
+                      color: Colors.black,
+                      icon: Icon(Icons.arrow_back),
+                      iconSize: 20.0,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                     contentPadding: EdgeInsets.only(left: 25.0),
                     hintText: 'Search By Name',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4.0))),
-              )
-            ],
-          ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 30,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      hint: Text('hiihi'),
+                      value: ddSearchCategory,
+                      elevation: 10,
+                      style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ddSearchCategory = newValue;
+                        });
+                      },
+                      items: <String>['Choose Category', 'Fashion', 'Laptops', 'Mobiles']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+          centerTitle: false,
           backgroundColor: Color(0xFF731800),
         ),
       ),

@@ -18,11 +18,10 @@ class _editAirConditionerState extends State<editAirConditioner> {
   final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, width, weight, depth, quantity;
-
   String ddBrand = 'Samsung';
   String picURL;
   double price;
-  String ddColor = 'White';
+  String ddColor = 'Black';
   String ddType = 'Split System';
   String ddHPower = '0.50';
   String productID;
@@ -33,49 +32,6 @@ class _editAirConditionerState extends State<editAirConditioner> {
     var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
-    _firestore
-        .collection('ProductsCollection')
-        .doc('AirConditioner')
-        .collection('Products')
-        .add({
-      'Brand Name': ddBrand,
-      'Product Name': name,
-      'CreatedAt': Timestamp.now(),
-      'Description': description,
-      'Width': width,
-      'Depth': depth,
-      'Weight': weight,
-      'Color': ddColor,
-      'Horse Power': ddHPower,
-      'Conditioner Type': ddType,
-      'Price': price,
-      'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'AirConditioner',
-      'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/AirConditioner/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('AirConditioner')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
     });
   }
 
@@ -437,7 +393,6 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
 
                   Navigator.pop(context);
                 } else {

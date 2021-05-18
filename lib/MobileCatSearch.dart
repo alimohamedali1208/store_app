@@ -11,24 +11,106 @@ class mobileCatSearch extends StatefulWidget {
 class _mobileCatSearchState extends State<mobileCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
+  String ddSearchBrand;
+  int ddStorage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: Size(double.infinity, 110),
         child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Search"),
-            ],
-          ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
+          automaticallyImplyLeading: false,
+          flexibleSpace: Padding(
+            padding:EdgeInsets.only(top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  textCapitalization: TextCapitalization.none,
+                  autofocus: false,
+                  style: TextStyle(fontSize: 16),
+                  cursorColor: Colors.blue[900],
+                  onChanged: (val) {
+                    setState(() {
+                      searchString = val.toLowerCase().trim();
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    filled: true,
+                    fillColor: Colors.white70,
+                    prefixIcon: IconButton(
+                      color: Colors.black,
+                      icon: Icon(Icons.arrow_back),
+                      iconSize: 20.0,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Search By Name',
+                  ),
+                ),
+                Row(
+                  children: [
+                    Center(
+                      child: DropdownButton<String>(
+                        items: [
+                          DropdownMenuItem<String>(
+                            child: Text('Sony'),
+                            value: 'Sony',
+                          ),
+                          DropdownMenuItem<String>(
+                            child: Text('Apple'),
+                            value: 'Apple',
+                          ),
+                          DropdownMenuItem<String>(
+                            child: Text('Samsung'),
+                            value: 'Samsung',
+                          ),
+                        ],
+                        onChanged: (String value) {
+                          setState(() {
+                            ddSearchBrand = value;
+                          });
+                        },
+                        hint: Text('Choose Brand'),
+                        value: ddSearchBrand,
+                      ),
+                    ),
+                    Center(
+                      child: DropdownButton<int>(
+                        items: [
+                          DropdownMenuItem<int>(
+                            child: Text('>16 GB'),
+                            value: 16,
+                          ),
+                          DropdownMenuItem<int>(
+                            child: Text('>32 GB'),
+                            value: 32,
+                          ),
+                          DropdownMenuItem<int>(
+                            child: Text('>64 GB'),
+                            value: 64,
+                          ),
+                        ],
+                        onChanged: (int value) {
+                          setState(() {
+                            ddStorage = value;
+                          });
+                        },
+                        hint: Text('Choose Storage'),
+                        value: ddStorage,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+          centerTitle: false,
           backgroundColor: Color(0xFF731800),
         ),
       ),
@@ -37,26 +119,26 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
           Expanded(
             child: Column(
               children: [
-                TextField(
-                  onChanged: (val) {
-                    setState(() {
-                      searchString = val.toLowerCase().trim();
-                    });
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: IconButton(
-                        color: Colors.black,
-                        icon: Icon(Icons.arrow_back),
-                        iconSize: 20.0,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      contentPadding: EdgeInsets.only(left: 25.0),
-                      hintText: 'Search By Name',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4.0))),
-                ),
+                // TextField(
+                //   onChanged: (val) {
+                //     setState(() {
+                //       searchString = val.toLowerCase().trim();
+                //     });
+                //   },
+                //   decoration: InputDecoration(
+                //       prefixIcon: IconButton(
+                //         color: Colors.black,
+                //         icon: Icon(Icons.arrow_back),
+                //         iconSize: 20.0,
+                //         onPressed: () {
+                //           Navigator.of(context).pop();
+                //         },
+                //       ),
+                //       contentPadding: EdgeInsets.only(left: 25.0),
+                //       hintText: 'Search By Name',
+                //       border: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(4.0))),
+                // ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -64,6 +146,8 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                       .doc('Mobiles')
                       .collection('Products')
                       .where('searchIndex', arrayContains: searchString)
+                      .where('Brand Name', isEqualTo: ddSearchBrand)
+                      .where('Storage', isGreaterThanOrEqualTo: ddStorage)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError)
