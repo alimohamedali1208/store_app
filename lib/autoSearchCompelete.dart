@@ -6,7 +6,7 @@ import 'package:store_app/ProductDetails.dart';
 class autoSearchCompelete extends StatefulWidget {
   @override
   _autoSearchCompeleteState createState() => _autoSearchCompeleteState();
-} // zyad 5lla el 2otta re5maaaaa
+}
 
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   final database = FirebaseFirestore.instance;
