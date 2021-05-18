@@ -20,7 +20,19 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
           title: Column(
             children: [
               SizedBox(height: 5),
-              Text("Search"),
+              TextField(
+
+                onChanged: (val) {
+                  setState(() {
+                    searchString = val.toLowerCase().trim();
+                  });
+                },
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 25.0),
+                    hintText: 'Search By Name',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4.0))),
+              )
             ],
           ),
           centerTitle: true,
@@ -38,26 +50,6 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                TextField(
-                  onChanged: (val) {
-                    setState(() {
-                      searchString = val.toLowerCase().trim();
-                    });
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: IconButton(
-                        color: Colors.black,
-                        icon: Icon(Icons.arrow_back),
-                        iconSize: 20.0,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      contentPadding: EdgeInsets.only(left: 25.0),
-                      hintText: 'Search By Name',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4.0))),
-                ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
