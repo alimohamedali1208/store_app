@@ -1,6 +1,9 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/EditPages/editAirConditioner.dart';
+import 'package:store_app/EditPages/editCameraAccessory.dart';
+import 'package:store_app/EditPages/editCameras.dart';
 import 'package:store_app/EditPages/editLaptops.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserSeller.dart';
@@ -226,8 +229,33 @@ class SingleProduct extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => editLaptops()));
+                    // ignore: unrelated_type_equality_checks
+                    if (productType == 'Laptops') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editLaptops()));
+                    } else if (productType == 'AirConditioner') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editAirConditioner()));
+                    } else if (productType == 'Cameras') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editCameras()));
+                    } else if (productType == 'CameraAccessories') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editCameraAccessory()));
+                    } else if (productType == 'CameraAccessories') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editCameraAccessory()));
+                    }
                   },
                   child: Text('Edit'),
                   color: Colors.blue,
