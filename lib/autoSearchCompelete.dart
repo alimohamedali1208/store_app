@@ -8,6 +8,7 @@ class autoSearchCompelete extends StatefulWidget {
   _autoSearchCompeleteState createState() => _autoSearchCompeleteState();
 }
 //Fady is the best :)
+} // zyad 5lla el 2otta re5maaaaa
 
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   final database = FirebaseFirestore.instance;
