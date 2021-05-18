@@ -89,11 +89,7 @@ class _sellerhomeState extends State<sellerhome> {
                     child: Icon(Icons.person, color: Colors.white),
                   ),
                 ),
-                decoration: new BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(30),
-                    ),
-                    color: Color(0xFF731800)),
+                decoration: new BoxDecoration(color: Color(0xFF731800)),
               ),
               InkWell(
                 onTap: () {},
