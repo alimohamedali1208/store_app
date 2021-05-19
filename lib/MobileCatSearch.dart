@@ -13,6 +13,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
   String searchString = '';
   String ddSearchBrand;
   int ddStorage;
+  String ddOS;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,6 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
           flexibleSpace: Padding(
             padding:EdgeInsets.only(top: 10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 TextField(
@@ -53,59 +53,107 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                     hintText: 'Search By Name',
                   ),
                 ),
-                Row(
-                  children: [
-                    Center(
-                      child: DropdownButton<String>(
-                        items: [
-                          DropdownMenuItem<String>(
-                            child: Text('Sony'),
-                            value: 'Sony',
-                          ),
-                          DropdownMenuItem<String>(
-                            child: Text('Apple'),
-                            value: 'Apple',
-                          ),
-                          DropdownMenuItem<String>(
-                            child: Text('Samsung'),
-                            value: 'Samsung',
-                          ),
-                        ],
-                        onChanged: (String value) {
-                          setState(() {
-                            ddSearchBrand = value;
-                          });
-                        },
-                        hint: Text('Choose Brand'),
-                        value: ddSearchBrand,
+                SizedBox(height: 10,),
+                Container(
+                  height: 30,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Sony'),
+                              value: 'Sony',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Apple'),
+                              value: 'Apple',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Samsung'),
+                              value: 'Samsung',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddSearchBrand = value;
+                            });
+                          },
+                          hint: Text('Choose Brand'),
+                          value: ddSearchBrand,
+                        ),
                       ),
-                    ),
-                    Center(
-                      child: DropdownButton<int>(
-                        items: [
-                          DropdownMenuItem<int>(
-                            child: Text('>16 GB'),
-                            value: 16,
-                          ),
-                          DropdownMenuItem<int>(
-                            child: Text('>32 GB'),
-                            value: 32,
-                          ),
-                          DropdownMenuItem<int>(
-                            child: Text('>64 GB'),
-                            value: 64,
-                          ),
-                        ],
-                        onChanged: (int value) {
-                          setState(() {
-                            ddStorage = value;
-                          });
-                        },
-                        hint: Text('Choose Storage'),
-                        value: ddStorage,
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<int>(
+                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<int>(
+                              child: Text('>16 GB'),
+                              value: 16,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>32 GB'),
+                              value: 32,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>64 GB'),
+                              value: 64,
+                            ),
+                          ],
+                          onChanged: (int value) {
+                            setState(() {
+                              ddStorage = value;
+                            });
+                          },
+                          hint: Text('Choose Storage'),
+                          value: ddStorage,
+                        ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('IOS'),
+                              value: 'IOS',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Android'),
+                              value: 'Android',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddOS = value;
+                            });
+                          },
+                          hint: Text('Choose OS'),
+                          value: ddOS,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -119,26 +167,6 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
           Expanded(
             child: Column(
               children: [
-                // TextField(
-                //   onChanged: (val) {
-                //     setState(() {
-                //       searchString = val.toLowerCase().trim();
-                //     });
-                //   },
-                //   decoration: InputDecoration(
-                //       prefixIcon: IconButton(
-                //         color: Colors.black,
-                //         icon: Icon(Icons.arrow_back),
-                //         iconSize: 20.0,
-                //         onPressed: () {
-                //           Navigator.of(context).pop();
-                //         },
-                //       ),
-                //       contentPadding: EdgeInsets.only(left: 25.0),
-                //       hintText: 'Search By Name',
-                //       border: OutlineInputBorder(
-                //           borderRadius: BorderRadius.circular(4.0))),
-                // ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -159,28 +187,33 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         final products = snapshot.data.docs;
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
-                          final productname = product.data()['Product Name'];
-                          final productprice =
-                              product.data()['Price'].toString();
-                          final productimg = product.data()['imgURL'];
-                          final producttype = product.data()['type'];
-                          final productdesc = product.data()['Description'];
-                          final productbrand = product.data()['Brand Name'];
-                          final productquantity = product.data()['Quantity'];
-                          final productseller = product.data()['Seller Email'];
-                          final productid = product.id;
-                          final productview = SingleProduct(
-                            productName: productname,
-                            productPrice: productprice,
-                            productImg: productimg,
-                            productType: producttype,
-                            productDesc: productdesc,
-                            productBrand: productbrand,
-                            productQuantity: productquantity,
-                            productSeller: productseller,
-                            productID: productid,
-                          );
-                          productsview.add(productview);
+                          final productOS = product.data()['OS'];
+                          if(productOS == ddOS) {
+                            final productname = product.data()['Product Name'];
+                            final productprice =
+                            product.data()['Price'].toString();
+
+                            final productimg = product.data()['imgURL'];
+                            final producttype = product.data()['type'];
+                            final productdesc = product.data()['Description'];
+                            final productbrand = product.data()['Brand Name'];
+                            final productquantity = product.data()['Quantity'];
+                            final productseller = product
+                                .data()['Seller Email'];
+                            final productid = product.id;
+                            final productview = SingleProduct(
+                              productName: productname,
+                              productPrice: productprice,
+                              productImg: productimg,
+                              productType: producttype,
+                              productDesc: productdesc,
+                              productBrand: productbrand,
+                              productQuantity: productquantity,
+                              productSeller: productseller,
+                              productID: productid,
+                            );
+                            productsview.add(productview);
+                          }
                         }
                         return ListView(
                           children: productsview,
