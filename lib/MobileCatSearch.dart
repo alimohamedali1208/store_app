@@ -13,6 +13,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
   String searchString = '';
   String ddSearchBrand;
   int ddStorage;
+  String ddCamera;
   String ddOS;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Padding(
-            padding:EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 10),
             child: Column(
               children: [
                 SizedBox(height: 20),
@@ -53,7 +54,9 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                     hintText: 'Search By Name',
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
                   height: 30,
                   child: ListView(
@@ -66,7 +69,9 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             color: Colors.white70,
                             borderRadius: BorderRadius.circular(20)),
                         child: DropdownButton<String>(
-                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
                               child: Text('Sony'),
@@ -97,7 +102,9 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             color: Colors.white70,
                             borderRadius: BorderRadius.circular(20)),
                         child: DropdownButton<int>(
-                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<int>(
                               child: Text('>16 GB'),
@@ -128,7 +135,42 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             color: Colors.white70,
                             borderRadius: BorderRadius.circular(20)),
                         child: DropdownButton<String>(
-                          style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('24'),
+                              value: '24',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('30'),
+                              value: '30',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddCamera = value;
+                            });
+                          },
+                          hint: Text('Camera resolution'),
+                          value: ddCamera,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
                               child: Text('IOS'),
@@ -175,7 +217,9 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                       .collection('Products')
                       .where('searchIndex', arrayContains: searchString)
                       .where('Brand Name', isEqualTo: ddSearchBrand)
-                      .where('Storage', isGreaterThanOrEqualTo: ddStorage)
+                      //.where('Storage', isGreaterThan: ddStorage)
+                  .where('OS', isEqualTo: ddOS)
+                  .where('Camera', isEqualTo: ddCamera)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError)
@@ -188,18 +232,17 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productOS = product.data()['OS'];
-                          if(productOS == ddOS) {
                             final productname = product.data()['Product Name'];
                             final productprice =
-                            product.data()['Price'].toString();
+                                product.data()['Price'].toString();
 
                             final productimg = product.data()['imgURL'];
                             final producttype = product.data()['type'];
                             final productdesc = product.data()['Description'];
                             final productbrand = product.data()['Brand Name'];
                             final productquantity = product.data()['Quantity'];
-                            final productseller = product
-                                .data()['Seller Email'];
+                            final productseller =
+                                product.data()['Seller Email'];
                             final productid = product.id;
                             final productview = SingleProduct(
                               productName: productname,
@@ -214,7 +257,6 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             );
                             productsview.add(productview);
                           }
-                        }
                         return ListView(
                           children: productsview,
                         );

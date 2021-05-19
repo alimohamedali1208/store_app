@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
 
 class autoSearchCompelete extends StatefulWidget {
@@ -11,7 +12,7 @@ class autoSearchCompelete extends StatefulWidget {
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  String ddSearchCategory = 'Choose Category';
+  String ddSearchCategory;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Padding(
-            padding:EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -55,33 +56,43 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                 SizedBox(height: 10),
                 Container(
                   height: 30,
+                  margin: EdgeInsets.only(left: 5, right: 5),
                   padding: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                       color: Colors.white70,
                       borderRadius: BorderRadius.circular(20)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      hint: Text('hiihi'),
-                      value: ddSearchCategory,
-                      elevation: 10,
-                      style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black,
+                  child: DropdownButton<String>(
+                    style: TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.w600),
+                    items: [
+                      DropdownMenuItem<String>(
+                        child: Text('Laptops'),
+                        value: 'laptops',
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ddSearchCategory = newValue;
-                        });
-                      },
-                      items: <String>['Choose Category', 'Fashion', 'Laptops', 'Mobiles']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
+                      DropdownMenuItem<String>(
+                        child: Text('Mobiles'),
+                        value: 'mobiles',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('Home Appliances'),
+                        value: 'home',
+                      ),
+                    ],
+                    onChanged: (String value) {
+                      setState(() {
+                        if (value == 'laptops') {
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => login()));
+                        } else if (value == 'mobiles') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => mobileCatSearch()));
+                        } else {}
+                      });
+                    },
+                    hint: Text('Choose Category'),
+                    value: ddSearchCategory,
                   ),
                 ),
               ],
