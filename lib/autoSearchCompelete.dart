@@ -122,6 +122,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         return Center(child: CircularProgressIndicator());
                       default:
                         final products = snapshot.data.docs;
+                        var productview;
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productname = product.data()['Product Name'];
@@ -134,7 +135,33 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           final productseller = product.data()['Seller Email'];
                           final productrating = product.data()['Rating'];
                           final productid = product.id;
-                          final productview = SingleProduct(
+                          //now stuff that's specific for every product type
+                          if(producttype == 'Mobiles'){
+                            final productStorage = product.data()['Storage'];
+                            final productbattery = product.data()['Battery'];
+                            final productmemory = product.data()['Memory'];
+                            final productcamera = product.data()['Camera'];
+                            final productos = product.data()['OS'];
+                             productview = SingleProduct.mobile(
+                              productName: productname,
+                              productPrice: productprice,
+                              productImg: productimg,
+                              productType: producttype,
+                              productDesc: productdesc,
+                              productBrand: productbrand,
+                              productQuantity: productquantity,
+                              productSeller: productseller,
+                              productID: productid,
+                              productRating: productrating,
+                              productOS: productos,
+                              productMemory: productmemory,
+                              productCamera: productcamera,
+                              productStorage: productStorage,
+                              productBattery: productbattery,
+                            );
+                          }
+                          else{
+                           productview = SingleProduct(
                             productName: productname,
                             productPrice: productprice,
                             productImg: productimg,
@@ -145,7 +172,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productSeller: productseller,
                             productID: productid,
                             productRating: productrating,
-                          );
+                          );}
                           productsview.add(productview);
                         }
                         return ListView(
@@ -174,6 +201,11 @@ class SingleProduct extends StatefulWidget {
   final String productQuantity;
   final String productSeller;
   final int productRating;
+   int productStorage;
+   String productBattery;
+   String productMemory;
+   String productCamera;
+   String productOS;
 
   SingleProduct(
       {this.productName,
@@ -187,6 +219,23 @@ class SingleProduct extends StatefulWidget {
       this.productSeller,
       this.productRating});
 
+  SingleProduct.mobile(
+      {this.productName,
+        this.productPrice,
+        this.productImg,
+        this.productID,
+        this.productType,
+        this.productDesc,
+        this.productBrand,
+        this.productQuantity,
+        this.productSeller,
+        this.productRating,
+        this.productStorage,
+        this.productOS,
+        this.productBattery,
+        this.productCamera,
+        this.productMemory});
+
   @override
   _SingleProductState createState() => _SingleProductState();
 }
@@ -197,7 +246,31 @@ class _SingleProductState extends State<SingleProduct> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {
+        onTap: () { if(widget.productType == 'Mobiles'){
+          Navigator.of(context).push(
+            new MaterialPageRoute(
+              builder: (context) => ProductDetails.Mobile(
+                // passing the values via constructor
+                product_detail_name: widget.productName,
+                product_detail_new_price: widget.productPrice,
+                product_detail_picture: widget.productImg,
+                product_detail_desc: widget.productDesc,
+                product_detail_brand: widget.productBrand,
+                product_detail_quantity: widget.productQuantity,
+                product_detail_seller: widget.productSeller,
+                product_detail_rating: widget.productRating,
+                product_detail_type: widget.productType,
+                product_detail_id: widget.productID,
+                mobile_storage: widget.productStorage,
+                mobile_battery: widget.productBattery,
+                mobile_camera: widget.productCamera,
+                mobile_memory: widget.productMemory,
+                mobile_os: widget.productOS,
+              ),
+            ),
+          );
+        }
+          else{
           Navigator.of(context).push(
             new MaterialPageRoute(
               builder: (context) => ProductDetails(
@@ -215,6 +288,7 @@ class _SingleProductState extends State<SingleProduct> {
               ),
             ),
           );
+        }
         },
         child: ListTile(
           //    ======= the leading image section =======

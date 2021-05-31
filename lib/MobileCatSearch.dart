@@ -365,7 +365,13 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               final productbrand = product.data()['Brand Name'];
                               final productquantity = product.data()['Quantity'];
                               final productseller = product.data()['Seller Email'];
+                              final productrating = product.data()['Rating'];
                               final productid = product.id;
+                              //stuff specific to this type of products
+                              final productbattery = product.data()['Battery'];
+                              final productmemory = product.data()['Memory'];
+                              final productcamera = product.data()['Camera'];
+                              final productos = product.data()['OS'];
                               final productview = SingleProduct(
                                 productName: productname,
                                 productPrice: productprice,
@@ -375,7 +381,14 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                                 productBrand: productbrand,
                                 productQuantity: productquantity,
                                 productSeller: productseller,
+                                productRating: productrating,
                                 productID: productid,
+                                //stuff specific to this type of products
+                                productStorage: productStorage,
+                                productBattery: productbattery,
+                                productCamera: productcamera,
+                                productMemory: productmemory,
+                                productOS: productos,
                               );
                               productsview.add(productview);
                             }
@@ -404,6 +417,13 @@ class SingleProduct extends StatefulWidget {
   final String productBrand;
   final String productQuantity;
   final String productSeller;
+  final int productRating;
+  //stuff specific to this type of products
+  final int productStorage;
+  final String productBattery;
+  final String productMemory;
+  final String productCamera;
+  final String productOS;
 
   SingleProduct(
       {this.productName,
@@ -414,7 +434,13 @@ class SingleProduct extends StatefulWidget {
       this.productDesc,
       this.productBrand,
       this.productQuantity,
-      this.productSeller});
+      this.productSeller,
+      this.productRating,
+      this.productStorage,
+      this.productOS,
+      this.productBattery,
+      this.productCamera,
+      this.productMemory});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -429,7 +455,7 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails(
+              builder: (context) => ProductDetails.Mobile(
                 // passing the values via constructor
                 product_detail_name: widget.productName,
                 product_detail_new_price: widget.productPrice,
@@ -438,6 +464,14 @@ class _SingleProductState extends State<SingleProduct> {
                 product_detail_brand: widget.productBrand,
                 product_detail_quantity: widget.productQuantity,
                 product_detail_seller: widget.productSeller,
+                product_detail_id: widget.productID,
+                product_detail_type: widget.productType,
+                product_detail_rating: widget.productRating,
+                mobile_storage: widget.productStorage,
+                mobile_battery: widget.productBattery,
+                mobile_camera: widget.productCamera,
+                mobile_memory: widget.productMemory,
+                mobile_os: widget.productOS,
               ),
             ),
           );

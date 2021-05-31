@@ -3,19 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductDetails extends StatefulWidget {
-  final product_detail_name;
-  final product_detail_new_price;
+  String product_detail_name;
+  String product_detail_new_price;
   //final product_detail_old_price;
-  final product_detail_picture;
-  final String product_detail_desc;
-  final String product_detail_brand;
-  final String product_detail_quantity;
-  final String product_detail_seller;
-  final int product_detail_rating;
-  final String product_detail_type;
-  final String product_detail_id;
+  var product_detail_picture;
+  String product_detail_desc;
+  String product_detail_brand;
+  String product_detail_quantity;
+  String product_detail_seller;
+  int product_detail_rating;
+  String product_detail_type;
+  String product_detail_id;
+  //mobileTypeStuff
+  int mobile_storage;
+  String mobile_battery;
+  String mobile_memory;
+  String mobile_camera;
+  String mobile_os;
 
-  const ProductDetails(
+  ProductDetails({
+    this.product_detail_name,
+    this.product_detail_new_price,
+    this.product_detail_picture,
+    this.product_detail_desc,
+    this.product_detail_brand,
+    this.product_detail_quantity,
+    this.product_detail_seller,
+    this.product_detail_rating,
+    this.product_detail_type,
+    this.product_detail_id,
+  });
+
+  ProductDetails.Mobile(
       {this.product_detail_name,
       this.product_detail_new_price,
       this.product_detail_picture,
@@ -25,7 +44,12 @@ class ProductDetails extends StatefulWidget {
       this.product_detail_seller,
       this.product_detail_rating,
       this.product_detail_type,
-      this.product_detail_id});
+      this.product_detail_id,
+      this.mobile_battery,
+      this.mobile_camera,
+      this.mobile_memory,
+      this.mobile_os,
+      this.mobile_storage});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -37,11 +61,24 @@ class _ProductDetailsState extends State<ProductDetails> {
   int rate;
 
   Future updateProductRating(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('${widget.product_detail_type}').collection('Products').doc('${widget.product_detail_id}').update({"Rating": rate}).then((_) {
+    _firestore
+        .collection('ProductsCollection')
+        .doc('${widget.product_detail_type}')
+        .collection('Products')
+        .doc('${widget.product_detail_id}')
+        .update({"Rating": rate}).then((_) {
       print("success!");
     });
-    }
-  
+  }
+
+  String getMobileSpecs() {
+    return "\u2022 Storage: ${widget.mobile_storage}\n"
+        "\u2022 OS: ${widget.mobile_os}\n"
+        "\u2022 Battery: ${widget.mobile_battery}\n"
+        "\u2022 Camera: ${widget.mobile_camera}\n"
+        "\u2022 Memory: ${widget.mobile_memory}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,6 +325,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Text(
                             "\u2022 Quantity: ${widget.product_detail_quantity}"),
                       ),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15.0,
+                            right: 60,
+                            top: 10,
+                          ),
+                          child: Text((() {
+                            if (widget.product_detail_type == 'Mobiles')
+                              return getMobileSpecs();
+                            else
+                              return 'other';
+                          })())),
                       Divider(
                         thickness: 1,
                         color: Colors.grey,
