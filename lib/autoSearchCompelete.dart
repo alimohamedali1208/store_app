@@ -125,14 +125,14 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productname = product.data()['Product Name'];
-                          final productprice =
-                              product.data()['Price'].toString();
+                          final productprice = product.data()['Price'].toString();
                           final productimg = product.data()['imgURL'];
                           final producttype = product.data()['type'];
                           final productdesc = product.data()['Description'];
                           final productbrand = product.data()['Brand Name'];
                           final productquantity = product.data()['Quantity'];
                           final productseller = product.data()['Seller Email'];
+                          final productrating = product.data()['Rating'];
                           final productid = product.id;
                           final productview = SingleProduct(
                             productName: productname,
@@ -144,6 +144,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productQuantity: productquantity,
                             productSeller: productseller,
                             productID: productid,
+                            productRating: productrating,
                           );
                           productsview.add(productview);
                         }
@@ -172,6 +173,7 @@ class SingleProduct extends StatefulWidget {
   final String productBrand;
   final String productQuantity;
   final String productSeller;
+  final int productRating;
 
   SingleProduct(
       {this.productName,
@@ -182,7 +184,8 @@ class SingleProduct extends StatefulWidget {
       this.productDesc,
       this.productBrand,
       this.productQuantity,
-      this.productSeller});
+      this.productSeller,
+      this.productRating});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -206,6 +209,9 @@ class _SingleProductState extends State<SingleProduct> {
                 product_detail_brand: widget.productBrand,
                 product_detail_quantity: widget.productQuantity,
                 product_detail_seller: widget.productSeller,
+                product_detail_rating: widget.productRating,
+                product_detail_type: widget.productType,
+                product_detail_id: widget.productID,
               ),
             ),
           );

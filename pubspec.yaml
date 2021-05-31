@@ -25,6 +25,7 @@ dependencies:
   cloud_firestore: ^0.16.0
   flutter_typeahead: ^2.0.0
   image_picker: ^0.6.7+22
+  flutter_rating_bar: ^4.0.0
 
 
 
@@ -32,13 +33,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_native_splash: ^0.2.8
-
-flutter_native_splash:
-  color: "#731800"
-  image: images/ProjectLogo.png
-  android: true
 
 flutter:
   uses-material-design: true

@@ -165,6 +165,7 @@ class _sellerhomeState extends State<sellerhome> {
                   final productprice = product.data()['Price'].toString();
                   final productimg = product.data()['imgURL'];
                   final producttype = product.data()['type'];
+                  final productrate = product.data()['Rating'];
                   final productid = product.id;
                   final productview = SingleProduct(
                     productName: productname,
@@ -172,6 +173,7 @@ class _sellerhomeState extends State<sellerhome> {
                     productImg: productimg,
                     productType: producttype,
                     productID: productid,
+                    productRating: productrate,
                   );
                   productsview.add(productview);
                 }
@@ -201,13 +203,15 @@ class SingleProduct extends StatelessWidget {
   final String productImg;
   final String productType;
   final String productID;
+  final int productRating;
 
   SingleProduct(
       {this.productName,
       this.productPrice,
       this.productImg,
       this.productID,
-      this.productType});
+      this.productType,
+      this.productRating});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -343,6 +347,27 @@ class SingleProduct extends StatelessWidget {
                   child: Text('Delete'),
                   color: Colors.red,
                   textColor: Colors.white,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                  height: 40,
+                  width: 80,
+                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$productRating',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(
+                        Icons.star_outlined,
+                        color: Colors.yellow,
+                      )
+                    ],
+                  ),
                 ),
               ],
             )

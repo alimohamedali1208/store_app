@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductDetails extends StatefulWidget {
   final product_detail_name;
@@ -9,6 +11,9 @@ class ProductDetails extends StatefulWidget {
   final String product_detail_brand;
   final String product_detail_quantity;
   final String product_detail_seller;
+  final int product_detail_rating;
+  final String product_detail_type;
+  final String product_detail_id;
 
   const ProductDetails(
       {this.product_detail_name,
@@ -17,14 +22,26 @@ class ProductDetails extends StatefulWidget {
       this.product_detail_desc,
       this.product_detail_brand,
       this.product_detail_quantity,
-      this.product_detail_seller});
+      this.product_detail_seller,
+      this.product_detail_rating,
+      this.product_detail_type,
+      this.product_detail_id});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  final _firestore = FirebaseFirestore.instance;
   bool isPressed = false;
+  int rate;
+
+  Future updateProductRating(BuildContext context) async {
+    _firestore.collection('ProductsCollection').doc('${widget.product_detail_type}').collection('Products').doc('${widget.product_detail_id}').update({"Rating": rate}).then((_) {
+      print("success!");
+    });
+    }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,7 +211,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "4.5",
+                                    "${widget.product_detail_rating}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -270,6 +287,33 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                         child: Text(
                             "\u2022 Quantity: ${widget.product_detail_quantity}"),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 10),
+                        child: Text(
+                          "Rate product:",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                      RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          rate = rating.toInt();
+                          updateProductRating(context);
+                        },
                       ),
                       SizedBox(
                         height: 100,

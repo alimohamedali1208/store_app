@@ -11,10 +11,8 @@ class mobileCatSearch extends StatefulWidget {
 class _mobileCatSearchState extends State<mobileCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  String ddSearchBrand;
-  int ddStorage;
-  String ddCamera;
-  String ddOS;
+  int ddStorage, ddRatings;
+  String ddCamera, ddBattery, ddOS, ddSearchBrand, ddMemory;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +83,10 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               child: Text('Samsung'),
                               value: 'Samsung',
                             ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
                           ],
                           onChanged: (String value) {
                             setState(() {
@@ -140,16 +142,16 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('24'),
-                              value: '24',
+                              child: Text('16'),
+                              value: '16',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('30'),
-                              value: '30',
+                              child: Text('32'),
+                              value: '32',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: 'Other',
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -182,7 +184,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: 'Other',
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -192,6 +194,125 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                           },
                           hint: Text('Choose OS'),
                           value: ddOS,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('2800 mAH'),
+                              value: '2800',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('3800 mAH'),
+                              value: '3800',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('4800 mAH'),
+                              value: '4800',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: null,
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddBattery = value;
+                            });
+                          },
+                          hint: Text('Choose Battery'),
+                          value: ddBattery,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<int>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<int>(
+                              child: Text('>1 Star'),
+                              value: 1,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>2 Stars'),
+                              value: 2,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>3 Stars'),
+                              value: 3,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>4 Stars'),
+                              value: 4,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('5 Stars'),
+                              value: 5,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('No Reviews'),
+                              value: null,
+                            ),
+                          ],
+                          onChanged: (int value) {
+                            setState(() {
+                              ddRatings = value;
+                            });
+                          },
+                          hint: Text('Choose Rating'),
+                          value: ddRatings,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('3 GB'),
+                              value: '3',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('4 GB'),
+                              value: '4',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('6 GB'),
+                              value: '6',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: null,
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddMemory = value;
+                            });
+                          },
+                          hint: Text('Choose Memory'),
+                          value: ddMemory,
                         ),
                       ),
                     ],
@@ -217,9 +338,10 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                       .collection('Products')
                       .where('searchIndex', arrayContains: searchString)
                       .where('Brand Name', isEqualTo: ddSearchBrand)
-                      //.where('Storage', isGreaterThan: ddStorage)
-                  .where('OS', isEqualTo: ddOS)
-                  .where('Camera', isEqualTo: ddCamera)
+                      .where('OS', isEqualTo: ddOS)
+                      .where('Camera', isEqualTo: ddCamera)
+                      .where('Memory', isEqualTo: ddMemory)
+                      .where('Battery', isEqualTo: ddBattery)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError)
@@ -231,35 +353,35 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         final products = snapshot.data.docs;
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
-                          final productOS = product.data()['OS'];
-                            final productname = product.data()['Product Name'];
-                            final productprice =
-                                product.data()['Price'].toString();
-
-                            final productimg = product.data()['imgURL'];
-                            final producttype = product.data()['type'];
-                            final productdesc = product.data()['Description'];
-                            final productbrand = product.data()['Brand Name'];
-                            final productquantity = product.data()['Quantity'];
-                            final productseller =
-                                product.data()['Seller Email'];
-                            final productid = product.id;
-                            final productview = SingleProduct(
-                              productName: productname,
-                              productPrice: productprice,
-                              productImg: productimg,
-                              productType: producttype,
-                              productDesc: productdesc,
-                              productBrand: productbrand,
-                              productQuantity: productquantity,
-                              productSeller: productseller,
-                              productID: productid,
-                            );
-                            productsview.add(productview);
+                          final productStorage = product.data()['Storage'];
+                          final productRating = product.data()['Rating'];
+                          if (ddStorage == null || productStorage >= ddStorage) {
+                            if (ddRatings == null || productRating >= ddRatings) {
+                              final productname = product.data()['Product Name'];
+                              final productprice = product.data()['Price'].toString();
+                              final productimg = product.data()['imgURL'];
+                              final producttype = product.data()['type'];
+                              final productdesc = product.data()['Description'];
+                              final productbrand = product.data()['Brand Name'];
+                              final productquantity = product.data()['Quantity'];
+                              final productseller = product.data()['Seller Email'];
+                              final productid = product.id;
+                              final productview = SingleProduct(
+                                productName: productname,
+                                productPrice: productprice,
+                                productImg: productimg,
+                                productType: producttype,
+                                productDesc: productdesc,
+                                productBrand: productbrand,
+                                productQuantity: productquantity,
+                                productSeller: productseller,
+                                productID: productid,
+                              );
+                              productsview.add(productview);
+                            }
                           }
-                        return ListView(
-                          children: productsview,
-                        );
+                        }
+                        return ListView(children: productsview);
                     }
                   },
                 )),

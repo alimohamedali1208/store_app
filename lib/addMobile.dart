@@ -24,8 +24,8 @@ class _addMobileState extends State<addMobile> {
       name,
       searchKey,
       screenSize,
-      quantity,
-      storage;
+      quantity;
+  int storage;
   String ddBrand = 'Apple';
   String ddOS = 'IOS';
   String ddRamCapacity = 'GB';
@@ -44,11 +44,7 @@ class _addMobileState extends State<addMobile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore
-        .collection('ProductsCollection')
-        .doc('Mobiles')
-        .collection('Products')
-        .add({
+    _firestore.collection('ProductsCollection').doc('Mobiles').collection('Products').add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -62,6 +58,13 @@ class _addMobileState extends State<addMobile> {
       'Price': price,
       'Quantity': quantity,
       'Rating': 0,
+      '1Star rate': 0,
+      '2Star rate':0,
+      '3Star rate':0,
+      '4Star rate':0,
+      '5Star rate':0,
+      'Discount': 'false',
+      'Discount percent':0,
       'SellerID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
       'type': 'Mobiles',
@@ -157,7 +160,6 @@ class _addMobileState extends State<addMobile> {
                       ),
                       onSaved: (value) {
                         name = value.trim();
-                        searchKey = name.substring(0, 1);
                       },
                     ),
                   ),
@@ -238,7 +240,7 @@ class _addMobileState extends State<addMobile> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddRamCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB', 'MB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))
@@ -311,8 +313,8 @@ class _addMobileState extends State<addMobile> {
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (String value) {
-                                storage = value.trim();
+                              onChanged: (value) {
+                                storage = int.parse(value.trim());
                               },
                             )),
                         SizedBox(
@@ -328,7 +330,7 @@ class _addMobileState extends State<addMobile> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddStorageCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB', 'MB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))
