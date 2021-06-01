@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 class editMobile extends StatefulWidget {
+
+  String pID;
+
+  editMobile({this.pID});
+
   @override
   _editMobileState createState() => _editMobileState();
 }
@@ -14,7 +17,6 @@ class editMobile extends StatefulWidget {
 class _editMobileState extends State<editMobile> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -23,10 +25,9 @@ class _editMobileState extends State<editMobile> {
       description,
       memory,
       name,
-      searchKey,
       screenSize,
-      quantity,
-      storage;
+      quantity;
+  int storage;
   String ddBrand = 'Apple';
   String ddOS = 'IOS';
   String ddRamCapacity = 'GB';
@@ -36,23 +37,14 @@ class _editMobileState extends State<editMobile> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('Mobiles')
-        .collection('Products')
-        .add({
+        .collection('Products').doc('${widget.pID}')
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Battery': battery,
       'Camera': camera,
@@ -62,28 +54,9 @@ class _editMobileState extends State<editMobile> {
       'OS': ddOS,
       'Price': price,
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'Mobiles',
       'searchIndex': indexList,
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Mobiles/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('Mobiles')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
+    }).then((_){
+      print('Update Success');
     });
   }
 
@@ -127,21 +100,6 @@ class _editMobileState extends State<editMobile> {
       body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.camera_alt,
-                ),
-                Container(
-                  child: _image == null
-                      ? Text('No image selected.')
-                      : Image.file(_image),
-                ),
-              ],
-            ),
-          ),
-          Container(
             alignment: Alignment.center,
             child: Form(
               key: _addMobileFormKey,
@@ -158,7 +116,6 @@ class _editMobileState extends State<editMobile> {
                       ),
                       onSaved: (value) {
                         name = value.trim();
-                        searchKey = name.substring(0, 1);
                       },
                     ),
                   ),
@@ -312,8 +269,8 @@ class _editMobileState extends State<editMobile> {
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (String value) {
-                                storage = value.trim();
+                              onChanged: (value) {
+                                storage = int.parse(value.trim());
                               },
                             )),
                         SizedBox(
@@ -329,7 +286,7 @@ class _editMobileState extends State<editMobile> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddStorageCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB', 'MB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))
@@ -425,12 +382,6 @@ class _editMobileState extends State<editMobile> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Pick Image',
-        backgroundColor: Color(0xFF731800),
-        child: Icon(Icons.add_a_photo),
-      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -460,7 +411,7 @@ class _editMobileState extends State<editMobile> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {
