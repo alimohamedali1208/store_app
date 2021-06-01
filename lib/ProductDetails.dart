@@ -14,12 +14,15 @@ class ProductDetails extends StatefulWidget {
   int product_detail_rating;
   String product_detail_type;
   String product_detail_id;
-  //mobileTypeStuff
+  //mobile/laptop Type Stuff
   int mobile_storage;
   String mobile_battery;
   String mobile_memory;
   String mobile_camera;
   String mobile_os;
+  //Laptops Stuff
+  String GPU;
+  String CPU;
 
   ProductDetails({
     this.product_detail_name,
@@ -51,6 +54,24 @@ class ProductDetails extends StatefulWidget {
       this.mobile_os,
       this.mobile_storage});
 
+  ProductDetails.Laptop(
+      {this.product_detail_name,
+        this.product_detail_new_price,
+        this.product_detail_picture,
+        this.product_detail_desc,
+        this.product_detail_brand,
+        this.product_detail_quantity,
+        this.product_detail_seller,
+        this.product_detail_rating,
+        this.product_detail_type,
+        this.product_detail_id,
+        this.mobile_battery,
+        this.CPU,
+        this.GPU,
+        this.mobile_memory,
+        this.mobile_os,
+        this.mobile_storage});
+
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -76,6 +97,15 @@ class _ProductDetailsState extends State<ProductDetails> {
         "\u2022 OS: ${widget.mobile_os}\n"
         "\u2022 Battery: ${widget.mobile_battery}\n"
         "\u2022 Camera: ${widget.mobile_camera}\n"
+        "\u2022 Memory: ${widget.mobile_memory}";
+  }
+
+  String getLaptopSpecs() {
+    return "\u2022 Storage: ${widget.mobile_storage}\n"
+        "\u2022 OS: ${widget.mobile_os}\n"
+        "\u2022 Battery: ${widget.mobile_battery}\n"
+        "\u2022 CPU: ${widget.CPU}\n"
+        "\u2022 GPU: ${widget.GPU}\n"
         "\u2022 Memory: ${widget.mobile_memory}";
   }
 
@@ -334,6 +364,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: Text((() {
                             if (widget.product_detail_type == 'Mobiles')
                               return getMobileSpecs();
+                            else if(widget.product_detail_type=='Laptops')
+                              return getLaptopSpecs();
                             else
                               return 'other';
                           })())),

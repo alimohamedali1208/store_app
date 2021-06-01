@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
+import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 
 class autoSearchCompelete extends StatefulWidget {
   @override
@@ -81,8 +82,8 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                     onChanged: (String value) {
                       setState(() {
                         if (value == 'laptops') {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => login()));
+                           Navigator.push(context,
+                               MaterialPageRoute(builder: (context) => laptopCatSearch()));
                         } else if (value == 'mobiles') {
                           Navigator.push(
                               context,
@@ -160,6 +161,32 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               productBattery: productbattery,
                             );
                           }
+                          else if (producttype == 'Laptops'){
+                            final productStorage = product.data()['Storage'];
+                            final productbattery = product.data()['Battery'];
+                            final productmemory = product.data()['Memory'];
+                            final productcpu = product.data()['CPU'];
+                            final productgpu = product.data()['GPU'];
+                            final productos = product.data()['OS'];
+                            productview = SingleProduct.laptop(
+                              productName: productname,
+                              productPrice: productprice,
+                              productImg: productimg,
+                              productType: producttype,
+                              productDesc: productdesc,
+                              productBrand: productbrand,
+                              productQuantity: productquantity,
+                              productSeller: productseller,
+                              productID: productid,
+                              productRating: productrating,
+                              productOS: productos,
+                              productMemory: productmemory,
+                              productCPU: productcpu,
+                              productGPU: productgpu,
+                              productStorage: productStorage,
+                              productBattery: productbattery,
+                            );
+                          }
                           else{
                            productview = SingleProduct(
                             productName: productname,
@@ -201,11 +228,15 @@ class SingleProduct extends StatefulWidget {
   final String productQuantity;
   final String productSeller;
   final int productRating;
+  //mobile/laptop stuff
    int productStorage;
    String productBattery;
    String productMemory;
    String productCamera;
    String productOS;
+   //laptop stuff
+   String productCPU;
+   String productGPU;
 
   SingleProduct(
       {this.productName,
@@ -236,6 +267,24 @@ class SingleProduct extends StatefulWidget {
         this.productCamera,
         this.productMemory});
 
+  SingleProduct.laptop(
+      {this.productName,
+        this.productPrice,
+        this.productImg,
+        this.productID,
+        this.productType,
+        this.productDesc,
+        this.productBrand,
+        this.productQuantity,
+        this.productSeller,
+        this.productRating,
+        this.productStorage,
+        this.productOS,
+        this.productBattery,
+        this.productCPU,
+        this.productGPU,
+        this.productMemory});
+
   @override
   _SingleProductState createState() => _SingleProductState();
 }
@@ -264,6 +313,31 @@ class _SingleProductState extends State<SingleProduct> {
                 mobile_storage: widget.productStorage,
                 mobile_battery: widget.productBattery,
                 mobile_camera: widget.productCamera,
+                mobile_memory: widget.productMemory,
+                mobile_os: widget.productOS,
+              ),
+            ),
+          );
+        }
+        else if(widget.productType=='Laptops'){
+          Navigator.of(context).push(
+            new MaterialPageRoute(
+              builder: (context) => ProductDetails.Laptop(
+                // passing the values via constructor
+                product_detail_name: widget.productName,
+                product_detail_new_price: widget.productPrice,
+                product_detail_picture: widget.productImg,
+                product_detail_desc: widget.productDesc,
+                product_detail_brand: widget.productBrand,
+                product_detail_quantity: widget.productQuantity,
+                product_detail_seller: widget.productSeller,
+                product_detail_rating: widget.productRating,
+                product_detail_type: widget.productType,
+                product_detail_id: widget.productID,
+                mobile_storage: widget.productStorage,
+                mobile_battery: widget.productBattery,
+                CPU: widget.productCPU,
+                GPU: widget.productGPU,
                 mobile_memory: widget.productMemory,
                 mobile_os: widget.productOS,
               ),

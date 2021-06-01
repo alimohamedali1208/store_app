@@ -3,16 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/ProductDetails.dart';
 
-class mobileCatSearch extends StatefulWidget {
+class laptopCatSearch extends StatefulWidget {
   @override
-  _mobileCatSearchState createState() => _mobileCatSearchState();
+  _laptopCatSearchState createState() => _laptopCatSearchState();
 }
 
-class _mobileCatSearchState extends State<mobileCatSearch> {
+class _laptopCatSearchState extends State<laptopCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   int ddStorage, ddRatings;
-  String ddCamera, ddBattery, ddOS, ddSearchBrand, ddMemory;
+  String ddGPU, ddBattery, ddOS, ddSearchBrand, ddMemory, ddCPU;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +50,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                       },
                     ),
                     contentPadding: EdgeInsets.only(left: 25.0),
-                    hintText: 'Search for phones',
+                    hintText: 'Search for laptops',
                   ),
                 ),
                 SizedBox(
@@ -76,12 +77,12 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               value: 'Sony',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('Apple'),
-                              value: 'Apple',
+                              child: Text('Lenovo'),
+                              value: 'Lenovo',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('Samsung'),
-                              value: 'Samsung',
+                              child: Text('HP'),
+                              value: 'HP',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -109,16 +110,12 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<int>(
-                              child: Text('>16 GB'),
-                              value: 16,
+                              child: Text('>1 TB'),
+                              value: 1,
                             ),
                             DropdownMenuItem<int>(
-                              child: Text('>32 GB'),
-                              value: 32,
-                            ),
-                            DropdownMenuItem<int>(
-                              child: Text('>64 GB'),
-                              value: 64,
+                              child: Text('>2 TB'),
+                              value: 2,
                             ),
                           ],
                           onChanged: (int value) {
@@ -142,25 +139,29 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('16'),
-                              value: '16',
+                              child: Text('Core i5'),
+                              value: 'Core i5',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('32'),
-                              value: '32',
+                              child: Text('Core i7'),
+                              value: 'Core i7',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Ryzen'),
+                              value: 'AMD Ryzen',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: null,
+                              value: 'Other',
                             ),
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              ddCamera = value;
+                              ddCPU = value;
                             });
                           },
-                          hint: Text('Camera resolution'),
-                          value: ddCamera,
+                          hint: Text('Choose CPU'),
+                          value: ddCPU,
                         ),
                       ),
                       Container(
@@ -175,12 +176,45 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('IOS'),
-                              value: 'IOS',
+                              child: Text('Nvidia'),
+                              value: 'Nvidia 1050',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('Android'),
-                              value: 'Android',
+                              child: Text('AMD'),
+                              value: 'AMD Radeon 570',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: null,
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddGPU = value;
+                            });
+                          },
+                          hint: Text('Choose GPU'),
+                          value: ddGPU,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Windows'),
+                              value: 'Windows',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Mac OS'),
+                              value: 'Mac OS',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -192,7 +226,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               ddOS = value;
                             });
                           },
-                          hint: Text('Choose OS'),
+                          hint: Text('Operating System'),
                           value: ddOS,
                         ),
                       ),
@@ -290,16 +324,16 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('3 GB'),
-                              value: '3',
+                              child: Text('8 GB'),
+                              value: '8 GB',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('4 GB'),
-                              value: '4',
+                              child: Text('16 GB'),
+                              value: '16 GB',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('6 GB'),
-                              value: '6',
+                              child: Text('32 GB'),
+                              value: '32 GB',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -332,72 +366,75 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
               children: [
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('ProductsCollection')
-                      .doc('Mobiles')
-                      .collection('Products')
-                      .where('searchIndex', arrayContains: searchString)
-                      .where('Brand Name', isEqualTo: ddSearchBrand)
-                      .where('OS', isEqualTo: ddOS)
-                      .where('Camera', isEqualTo: ddCamera)
-                      .where('Memory', isEqualTo: ddMemory)
-                      .where('Battery', isEqualTo: ddBattery)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError)
-                      return Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(child: CircularProgressIndicator());
-                      default:
-                        final products = snapshot.data.docs;
-                        List<SingleProduct> productsview = [];
-                        for (var product in products) {
-                          final productStorage = product.data()['Storage'];
-                          final productRating = product.data()['Rating'];
-                          if (ddStorage == null || productStorage >= ddStorage) {
-                            if (ddRatings == null || productRating >= ddRatings) {
-                              final productname = product.data()['Product Name'];
-                              final productprice = product.data()['Price'].toString();
-                              final productimg = product.data()['imgURL'];
-                              final producttype = product.data()['type'];
-                              final productdesc = product.data()['Description'];
-                              final productbrand = product.data()['Brand Name'];
-                              final productquantity = product.data()['Quantity'];
-                              final productseller = product.data()['Seller Email'];
-                              final productrating = product.data()['Rating'];
-                              final productid = product.id;
-                              //stuff specific to this type of products
-                              final productbattery = product.data()['Battery'];
-                              final productmemory = product.data()['Memory'];
-                              final productcamera = product.data()['Camera'];
-                              final productos = product.data()['OS'];
-                              final productview = SingleProduct(
-                                productName: productname,
-                                productPrice: productprice,
-                                productImg: productimg,
-                                productType: producttype,
-                                productDesc: productdesc,
-                                productBrand: productbrand,
-                                productQuantity: productquantity,
-                                productSeller: productseller,
-                                productRating: productrating,
-                                productID: productid,
-                                //stuff specific to this type of products
-                                productStorage: productStorage,
-                                productBattery: productbattery,
-                                productCamera: productcamera,
-                                productMemory: productmemory,
-                                productOS: productos,
-                              );
-                              productsview.add(productview);
+                      stream: FirebaseFirestore.instance
+                          .collection('ProductsCollection')
+                          .doc('Laptops')
+                          .collection('Products')
+                          .where('searchIndex', arrayContains: searchString)
+                          .where('Brand Name', isEqualTo: ddSearchBrand)
+                          .where('OS', isEqualTo: ddOS)
+                          .where('CPU', isEqualTo: ddCPU)
+                          .where('GPU', isEqualTo: ddGPU)
+                          .where('Memory', isEqualTo: ddMemory)
+                          .where('Battery', isEqualTo: ddBattery)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return Center(child: CircularProgressIndicator());
+                          default:
+                            final products = snapshot.data.docs;
+                            List<SingleProduct> productsview = [];
+                            for (var product in products) {
+                              final productStorage = product.data()['Storage'];
+                              final productRating = product.data()['Rating'];
+                              if (ddStorage == null || productStorage >= ddStorage) {
+                                if (ddRatings == null || productRating >= ddRatings) {
+                                  final productname = product.data()['Product Name'];
+                                  final productprice = product.data()['Price'].toString();
+                                  final productimg = product.data()['imgURL'];
+                                  final producttype = product.data()['type'];
+                                  final productdesc = product.data()['Description'];
+                                  final productbrand = product.data()['Brand Name'];
+                                  final productquantity = product.data()['Quantity'];
+                                  final productseller = product.data()['Seller Email'];
+                                  final productrating = product.data()['Rating'];
+                                  final productid = product.id;
+                                  //stuff specific to this type of products
+                                  final productbattery = product.data()['Battery'];
+                                  final productmemory = product.data()['Memory'];
+                                  final productcpu = product.data()['CPU'];
+                                  final productgpu = product.data()['GPU'];
+                                  final productos = product.data()['OS'];
+                                  final productview = SingleProduct(
+                                    productName: productname,
+                                    productPrice: productprice,
+                                    productImg: productimg,
+                                    productType: producttype,
+                                    productDesc: productdesc,
+                                    productBrand: productbrand,
+                                    productQuantity: productquantity,
+                                    productSeller: productseller,
+                                    productRating: productrating,
+                                    productID: productid,
+                                    //stuff specific to this type of products
+                                    productStorage: productStorage,
+                                    productBattery: productbattery,
+                                    productCPU: productcpu,
+                                    productGPU: productgpu,
+                                    productMemory: productmemory,
+                                    productOS: productos,
+                                  );
+                                  productsview.add(productview);
+                                }
+                              }
                             }
-                          }
+                            return ListView(children: productsview);
                         }
-                        return ListView(children: productsview);
-                    }
-                  },
-                )),
+                      },
+                    )),
               ],
             ),
           ),
@@ -422,25 +459,27 @@ class SingleProduct extends StatefulWidget {
   final int productStorage;
   final String productBattery;
   final String productMemory;
-  final String productCamera;
+  final String productCPU;
+  final String productGPU;
   final String productOS;
 
   SingleProduct(
       {this.productName,
-      this.productPrice,
-      this.productImg,
-      this.productID,
-      this.productType,
-      this.productDesc,
-      this.productBrand,
-      this.productQuantity,
-      this.productSeller,
-      this.productRating,
-      this.productStorage,
-      this.productOS,
-      this.productBattery,
-      this.productCamera,
-      this.productMemory});
+        this.productPrice,
+        this.productImg,
+        this.productID,
+        this.productType,
+        this.productDesc,
+        this.productBrand,
+        this.productQuantity,
+        this.productSeller,
+        this.productRating,
+        this.productStorage,
+        this.productOS,
+        this.productBattery,
+        this.productCPU,
+        this.productGPU,
+        this.productMemory});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -455,7 +494,7 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails.Mobile(
+              builder: (context) => ProductDetails.Laptop(
                 // passing the values via constructor
                 product_detail_name: widget.productName,
                 product_detail_new_price: widget.productPrice,
@@ -469,7 +508,8 @@ class _SingleProductState extends State<SingleProduct> {
                 product_detail_rating: widget.productRating,
                 mobile_storage: widget.productStorage,
                 mobile_battery: widget.productBattery,
-                mobile_camera: widget.productCamera,
+                CPU: widget.productCPU,
+                GPU: widget.productGPU,
                 mobile_memory: widget.productMemory,
                 mobile_os: widget.productOS,
               ),
