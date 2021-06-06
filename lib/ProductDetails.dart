@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:store_app/UserCustomer.dart';
+
+UserCustomer customer = UserCustomer();
 
 class ProductDetails extends StatefulWidget {
   String product_detail_name;
@@ -56,40 +60,52 @@ class ProductDetails extends StatefulWidget {
 
   ProductDetails.Laptop(
       {this.product_detail_name,
-        this.product_detail_new_price,
-        this.product_detail_picture,
-        this.product_detail_desc,
-        this.product_detail_brand,
-        this.product_detail_quantity,
-        this.product_detail_seller,
-        this.product_detail_rating,
-        this.product_detail_type,
-        this.product_detail_id,
-        this.mobile_battery,
-        this.CPU,
-        this.GPU,
-        this.mobile_memory,
-        this.mobile_os,
-        this.mobile_storage});
+      this.product_detail_new_price,
+      this.product_detail_picture,
+      this.product_detail_desc,
+      this.product_detail_brand,
+      this.product_detail_quantity,
+      this.product_detail_seller,
+      this.product_detail_rating,
+      this.product_detail_type,
+      this.product_detail_id,
+      this.mobile_battery,
+      this.CPU,
+      this.GPU,
+      this.mobile_memory,
+      this.mobile_os,
+      this.mobile_storage});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   bool isPressed = false;
   int rate;
 
   Future updateProductRating(BuildContext context) async {
-    _firestore
-        .collection('ProductsCollection')
-        .doc('${widget.product_detail_type}')
-        .collection('Products')
-        .doc('${widget.product_detail_id}')
-        .update({"Rating": rate}).then((_) {
-      print("success!");
-    });
+    if(customer.firstName == 'temp')
+      print('user not signed in!');
+    else{
+      print('User is signed in!');
+      _firestore
+          .collection('ProductsCollection')
+          .doc('${widget.product_detail_type}')
+          .collection('Products')
+          .doc('${widget.product_detail_id}')
+          .update({"Rating": rate}).then((_) {
+        print("success!");
+        _firestore
+            .collection('Customers')
+            .doc(_auth.currentUser.uid)
+            .collection('rated products')
+            .doc(widget.product_detail_id)
+            .set({'rating': rate}).then((value) => print('Second succes!'));
+      });
+    }
   }
 
   String getMobileSpecs() {
@@ -364,7 +380,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: Text((() {
                             if (widget.product_detail_type == 'Mobiles')
                               return getMobileSpecs();
-                            else if(widget.product_detail_type=='Laptops')
+                            else if (widget.product_detail_type == 'Laptops')
                               return getLaptopSpecs();
                             else
                               return 'other';

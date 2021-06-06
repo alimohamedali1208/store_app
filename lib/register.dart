@@ -398,42 +398,49 @@ class _registerState extends State<register> {
                   setState(() {
                     showSpinner = true;
                   });
-                  if (flagSellerDatabase) {
-                    _firestore.collection('Sellers').add({
-                      'FirstName': fname,
-                      'LastName': lname,
-                      'Phone': phone,
-                      'Sex': sex,
-                      'Email': email,
-                      'Password': pass,
-                      'CompanyName': companyName,
-                      'TaxCard': tax
-                    });
-                    seller.firstName = fname;
-                    seller.lastName = lname;
-                  } else {
-                    _firestore.collection('Customers').add({
-                      'FirstName': fname,
-                      'LastName': lname,
-                      'Phone': phone,
-                      'Sex': sex,
-                      'Email': email,
-                      'Password': pass,
-                    });
-                    customer.firstName = fname;
-                    customer.lastName = lname;
-                  }
                   try {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
                     if (flagSellerDatabase) {
+                      _firestore.collection('Sellers').doc(_auth.currentUser.uid).set({
+                        'FirstName': fname,
+                        'LastName': lname,
+                        'Phone': phone,
+                        'Sex': sex,
+                        'Email': email,
+                        'Password': pass,
+                        'CompanyName': companyName,
+                        'TaxCard': tax
+                      });
+                      seller.firstName = fname;
+                      seller.lastName = lname;
+                      setState(() {
+                        showSpinner = false;
+                      });
                       Navigator.pushNamed(context, sellerhome.id);
                     } else {
+                      _firestore.collection('Customers').doc(_auth.currentUser.uid).set({
+                        'FirstName': fname,
+                        'LastName': lname,
+                        'Phone': phone,
+                        'Sex': sex,
+                        'Email': email,
+                        'Password': pass,
+                      }).then((_) {
+                        _firestore
+                            .collection("Customers")
+                            .doc(_auth.currentUser.uid)
+                            .collection("rated products")
+                            .add({});
+                      });
+                      customer.firstName = fname;
+                      customer.lastName = lname;
+                      customer.userID = _auth.currentUser.uid;
+                      setState(() {
+                        showSpinner = false;
+                      });
                       Navigator.pushNamed(context, loggedinhome.id);
                     }
-                    setState(() {
-                      showSpinner = false;
-                    });
                   } catch (e) {
                     print(e);
                     setState(() {

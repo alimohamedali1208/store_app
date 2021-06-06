@@ -4,7 +4,8 @@ class UserCustomer {
       _phone,
       _sex,
       _email,
-      _pass;
+      _pass,
+      _userID;
 
   String get firstName => _firstName;
 
@@ -12,7 +13,17 @@ class UserCustomer {
     _firstName = value;
   }
 
+  get userID => _userID;
+
+  set userID(String value){
+    _userID = value;
+  }
+
   get lastName => _lastName;
+
+  set lastName(value) {
+    _lastName = value;
+  }
 
   get getPass => _pass;
 
@@ -36,9 +47,5 @@ class UserCustomer {
 
   set phone(value) {
     _phone = value;
-  }
-
-  set lastName(value) {
-    _lastName = value;
   }
 }
