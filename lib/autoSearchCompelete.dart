@@ -84,8 +84,10 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                     onChanged: (String value) {
                       setState(() {
                         if (value == 'laptops') {
-                           Navigator.push(context,
-                               MaterialPageRoute(builder: (context) => laptopCatSearch()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => laptopCatSearch()));
                         } else if (value == 'mobiles') {
                           Navigator.push(
                               context,
@@ -129,23 +131,29 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productname = product.data()['Product Name'];
-                          final productprice = product.data()['Price'].toString();
+                          final productprice =
+                              product.data()['Price'].toString();
                           final productimg = product.data()['imgURL'];
                           final producttype = product.data()['type'];
                           final productdesc = product.data()['Description'];
                           final productbrand = product.data()['Brand Name'];
                           final productquantity = product.data()['Quantity'];
                           final productseller = product.data()['Seller Email'];
+                          final rate1star = product.data()['1 star rate'];
+                          final rate2star = product.data()['2 star rate'];
+                          final rate3star = product.data()['3 star rate'];
+                          final rate4star = product.data()['4 star rate'];
+                          final rate5star = product.data()['5 star rate'];
                           final productrating = product.data()['Rating'];
                           final productid = product.id;
                           //now stuff that's specific for every product type
-                          if(producttype == 'Mobiles'){
+                          if (producttype == 'Mobiles') {
                             final productStorage = product.data()['Storage'];
                             final productbattery = product.data()['Battery'];
                             final productmemory = product.data()['Memory'];
                             final productcamera = product.data()['Camera'];
                             final productos = product.data()['OS'];
-                             productview = SingleProduct.mobile(
+                            productview = SingleProduct.mobile(
                               productName: productname,
                               productPrice: productprice,
                               productImg: productimg,
@@ -161,9 +169,13 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               productCamera: productcamera,
                               productStorage: productStorage,
                               productBattery: productbattery,
+                              rate1star: rate1star,
+                              rate2star: rate2star,
+                              rate3star: rate3star,
+                              rate4star: rate4star,
+                              rate5star: rate5star,
                             );
-                          }
-                          else if (producttype == 'Laptops'){
+                          } else if (producttype == 'Laptops') {
                             final productStorage = product.data()['Storage'];
                             final productbattery = product.data()['Battery'];
                             final productmemory = product.data()['Memory'];
@@ -180,6 +192,11 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               productQuantity: productquantity,
                               productSeller: productseller,
                               productID: productid,
+                              rate1star: rate1star,
+                              rate2star: rate2star,
+                              rate3star: rate3star,
+                              rate4star: rate4star,
+                              rate5star: rate5star,
                               productRating: productrating,
                               productOS: productos,
                               productMemory: productmemory,
@@ -188,20 +205,25 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               productStorage: productStorage,
                               productBattery: productbattery,
                             );
+                          } else {
+                            productview = SingleProduct(
+                              productName: productname,
+                              productPrice: productprice,
+                              productImg: productimg,
+                              productType: producttype,
+                              productDesc: productdesc,
+                              productBrand: productbrand,
+                              productQuantity: productquantity,
+                              productSeller: productseller,
+                              productID: productid,
+                              rate1star: rate1star,
+                              rate2star: rate2star,
+                              rate3star: rate3star,
+                              rate4star: rate4star,
+                              rate5star: rate5star,
+                              productRating: productrating,
+                            );
                           }
-                          else{
-                           productview = SingleProduct(
-                            productName: productname,
-                            productPrice: productprice,
-                            productImg: productimg,
-                            productType: producttype,
-                            productDesc: productdesc,
-                            productBrand: productbrand,
-                            productQuantity: productquantity,
-                            productSeller: productseller,
-                            productID: productid,
-                            productRating: productrating,
-                          );}
                           productsview.add(productview);
                         }
                         return ListView(
@@ -229,16 +251,21 @@ class SingleProduct extends StatefulWidget {
   final String productBrand;
   final String productQuantity;
   final String productSeller;
-  final int productRating;
+  final String productRating;
+  final int rate1star;
+  final int rate2star;
+  final int rate3star;
+  final int rate4star;
+  final int rate5star;
   //mobile/laptop stuff
-   int productStorage;
-   String productBattery;
-   String productMemory;
-   String productCamera;
-   String productOS;
-   //laptop stuff
-   String productCPU;
-   String productGPU;
+  int productStorage;
+  String productBattery;
+  String productMemory;
+  String productCamera;
+  String productOS;
+  //laptop stuff
+  String productCPU;
+  String productGPU;
 
   SingleProduct(
       {this.productName,
@@ -250,42 +277,57 @@ class SingleProduct extends StatefulWidget {
       this.productBrand,
       this.productQuantity,
       this.productSeller,
-      this.productRating});
+      this.productRating,
+      this.rate1star,
+      this.rate2star,
+      this.rate3star,
+      this.rate4star,
+      this.rate5star});
 
   SingleProduct.mobile(
       {this.productName,
-        this.productPrice,
-        this.productImg,
-        this.productID,
-        this.productType,
-        this.productDesc,
-        this.productBrand,
-        this.productQuantity,
-        this.productSeller,
-        this.productRating,
-        this.productStorage,
-        this.productOS,
-        this.productBattery,
-        this.productCamera,
-        this.productMemory});
+      this.productPrice,
+      this.productImg,
+      this.productID,
+      this.productType,
+      this.productDesc,
+      this.productBrand,
+      this.productQuantity,
+      this.productSeller,
+      this.productRating,
+      this.productStorage,
+      this.productOS,
+      this.productBattery,
+      this.productCamera,
+      this.productMemory,
+      this.rate1star,
+      this.rate2star,
+      this.rate3star,
+      this.rate4star,
+      this.rate5star});
 
   SingleProduct.laptop(
       {this.productName,
-        this.productPrice,
-        this.productImg,
-        this.productID,
-        this.productType,
-        this.productDesc,
-        this.productBrand,
-        this.productQuantity,
-        this.productSeller,
-        this.productRating,
-        this.productStorage,
-        this.productOS,
-        this.productBattery,
-        this.productCPU,
-        this.productGPU,
-        this.productMemory});
+      this.productPrice,
+      this.productImg,
+      this.productID,
+      this.productType,
+      this.productDesc,
+      this.productBrand,
+      this.productQuantity,
+      this.productSeller,
+      this.productRating,
+      this.productStorage,
+      this.productOS,
+      this.productBattery,
+      this.productCPU,
+      this.productGPU,
+      this.productMemory,
+      this.rate1star,
+      this.rate2star,
+      this.rate3star,
+      this.rate4star,
+      this.rate5star});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -297,74 +339,88 @@ class _SingleProductState extends State<SingleProduct> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () { if(widget.productType == 'Mobiles'){
-          Navigator.of(context).push(
-            new MaterialPageRoute(
-              builder: (context) => ProductDetails.Mobile(
-                // passing the values via constructor
-                product_detail_name: widget.productName,
-                product_detail_new_price: widget.productPrice,
-                product_detail_picture: widget.productImg,
-                product_detail_desc: widget.productDesc,
-                product_detail_brand: widget.productBrand,
-                product_detail_quantity: widget.productQuantity,
-                product_detail_seller: widget.productSeller,
-                product_detail_rating: widget.productRating,
-                product_detail_type: widget.productType,
-                product_detail_id: widget.productID,
-                mobile_storage: widget.productStorage,
-                mobile_battery: widget.productBattery,
-                mobile_camera: widget.productCamera,
-                mobile_memory: widget.productMemory,
-                mobile_os: widget.productOS,
+        onTap: () {
+          if (widget.productType == 'Mobiles') {
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => ProductDetails.Mobile(
+                  // passing the values via constructor
+                  product_detail_name: widget.productName,
+                  product_detail_new_price: widget.productPrice,
+                  product_detail_picture: widget.productImg,
+                  product_detail_desc: widget.productDesc,
+                  product_detail_brand: widget.productBrand,
+                  product_detail_quantity: widget.productQuantity,
+                  product_detail_seller: widget.productSeller,
+                  rate1star: widget.rate1star,
+                  rate2star: widget.rate2star,
+                  rate3star: widget.rate3star,
+                  rate4star: widget.rate4star,
+                  rate5star: widget.rate5star,
+                  product_detail_rating: widget.productRating,
+                  product_detail_type: widget.productType,
+                  product_detail_id: widget.productID,
+                  mobile_storage: widget.productStorage,
+                  mobile_battery: widget.productBattery,
+                  mobile_camera: widget.productCamera,
+                  mobile_memory: widget.productMemory,
+                  mobile_os: widget.productOS,
+                ),
               ),
-            ),
-          );
-        }
-        else if(widget.productType=='Laptops'){
-          Navigator.of(context).push(
-            new MaterialPageRoute(
-              builder: (context) => ProductDetails.Laptop(
-                // passing the values via constructor
-                product_detail_name: widget.productName,
-                product_detail_new_price: widget.productPrice,
-                product_detail_picture: widget.productImg,
-                product_detail_desc: widget.productDesc,
-                product_detail_brand: widget.productBrand,
-                product_detail_quantity: widget.productQuantity,
-                product_detail_seller: widget.productSeller,
-                product_detail_rating: widget.productRating,
-                product_detail_type: widget.productType,
-                product_detail_id: widget.productID,
-                mobile_storage: widget.productStorage,
-                mobile_battery: widget.productBattery,
-                CPU: widget.productCPU,
-                GPU: widget.productGPU,
-                mobile_memory: widget.productMemory,
-                mobile_os: widget.productOS,
+            );
+          } else if (widget.productType == 'Laptops') {
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => ProductDetails.Laptop(
+                  // passing the values via constructor
+                  product_detail_name: widget.productName,
+                  product_detail_new_price: widget.productPrice,
+                  product_detail_picture: widget.productImg,
+                  product_detail_desc: widget.productDesc,
+                  product_detail_brand: widget.productBrand,
+                  product_detail_quantity: widget.productQuantity,
+                  product_detail_seller: widget.productSeller,
+                  rate1star: widget.rate1star,
+                  rate2star: widget.rate2star,
+                  rate3star: widget.rate3star,
+                  rate4star: widget.rate4star,
+                  rate5star: widget.rate5star,
+                  product_detail_rating: widget.productRating,
+                  product_detail_type: widget.productType,
+                  product_detail_id: widget.productID,
+                  mobile_storage: widget.productStorage,
+                  mobile_battery: widget.productBattery,
+                  CPU: widget.productCPU,
+                  GPU: widget.productGPU,
+                  mobile_memory: widget.productMemory,
+                  mobile_os: widget.productOS,
+                ),
               ),
-            ),
-          );
-        }
-          else{
-          Navigator.of(context).push(
-            new MaterialPageRoute(
-              builder: (context) => ProductDetails(
-                // passing the values via constructor
-                product_detail_name: widget.productName,
-                product_detail_new_price: widget.productPrice,
-                product_detail_picture: widget.productImg,
-                product_detail_desc: widget.productDesc,
-                product_detail_brand: widget.productBrand,
-                product_detail_quantity: widget.productQuantity,
-                product_detail_seller: widget.productSeller,
-                product_detail_rating: widget.productRating,
-                product_detail_type: widget.productType,
-                product_detail_id: widget.productID,
+            );
+          } else {
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => ProductDetails(
+                  // passing the values via constructor
+                  product_detail_name: widget.productName,
+                  product_detail_new_price: widget.productPrice,
+                  product_detail_picture: widget.productImg,
+                  product_detail_desc: widget.productDesc,
+                  product_detail_brand: widget.productBrand,
+                  product_detail_quantity: widget.productQuantity,
+                  product_detail_seller: widget.productSeller,
+                  rate1star: widget.rate1star,
+                  rate2star: widget.rate2star,
+                  rate3star: widget.rate3star,
+                  rate4star: widget.rate4star,
+                  rate5star: widget.rate5star,
+                  product_detail_rating: widget.productRating,
+                  product_detail_type: widget.productType,
+                  product_detail_id: widget.productID,
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
         },
         child: ListTile(
           //    ======= the leading image section =======

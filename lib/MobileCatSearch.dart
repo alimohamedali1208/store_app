@@ -417,7 +417,12 @@ class SingleProduct extends StatefulWidget {
   final String productBrand;
   final String productQuantity;
   final String productSeller;
-  final int productRating;
+  final String productRating;
+  final int rate1star;
+  final int rate2star;
+  final int rate3star;
+  final int rate4star;
+  final int rate5star;
   //stuff specific to this type of products
   final int productStorage;
   final String productBattery;
@@ -440,7 +445,12 @@ class SingleProduct extends StatefulWidget {
       this.productOS,
       this.productBattery,
       this.productCamera,
-      this.productMemory});
+      this.productMemory,
+      this.rate1star,
+      this.rate2star,
+      this.rate3star,
+      this.rate4star,
+      this.rate5star});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -472,6 +482,11 @@ class _SingleProductState extends State<SingleProduct> {
                 mobile_camera: widget.productCamera,
                 mobile_memory: widget.productMemory,
                 mobile_os: widget.productOS,
+                rate1star: widget.rate1star,
+                rate2star: widget.rate2star,
+                rate3star: widget.rate3star,
+                rate4star: widget.rate4star,
+                rate5star: widget.rate5star,
               ),
             ),
           );
