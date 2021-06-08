@@ -33,9 +33,9 @@ class _sellerhomeState extends State<sellerhome> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   UserSeller seller = UserSeller();
-  String name;
-  int price;
-  String picURL;
+  //String name;
+  //int price;
+  //String picURL;
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -162,7 +162,7 @@ class _sellerhomeState extends State<sellerhome> {
               for (var product in products) {
                 if (_auth.currentUser.uid == product.data()['SellerID']) {
                   final productname = product.data()['Product Name'];
-                  final productprice = product.data()['Price'].toString();
+                  final productprice = product.data()['Price'];
                   final productimg = product.data()['imgURL'];
                   final producttype = product.data()['type'];
                   final productrate = product.data()['Rating'];
@@ -199,11 +199,11 @@ class _sellerhomeState extends State<sellerhome> {
 
 class SingleProduct extends StatelessWidget {
   final String productName;
-  final String productPrice;
+  final double productPrice;
   final String productImg;
   final String productType;
   final String productID;
-  final int productRating;
+  final String productRating;
 
   SingleProduct(
       {this.productName,
@@ -211,7 +211,8 @@ class SingleProduct extends StatelessWidget {
       this.productImg,
       this.productID,
       this.productType,
-      this.productRating});
+      this.productRating
+   });
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -232,7 +233,7 @@ class SingleProduct extends StatelessWidget {
             Container(
               alignment: Alignment.topLeft,
               child: Text(
-                "${productPrice} EGP",
+                "$productPrice EGP",
                 style: TextStyle(color: Colors.red),
               ),
             ),

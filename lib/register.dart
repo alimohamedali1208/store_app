@@ -402,7 +402,7 @@ class _registerState extends State<register> {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
                     if (flagSellerDatabase) {
-                      _firestore.collection('Sellers').doc(_auth.currentUser.uid).set({
+                      await _firestore.collection('Sellers').doc(_auth.currentUser.uid).set({
                         'FirstName': fname,
                         'LastName': lname,
                         'Phone': phone,
@@ -419,7 +419,7 @@ class _registerState extends State<register> {
                       });
                       Navigator.pushNamed(context, sellerhome.id);
                     } else {
-                      _firestore.collection('Customers').doc(_auth.currentUser.uid).set({
+                      await _firestore.collection('Customers').doc(_auth.currentUser.uid).set({
                         'FirstName': fname,
                         'LastName': lname,
                         'Phone': phone,

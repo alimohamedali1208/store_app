@@ -70,26 +70,34 @@ class _loggedinhomeState extends State<loggedinhome> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: new AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.blueGrey[900],
-          title: Text("El Wekala"),
-          actions: <Widget>[
-            new IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: () {
-                  return Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => autoSearchCompelete()));
-                }),
-            new IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  return Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Cart()));
-                }),
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(62),
+          child: AppBar(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
+            ),
+            backgroundColor: Color(0xFF731800),
+            elevation: 0.0,
+            title: Text("ElweKalA", style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),),
+            actions: <Widget>[
+              new IconButton(
+                  icon: Icon(Icons.search, color: Colors.white),
+                  onPressed: () {
+                    return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => autoSearchCompelete()));
+                  }),
+              new IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.white),
+                  onPressed: () {
+                    return Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => Cart()));
+                  }),
+            ],
+          ),
         ),
         drawer: new Drawer(
           child: ListView(

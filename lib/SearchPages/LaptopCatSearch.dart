@@ -393,7 +393,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                               if (ddStorage == null || productStorage >= ddStorage) {
                                 if (ddRatings == null || productRating >= ddRatings) {
                                   final productname = product.data()['Product Name'];
-                                  final productprice = product.data()['Price'].toString();
+                                  final productprice = product.data()['Price'];
                                   final productimg = product.data()['imgURL'];
                                   final producttype = product.data()['type'];
                                   final productdesc = product.data()['Description'];
@@ -446,7 +446,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
 
 class SingleProduct extends StatefulWidget {
   final String productName;
-  final String productPrice;
+  final double productPrice;
   final String productImg;
   final String productType;
   final String productID;

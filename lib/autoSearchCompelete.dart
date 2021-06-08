@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
@@ -12,7 +13,6 @@ class autoSearchCompelete extends StatefulWidget {
 }
 
 class _autoSearchCompeleteState extends State<autoSearchCompelete> {
-  //final _auth = FirebaseAuth.instance;
   final database = FirebaseFirestore.instance;
   String searchString = '';
   String ddSearchCategory;
@@ -131,8 +131,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           final productname = product.data()['Product Name'];
-                          final productprice =
-                              product.data()['Price'].toString();
+                          final productprice = product.data()['Price'];
                           final productimg = product.data()['imgURL'];
                           final producttype = product.data()['type'];
                           final productdesc = product.data()['Description'];
@@ -243,7 +242,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
 
 class SingleProduct extends StatefulWidget {
   final String productName;
-  final String productPrice;
+  final double productPrice;
   final String productImg;
   final String productType;
   final String productID;
@@ -334,7 +333,44 @@ class SingleProduct extends StatefulWidget {
 }
 
 class _SingleProductState extends State<SingleProduct> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   bool isPressed = false;
+  bool cartIsPressed = false;
+
+  Future addToCart() async {
+    print('first check if product already in cart');
+    await _firestore
+        .collection('Customers')
+        .doc(_auth.currentUser.uid)
+        .collection('cart')
+        .doc(widget.productID)
+        .get()
+        .then((DocumentSnapshot snapshot) async {
+      if (snapshot.exists) {
+        print('product already in cart');
+      } else {
+        print('insert product id in cart');
+        await _firestore
+            .collection('Customers')
+            .doc(_auth.currentUser.uid)
+            .collection('cart')
+            .doc(widget.productID)
+            .set({
+          'Product Quantity': 1,
+          'Product Name': widget.productName,
+          'Price': widget.productPrice,
+          'type': widget.productType,
+          'imgURL': widget.productImg
+        });
+        setState(() {
+          cartIsPressed = true;
+        });
+        print('Product added to cart');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -446,6 +482,18 @@ class _SingleProductState extends State<SingleProduct> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
+                  RatingBarIndicator(
+                    rating: double.parse(widget.productRating),
+                    itemSize: 20.0,
+                    direction: Axis.horizontal,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                  ),
+                  Spacer(),
                   IconButton(
                       icon: (isPressed)
                           ? Icon(Icons.favorite)
@@ -464,10 +512,11 @@ class _SingleProductState extends State<SingleProduct> {
                     width: 10,
                   ),
                   IconButton(
-                      icon: const Icon(Icons.add_shopping_cart_outlined),
+                      icon: (cartIsPressed)? Icon(Icons.download_done_rounded):Icon(Icons.add_shopping_cart_outlined),
                       tooltip: 'Add to cart',
                       color: Colors.black,
-                      onPressed: () {}),
+                      onPressed: cartIsPressed? null: ()=> addToCart(),
+                  )
                 ],
               )
             ],

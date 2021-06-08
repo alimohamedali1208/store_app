@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65),
+          preferredSize: Size.fromHeight(62),
           child: AppBar(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 5),
                 Text(
                   "ElweKalA",
-                  style: TextStyle(fontFamily: 'Zanzabar', fontSize: 30),
+                  style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),
                 ),
               ],
             ),
