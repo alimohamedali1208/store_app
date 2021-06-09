@@ -95,12 +95,12 @@ class _sellerhomeState extends State<sellerhome> {
                 accountName: Text(seller.firstName + ' ' + seller.lastName),
                 accountEmail: Text(_auth.currentUser.email),
                 currentAccountPicture: GestureDetector(
-                  child: new CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.black12,
                     child: Icon(Icons.person, color: Colors.white),
                   ),
                 ),
-                decoration: new BoxDecoration(color: Color(0xFF731800)),
+                decoration: BoxDecoration(color: Color(0xFF731800)),
               ),
               InkWell(
                 onTap: () {},

@@ -493,6 +493,7 @@ class _SingleProductState extends State<SingleProduct> {
                       color: Colors.amber,
                     ),
                   ),
+                  Text('${widget.productRating}', style: TextStyle(height: 1.5),),
                   Spacer(),
                   IconButton(
                       icon: (isPressed)

@@ -82,7 +82,7 @@ class _loggedinhomeState extends State<loggedinhome> {
             elevation: 0.0,
             title: Text("ElweKalA", style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),),
             actions: <Widget>[
-              new IconButton(
+               IconButton(
                   icon: Icon(Icons.search, color: Colors.white),
                   onPressed: () {
                     return Navigator.push(
@@ -90,7 +90,7 @@ class _loggedinhomeState extends State<loggedinhome> {
                         MaterialPageRoute(
                             builder: (context) => autoSearchCompelete()));
                   }),
-              new IconButton(
+               IconButton(
                   icon: Icon(Icons.shopping_cart, color: Colors.white),
                   onPressed: () {
                     return Navigator.push(
@@ -99,19 +99,19 @@ class _loggedinhomeState extends State<loggedinhome> {
             ],
           ),
         ),
-        drawer: new Drawer(
+        drawer:  Drawer(
           child: ListView(
             children: <Widget>[
               //header
-              new UserAccountsDrawerHeader(
+               UserAccountsDrawerHeader(
                 accountName: Text(customer.firstName + ' ' + customer.lastName),
                 accountEmail: Text(_auth.currentUser.email),
                 currentAccountPicture: GestureDetector(
-                  child: new CircleAvatar(
-                      backgroundColor: Colors.blueGrey,
+                  child: CircleAvatar(
+                      backgroundColor: Colors.black12,
                       child: Icon(Icons.person, color: Colors.white)),
                 ),
-                decoration: new BoxDecoration(color: Colors.blueGrey[900]),
+                decoration: BoxDecoration(color: Color(0xFF731800)),
               ),
 
               //body
@@ -152,7 +152,9 @@ class _loggedinhomeState extends State<loggedinhome> {
 
               InkWell(
                 child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => w()));
+                  },
                   title: Text('Favorites'),
                   leading: Icon(Icons.favorite, color: Colors.blueGrey[900]),
                 ),
