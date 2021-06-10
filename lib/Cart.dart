@@ -9,7 +9,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final _auth = FirebaseAuth.instance;
-  int checkoutSum =0;
+  double checkoutSum =0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +52,7 @@ class _CartState extends State<Cart> {
                           for (var product in products) {
 
                               final productname = product.data()['Product Name'];
-                              final productprice = product.data()['Price'];
+                              final productprice = product.data()['Price'] as num;
                               final productimg = product.data()['imgURL'];
                               final producttype = product.data()['type'];
                               final productid = product.id;
