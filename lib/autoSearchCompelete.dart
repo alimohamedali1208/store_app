@@ -363,6 +363,12 @@ class _SingleProductState extends State<SingleProduct> {
           'type': widget.productType,
           'imgURL': widget.productImg
         });
+        await _firestore
+            .collection('Customers')
+            .doc(_auth.currentUser.uid)
+            .update({
+          'Total': FieldValue.increment(widget.productPrice)
+        });
         setState(() {
           cartIsPressed = true;
         });

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -18,6 +19,7 @@ class loggedinhome extends StatefulWidget {
 
 class _loggedinhomeState extends State<loggedinhome> {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   Future<bool> _onWillPop() async {
     return (await showDialog(

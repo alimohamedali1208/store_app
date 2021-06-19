@@ -426,6 +426,7 @@ class _registerState extends State<register> {
                         'Sex': sex,
                         'Email': email,
                         'Password': pass,
+                        'Total':0,
                       }).then((_) {
                         _firestore
                             .collection("Customers")

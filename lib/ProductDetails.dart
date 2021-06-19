@@ -136,6 +136,12 @@ class _ProductDetailsState extends State<ProductDetails> {
           'type': widget.product_detail_type,
           'imgURL': widget.product_detail_picture
         });
+        await _firestore
+            .collection('Customers')
+            .doc(_auth.currentUser.uid)
+            .update({
+          'Total': FieldValue.increment(widget.product_detail_new_price)
+        });
         print('Product added to cart');
       }
       setState(() {

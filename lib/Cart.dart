@@ -3,13 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Cart extends StatefulWidget {
+
   @override
   _CartState createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
   final _auth = FirebaseAuth.instance;
-  double checkoutSum =0;
+  final _firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,8 @@ class _CartState extends State<Cart> {
           title: Text("Shopping Cart"),
           actions: <Widget>[
             new IconButton(
-                icon: Icon(Icons.search, color: Colors.white), onPressed: () {}),
+                icon: Icon(Icons.search, color: Colors.white),
+                onPressed: () {}),
           ],
         ),
       ),
@@ -38,41 +41,38 @@ class _CartState extends State<Cart> {
                 SizedBox(height: 10),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('Customers')
-                          .doc(_auth.currentUser.uid)
-                          .collection('cart')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          return Text('no products available');
-                        else {
-                          final products = snapshot.data.docs;
-                          List<SingleCartProduct> productsview = [];
-                          for (var product in products) {
-
-                              final productname = product.data()['Product Name'];
-                              final productprice = product.data()['Price'] as num;
-                              final productimg = product.data()['imgURL'];
-                              final producttype = product.data()['type'];
-                              final productid = product.id;
-                              checkoutSum += productprice;
-                              final productview = SingleCartProduct(
-                                cart_prod_name: productname,
-                                cart_prod_price: productprice,
-                                cart_prod_picture: productimg,
-                                cart_prod_type: producttype,
-                                cart_prod_id: productid,
-                              );
-                              productsview.add(productview);
-
-                          }
-                          return ListView(
-                            children: productsview,
-                          );
-                        }
-                      },
-                    )),
+                  stream: FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(_auth.currentUser.uid)
+                      .collection('cart')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData)
+                      return Text('no products available');
+                    else {
+                      final products = snapshot.data.docs;
+                      List<SingleCartProduct> productsview = [];
+                      for (var product in products) {
+                        final productname = product.data()['Product Name'];
+                        final productprice = product.data()['Price'] as num;
+                        final productimg = product.data()['imgURL'];
+                        final producttype = product.data()['type'];
+                        final productid = product.id;
+                        final productview = SingleCartProduct(
+                          cart_prod_name: productname,
+                          cart_prod_price: productprice,
+                          cart_prod_picture: productimg,
+                          cart_prod_type: producttype,
+                          cart_prod_id: productid,
+                        );
+                        productsview.add(productview);
+                      }
+                      return ListView(
+                        children: productsview,
+                      );
+                    }
+                  },
+                )),
               ],
             ),
           ),
@@ -85,7 +85,19 @@ class _CartState extends State<Cart> {
             Expanded(
                 child: ListTile(
               title: Text("Total Amount"),
-              subtitle: Text("$checkoutSum EGP"),
+              subtitle: StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(_auth.currentUser.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData)
+                      return Text('');
+                    else {
+                      final totalPrice = snapshot.data.data()['Total'];
+                      return Text('$totalPrice EGP');
+                    }
+                  }),
             )),
             Expanded(
                 child: new MaterialButton(
@@ -110,14 +122,11 @@ class SingleCartProduct extends StatelessWidget {
   final cart_prod_type;
   final cart_prod_id;
 
-
-  const SingleCartProduct(
-      {this.cart_prod_name,
-        this.cart_prod_picture,
-        this.cart_prod_price,
-        this.cart_prod_type,
-        this.cart_prod_id});
-
+  const SingleCartProduct({this.cart_prod_name,
+    this.cart_prod_picture,
+    this.cart_prod_price,
+    this.cart_prod_type,
+    this.cart_prod_id});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +141,29 @@ class SingleCartProduct extends StatelessWidget {
           height: 80,
           width: 80,
         ),
-        title: Text(cart_prod_name),
+        title: Row(
+          children: [
+            Text(cart_prod_name),
+            Spacer(),
+            IconButton(
+              icon: Icon(Icons.highlight_remove),
+              color: Colors.red[300],
+              onPressed: () async {
+                double oldPrice = cart_prod_price;
+                await FirebaseFirestore.instance
+                    .collection('Customers')
+                    .doc(FirebaseAuth.instance.currentUser.uid)
+                    .collection('cart')
+                    .doc(cart_prod_id)
+                    .delete();
+                await FirebaseFirestore.instance
+                    .collection('Customers')
+                    .doc(FirebaseAuth.instance.currentUser.uid)
+                    .update({'Total': FieldValue.increment(-oldPrice)});
+              },
+            ),
+          ],
+        ),
         subtitle: Column(
           children: <Widget>[
             Row(
@@ -150,7 +181,7 @@ class SingleCartProduct extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "$cart_prod_type",
+                    "${cart_prod_type}",
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
@@ -170,3 +201,4 @@ class SingleCartProduct extends StatelessWidget {
     );
   }
 }
+

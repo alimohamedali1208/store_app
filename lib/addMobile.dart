@@ -227,30 +227,30 @@ class _addMobileState extends State<addMobile> {
                                 memory = value.trim();
                               },
                             )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: InputDecorator(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                  value: ddRamCapacity,
-                                  items: ['GB', 'MB']
-                                      .map((String unit) =>
-                                          DropdownMenuItem<String>(
-                                              value: unit, child: Text(unit)))
-                                      .toList(),
-                                  onChanged: (value) => setState(() {
-                                        ddRamCapacity = value;
-                                      })),
-                            ),
-                          ),
-                        )
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
+                        // Flexible(
+                        //   flex: 1,
+                        //   child: InputDecorator(
+                        //     decoration: const InputDecoration(
+                        //       border: OutlineInputBorder(),
+                        //       contentPadding: EdgeInsets.all(5),
+                        //     ),
+                        //     child: DropdownButtonHideUnderline(
+                        //       child: DropdownButton(
+                        //           value: ddRamCapacity,
+                        //           items: ['GB', 'MB']
+                        //               .map((String unit) =>
+                        //                   DropdownMenuItem<String>(
+                        //                       value: unit, child: Text(unit)))
+                        //               .toList(),
+                        //           onChanged: (value) => setState(() {
+                        //                 ddRamCapacity = value;
+                        //               })),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -317,30 +317,30 @@ class _addMobileState extends State<addMobile> {
                                 storage = int.parse(value.trim());
                               },
                             )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: InputDecorator(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                  value: ddStorageCapacity,
-                                  items: ['GB', 'MB']
-                                      .map((String unit) =>
-                                          DropdownMenuItem<String>(
-                                              value: unit, child: Text(unit)))
-                                      .toList(),
-                                  onChanged: (value) => setState(() {
-                                        ddStorageCapacity = value;
-                                      })),
-                            ),
-                          ),
-                        )
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
+                        // Flexible(
+                        //   flex: 1,
+                        //   child: InputDecorator(
+                        //     decoration: const InputDecoration(
+                        //       border: OutlineInputBorder(),
+                        //       contentPadding: EdgeInsets.all(5),
+                        //     ),
+                        //     child: DropdownButtonHideUnderline(
+                        //       child: DropdownButton(
+                        //           value: ddStorageCapacity,
+                        //           items: ['GB', 'MB']
+                        //               .map((String unit) =>
+                        //                   DropdownMenuItem<String>(
+                        //                       value: unit, child: Text(unit)))
+                        //               .toList(),
+                        //           onChanged: (value) => setState(() {
+                        //                 ddStorageCapacity = value;
+                        //               })),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
