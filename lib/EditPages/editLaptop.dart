@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class editLaptops extends StatefulWidget {
@@ -78,7 +79,7 @@ class _editLaptopsState extends State<editLaptops> {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       taskSnapshot.ref.getDownloadURL().then(
             (value) => print('done $value'),
-      );
+          );
       await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
       _firestore
           .collection('ProductsCollection')
@@ -240,12 +241,12 @@ class _editLaptopsState extends State<editLaptops> {
                                   value: ddRamCapacity,
                                   items: ['GB', 'MB', 'TB']
                                       .map((String unit) =>
-                                      DropdownMenuItem<String>(
-                                          value: unit, child: Text(unit)))
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
                                       .toList(),
                                   onChanged: (value) => setState(() {
-                                    ddRamCapacity = value;
-                                  })),
+                                        ddRamCapacity = value;
+                                      })),
                             ),
                           ),
                         )
@@ -258,6 +259,10 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Price',
                         border: OutlineInputBorder(),
@@ -273,6 +278,10 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Quantity',
                         border: OutlineInputBorder(),
@@ -345,12 +354,12 @@ class _editLaptopsState extends State<editLaptops> {
                                   value: ddStorageCapacity,
                                   items: ['GB', 'MB', 'TB']
                                       .map((String unit) =>
-                                      DropdownMenuItem<String>(
-                                          value: unit, child: Text(unit)))
+                                          DropdownMenuItem<String>(
+                                              value: unit, child: Text(unit)))
                                       .toList(),
                                   onChanged: (value) => setState(() {
-                                    ddStorageCapacity = value;
-                                  })),
+                                        ddStorageCapacity = value;
+                                      })),
                             ),
                           ),
                         )
@@ -366,29 +375,29 @@ class _editLaptopsState extends State<editLaptops> {
                       ),
                       child: DropdownButtonHideUnderline(
                           child: DropdownButtonFormField(
-                            value: ddOS,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              labelText: "Operating System",
-                            ),
-                            validator: validateEmpty,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                ddOS = newValue;
-                              });
-                            },
-                            items: <String>[
-                              'Windows',
-                              'DOS',
-                              'Other',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )),
+                        value: ddOS,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Operating System",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddOS = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Windows',
+                          'DOS',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
                   ),
                   Padding(
@@ -400,36 +409,36 @@ class _editLaptopsState extends State<editLaptops> {
                       ),
                       child: DropdownButtonHideUnderline(
                           child: DropdownButtonFormField(
-                            value: ddBrand,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              labelText: "Brand",
-                            ),
-                            validator: validateEmpty,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                ddBrand = newValue;
-                              });
-                            },
-                            items: <String>[
-                              'Asus',
-                              'Samsung',
-                              'Dell',
-                              'HP',
-                              'Lenovo',
-                              'MSI',
-                              'Razer',
-                              'Acer',
-                              'Microsoft',
-                              'Other',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )),
+                        value: ddBrand,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Brand",
+                        ),
+                        validator: validateEmpty,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ddBrand = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Asus',
+                          'Samsung',
+                          'Dell',
+                          'HP',
+                          'Lenovo',
+                          'MSI',
+                          'Razer',
+                          'Acer',
+                          'Microsoft',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                     ),
                   ),
                   SizedBox(
@@ -456,9 +465,9 @@ class _editLaptopsState extends State<editLaptops> {
               color: Color(0xFF731800),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(30),
-                    top: Radius.circular(30),
-                  )),
+                bottom: Radius.circular(30),
+                top: Radius.circular(30),
+              )),
               child: Text(
                 'Add product',
                 style: TextStyle(color: Colors.white),

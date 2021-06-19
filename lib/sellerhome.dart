@@ -211,8 +211,7 @@ class SingleProduct extends StatelessWidget {
       this.productImg,
       this.productID,
       this.productType,
-      this.productRating
-   });
+      this.productRating});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -353,7 +352,9 @@ class SingleProduct extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 14, vertical: 2),
                   height: 40,
                   width: 80,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(15))),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

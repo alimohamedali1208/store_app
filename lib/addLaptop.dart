@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class addLaptop extends StatefulWidget {
@@ -26,8 +27,8 @@ class _addLaptopState extends State<addLaptop> {
       name,
       searchKey,
       screenSize,
-      quantity,
-      storage;
+      quantity;
+  int storage;
   String ddBrand = 'HP';
   String ddOS = 'Windows';
   String ddRamCapacity = 'GB';
@@ -66,10 +67,10 @@ class _addLaptopState extends State<addLaptop> {
       'Quantity': quantity,
       'Rating': '0',
       '1 star rate': 0,
-      '2 star rate':0,
-      '3 star rate':0,
-      '4 star rate':0,
-      '5 star rate':0,
+      '2 star rate': 0,
+      '3 star rate': 0,
+      '4 star rate': 0,
+      '5 star rate': 0,
       'SellerID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
       'type': 'Laptops',
@@ -230,7 +231,7 @@ class _addLaptopState extends State<addLaptop> {
                                 memory = value.trim();
                               },
                             )),
-                        SizedBox(
+                        /*SizedBox(
                           width: 5,
                         ),
                         Flexible(
@@ -253,7 +254,7 @@ class _addLaptopState extends State<addLaptop> {
                                       })),
                             ),
                           ),
-                        )
+                        )*/
                       ],
                     ),
                   ),
@@ -263,6 +264,10 @@ class _addLaptopState extends State<addLaptop> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Price',
                         border: OutlineInputBorder(),
@@ -327,12 +332,16 @@ class _addLaptopState extends State<addLaptop> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              enableInteractiveSelection: false,
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                              ],
                               decoration: InputDecoration(
                                 labelText: 'Storage',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (String value) {
-                                storage = value.trim();
+                              onChanged: (value) {
+                                storage = int.parse(value.trim());
                               },
                             )),
                         SizedBox(
@@ -348,7 +357,7 @@ class _addLaptopState extends State<addLaptop> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddStorageCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB', 'TB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))

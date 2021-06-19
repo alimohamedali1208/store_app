@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class addMobile extends StatefulWidget {
@@ -44,7 +45,11 @@ class _addMobileState extends State<addMobile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore.collection('ProductsCollection').doc('Mobiles').collection('Products').add({
+    _firestore
+        .collection('ProductsCollection')
+        .doc('Mobiles')
+        .collection('Products')
+        .add({
       'Brand Name': ddBrand,
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
@@ -59,12 +64,12 @@ class _addMobileState extends State<addMobile> {
       'Quantity': quantity,
       'Rating': '0',
       '1 star rate': 0,
-      '2 star rate':0,
-      '3 star rate':0,
-      '4 star rate':0,
-      '5 star rate':0,
+      '2 star rate': 0,
+      '3 star rate': 0,
+      '4 star rate': 0,
+      '5 star rate': 0,
       'Discount': 'false',
-      'Discount percent':0,
+      'Discount percent': 0,
       'SellerID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
       'type': 'Mobiles',
@@ -260,6 +265,10 @@ class _addMobileState extends State<addMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Price',
                         border: OutlineInputBorder(),
@@ -309,6 +318,10 @@ class _addMobileState extends State<addMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              enableInteractiveSelection: false,
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                              ],
                               decoration: InputDecoration(
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),

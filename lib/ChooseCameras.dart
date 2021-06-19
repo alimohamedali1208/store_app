@@ -53,7 +53,7 @@ class _ChooseCamerasState extends State<ChooseCameras> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/toaster.png',
+                      img: 'images/tripod.jpg',
                       categoryName: 'Camera Accessories',
                     ),
                     onTap: () {

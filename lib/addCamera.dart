@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class addCamera extends StatefulWidget {
@@ -173,6 +174,10 @@ class _addCameraState extends State<addCamera> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Price',
                         border: OutlineInputBorder(),
@@ -188,6 +193,10 @@ class _addCameraState extends State<addCamera> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Quantity',
                         border: OutlineInputBorder(),

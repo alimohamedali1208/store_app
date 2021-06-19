@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class editMobile extends StatefulWidget {
-
   String pID;
 
   editMobile({this.pID});
@@ -20,13 +20,7 @@ class _editMobileState extends State<editMobile> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addMobileFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String camera,
-      battery,
-      description,
-      memory,
-      name,
-      screenSize,
-      quantity;
+  String camera, battery, description, memory, name, screenSize, quantity;
   int storage;
   String ddBrand = 'Apple';
   String ddOS = 'IOS';
@@ -41,7 +35,8 @@ class _editMobileState extends State<editMobile> {
     _firestore
         .collection('ProductsCollection')
         .doc('Mobiles')
-        .collection('Products').doc('${widget.pID}')
+        .collection('Products')
+        .doc('${widget.pID}')
         .update({
       'Brand Name': ddBrand,
       'Product Name': name,
@@ -55,7 +50,7 @@ class _editMobileState extends State<editMobile> {
       'Price': price,
       'Quantity': quantity,
       'searchIndex': indexList,
-    }).then((_){
+    }).then((_) {
       print('Update Success');
     });
   }
@@ -216,6 +211,10 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Price',
                         border: OutlineInputBorder(),
@@ -231,6 +230,10 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      enableInteractiveSelection: false,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Quantity',
                         border: OutlineInputBorder(),
