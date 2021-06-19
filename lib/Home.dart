@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
             // grid view list
 
             new Padding(padding: const EdgeInsets.all(14)),
-            Text('Recentproducts'),
+            Text('Recent products'),
             Container(
               child: Product(),
             )

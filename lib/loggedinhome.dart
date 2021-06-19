@@ -6,6 +6,7 @@ import 'package:store_app/Cart.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/autoSearchCompelete.dart';
+import 'package:store_app/components/Favorites.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
 
@@ -82,9 +83,12 @@ class _loggedinhomeState extends State<loggedinhome> {
             ),
             backgroundColor: Color(0xFF731800),
             elevation: 0.0,
-            title: Text("ElweKalA", style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),),
+            title: Text(
+              "ElweKalA",
+              style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),
+            ),
             actions: <Widget>[
-               IconButton(
+              IconButton(
                   icon: Icon(Icons.search, color: Colors.white),
                   onPressed: () {
                     return Navigator.push(
@@ -92,20 +96,20 @@ class _loggedinhomeState extends State<loggedinhome> {
                         MaterialPageRoute(
                             builder: (context) => autoSearchCompelete()));
                   }),
-               IconButton(
+              IconButton(
                   icon: Icon(Icons.shopping_cart, color: Colors.white),
                   onPressed: () {
-                    return Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => Cart()));
+                    return Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Cart()));
                   }),
             ],
           ),
         ),
-        drawer:  Drawer(
+        drawer: Drawer(
           child: ListView(
             children: <Widget>[
               //header
-               UserAccountsDrawerHeader(
+              UserAccountsDrawerHeader(
                 accountName: Text(customer.firstName + ' ' + customer.lastName),
                 accountEmail: Text(_auth.currentUser.email),
                 currentAccountPicture: GestureDetector(
@@ -155,7 +159,8 @@ class _loggedinhomeState extends State<loggedinhome> {
               InkWell(
                 child: ListTile(
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => w()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Favorites()));
                   },
                   title: Text('Favorites'),
                   leading: Icon(Icons.favorite, color: Colors.blueGrey[900]),
