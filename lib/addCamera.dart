@@ -394,7 +394,6 @@ class _addCameraState extends State<addCamera> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {
-                //todo camera
                 if (_addCameraFormKey.currentState.validate()) {
                   _addCameraFormKey.currentState.save();
                   List<String> splitlist = name.split(" ");

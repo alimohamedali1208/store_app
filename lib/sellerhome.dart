@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:store_app/EditPages/editAirConditioner.dart';
 import 'package:store_app/EditPages/editCameraAccessory.dart';
 import 'package:store_app/EditPages/editCameras.dart';
@@ -32,23 +35,33 @@ class sellerhome extends StatefulWidget {
 class _sellerhomeState extends State<sellerhome> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   UserSeller seller = UserSeller();
   //String name;
   //int price;
   //String picURL;
 
+  //Showing snackbar
+  void _showSnackbar(String msg) {
+    final snackbar = SnackBar(
+      content: Text(msg),
+      // duration: const Duration(seconds: 10),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to sign out?'),
+          builder: (context) => AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to sign out?'),
             actions: <Widget>[
-              new FlatButton(
+              FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
+                child: Text('No'),
               ),
-              new FlatButton(
+              FlatButton(
                 onPressed: () {
                   _auth.signOut();
                   Navigator.pushNamed(context, Home.id);
@@ -68,6 +81,7 @@ class _sellerhomeState extends State<sellerhome> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80),
@@ -197,7 +211,7 @@ class _sellerhomeState extends State<sellerhome> {
   }
 }
 
-class SingleProduct extends StatelessWidget {
+class SingleProduct extends StatefulWidget {
   final String productName;
   final double productPrice;
   final String productImg;
@@ -212,6 +226,23 @@ class SingleProduct extends StatelessWidget {
       this.productID,
       this.productType,
       this.productRating});
+
+  @override
+  _SingleProductState createState() => _SingleProductState();
+}
+
+class _SingleProductState extends State<SingleProduct> {
+  final _formKey = GlobalKey<FormState>();
+
+  File _image;
+  int offer;
+  Future getImage() async {
+    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -219,20 +250,20 @@ class SingleProduct extends StatelessWidget {
         //    ======= the leading image section =======
         leading: FadeInImage.assetNetwork(
           placeholder: 'images/PlaceHolder.gif',
-          image: (productImg == null)
+          image: (widget.productImg == null)
               ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-              : productImg,
+              : widget.productImg,
           height: 80,
           width: 80,
         ),
-        title: Text(productName),
+        title: Text(widget.productName),
         subtitle: Column(
           children: <Widget>[
             //  ======= this for price section ======
             Container(
               alignment: Alignment.topLeft,
               child: Text(
-                "$productPrice EGP",
+                "${widget.productPrice} EGP",
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -241,85 +272,243 @@ class SingleProduct extends StatelessWidget {
                 FlatButton(
                   onPressed: () {
                     // ignore: unrelated_type_equality_checks
-                    if (productType == 'Laptops') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editLaptops()));
-                    } else if (productType == 'AirConditioner') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editAirConditioner()));
-                    } else if (productType == 'Cameras') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editCameras()));
-                    } else if (productType == 'CameraAccessories') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editCameraAccessory()));
-                    } else if (productType == 'CameraAccessories') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editCameraAccessory()));
-                    } else if (productType == 'OtherElectronics') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editElectronics()));
-                    } else if (productType == 'Fashion') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editFashion()));
-                    } else if (productType == 'Fridges') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editFridge()));
-                    } else if (productType == 'Jewelry') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editJewelary()));
-                    } else if (productType == 'Mobiles') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editMobile()));
-                    } else if (productType == 'OtherHome') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editHomeAppliances()));
-                    } else if (productType == 'OtherPC') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editPCAccessories()));
-                    } else if (productType == 'Printers') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editPrinter()));
-                    } else if (productType == 'Projectors') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editProjector()));
-                    } else if (productType == 'StorageDevice') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => editStorageDevice()));
-                    } else if (productType == 'TV') {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => editTV()));
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Choose an Option"),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    if (widget.productType == 'Laptops') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editLaptops()));
+                                    } else if (widget.productType ==
+                                        'AirConditioner') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editAirConditioner()));
+                                    } else if (widget.productType ==
+                                        'Cameras') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameras()));
+                                    } else if (widget.productType ==
+                                        'CameraAccessories') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameraAccessory()));
+                                    } else if (widget.productType ==
+                                        'CameraAccessories') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameraAccessory()));
+                                    } else if (widget.productType ==
+                                        'OtherElectronics') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editElectronics()));
+                                    } else if (widget.productType ==
+                                        'Fashion') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editFashion()));
+                                    } else if (widget.productType ==
+                                        'Fridges') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editFridge()));
+                                    } else if (widget.productType ==
+                                        'Jewelry') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editJewelary()));
+                                    } else if (widget.productType ==
+                                        'Mobiles') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editMobile()));
+                                    } else if (widget.productType ==
+                                        'OtherHome') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editHomeAppliances()));
+                                    } else if (widget.productType ==
+                                        'OtherPC') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editPCAccessories()));
+                                    } else if (widget.productType ==
+                                        'Printers') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editPrinter()));
+                                    } else if (widget.productType ==
+                                        'Projectors') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editProjector()));
+                                    } else if (widget.productType ==
+                                        'StorageDevice') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editStorageDevice()));
+                                    } else if (widget.productType == 'TV') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => editTV()));
+                                    }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        color: Color(0xFF731800),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Edit This Product",
+                                          style: TextStyle(
+                                            color: Color(0xFF731800),
+                                          )),
+                                    ],
+                                  )),
+                              TextButton(
+                                  onPressed: () async {
+                                    await getImage();
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.filter,
+                                        color: Color(0xFF731800),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Edit Product Picture",
+                                          style: TextStyle(
+                                            color: Color(0xFF731800),
+                                          )),
+                                    ],
+                                  )),
+                              TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Offer"),
+                                        content: Form(
+                                          key: _formKey,
+                                          child: TextFormField(
+                                            enableInteractiveSelection: false,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              labelText: "Add offer percentage",
+                                            ),
+                                            onSaved: (value) {
+                                              offer = int.parse(value.trim());
+                                            },
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text(
+                                              "Go back",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              "OK",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              _formKey.currentState.save();
+                                              print(offer);
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.local_offer_outlined,
+                                      color: Color(0xFF731800),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Edit This Product Offer",
+                                      style: TextStyle(
+                                        color: Color(0xFF731800),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text(
+                                "Go Back",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Text('Edit'),
                   color: Colors.blue,
@@ -332,17 +521,17 @@ class SingleProduct extends StatelessWidget {
                   onPressed: () async {
                     await FirebaseFirestore.instance
                         .collection('ProductsCollection')
-                        .doc(productType)
+                        .doc(widget.productType)
                         .collection('Products')
-                        .doc(productID)
+                        .doc(widget.productID)
                         .delete();
                     Reference firebaseStorageRef =
                         FirebaseStorage.instance.ref();
                     firebaseStorageRef
                         .child(
-                            "ProductImage/$productType/$productID/$productName")
+                            "ProductImage/${widget.productType}/${widget.productID}/${widget.productName}")
                         .delete()
-                        .whenComplete(() => print('delelet success'));
+                        .whenComplete(() => print('delete success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,
@@ -359,7 +548,7 @@ class SingleProduct extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '$productRating',
+                        '${widget.productRating}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
