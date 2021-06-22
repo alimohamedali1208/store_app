@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Cart extends StatefulWidget {
 
@@ -55,12 +56,18 @@ class _CartState extends State<Cart> {
                       for (var product in products) {
                         final productname = product.data()['Product Name'];
                         final productprice = product.data()['Price'] as num;
+                        final productdiscount = product.data()['Discount'];
+                        final productdiscountpercent = product.data()['Discount percent'];
+                        final productnewprice = product.data()['New price'];
                         final productimg = product.data()['imgURL'];
                         final producttype = product.data()['type'];
                         final productid = product.id;
                         final productview = SingleCartProduct(
                           cart_prod_name: productname,
                           cart_prod_price: productprice,
+                          cart_prod_newPrice: productnewprice,
+                          cart_prod_discount: productdiscount,
+                          cart_prod_discountPercent: productdiscountpercent,
                           cart_prod_picture: productimg,
                           cart_prod_type: producttype,
                           cart_prod_id: productid,
@@ -119,12 +126,18 @@ class SingleCartProduct extends StatelessWidget {
   final cart_prod_name;
   final cart_prod_picture;
   final cart_prod_price;
+  final cart_prod_newPrice;
+  final cart_prod_discount;
+  final cart_prod_discountPercent;
   final cart_prod_type;
   final cart_prod_id;
 
   const SingleCartProduct({this.cart_prod_name,
     this.cart_prod_picture,
     this.cart_prod_price,
+    this.cart_prod_newPrice,
+    this.cart_prod_discount,
+    this.cart_prod_discountPercent,
     this.cart_prod_type,
     this.cart_prod_id});
 
@@ -149,7 +162,11 @@ class SingleCartProduct extends StatelessWidget {
               icon: Icon(Icons.highlight_remove),
               color: Colors.red[300],
               onPressed: () async {
-                double oldPrice = cart_prod_price;
+                double oldPrice;
+                if(cart_prod_discount=='false')
+                  oldPrice = cart_prod_price;
+                else
+                  oldPrice = double.parse(cart_prod_newPrice);
                 await FirebaseFirestore.instance
                     .collection('Customers')
                     .doc(FirebaseAuth.instance.currentUser.uid)
@@ -190,9 +207,19 @@ class SingleCartProduct extends StatelessWidget {
             //  ======= this for price section ======
             Container(
               alignment: Alignment.topLeft,
-              child: Text(
+              child: (cart_prod_discount=='false')? Text(
                 "${cart_prod_price} EGP",
                 style: TextStyle(color: Colors.red),
+              ):Row(
+                children: [
+                Text(
+                "${cart_prod_price} EGP",
+                style: TextStyle(decoration: TextDecoration.lineThrough),),
+              SizedBox(width: 10,),
+              Text(
+                "${cart_prod_newPrice} EGP",
+                style: TextStyle(color: Colors.red,),)
+                ],
               ),
             ),
           ],

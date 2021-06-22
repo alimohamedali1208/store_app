@@ -507,7 +507,7 @@ class _SingleProductState extends State<SingleProduct> {
               builder: (context) => ProductDetails.Laptop(
                 // passing the values via constructor
                 product_detail_name: widget.productName,
-                product_detail_new_price: widget.productPrice,
+                product_detail_price: widget.productPrice,
                 product_detail_picture: widget.productImg,
                 product_detail_desc: widget.productDesc,
                 product_detail_brand: widget.productBrand,

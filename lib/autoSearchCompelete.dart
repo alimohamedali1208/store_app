@@ -138,6 +138,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           final productbrand = product.data()['Brand Name'];
                           final productquantity = product.data()['Quantity'];
                           final productseller = product.data()['Seller Email'];
+                          final productdiscount = product.data()['Discount'];
+                          final productdiscountpercent = product.data()['Discount percent'];
+                          final productnewprice = product.data()['New price'];
                           final rate1star = product.data()['1 star rate'];
                           final rate2star = product.data()['2 star rate'];
                           final rate3star = product.data()['3 star rate'];
@@ -155,6 +158,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productview = SingleProduct.mobile(
                               productName: productname,
                               productPrice: productprice,
+                              productNewPrice: productnewprice,
+                              productDiscountFlag: productdiscount,
+                              productDiscountPercent: productdiscountpercent,
                               productImg: productimg,
                               productType: producttype,
                               productDesc: productdesc,
@@ -184,6 +190,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productview = SingleProduct.laptop(
                               productName: productname,
                               productPrice: productprice,
+                              productNewPrice: productnewprice,
+                              productDiscountFlag: productdiscount,
+                              productDiscountPercent: productdiscountpercent,
                               productImg: productimg,
                               productType: producttype,
                               productDesc: productdesc,
@@ -208,6 +217,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productview = SingleProduct(
                               productName: productname,
                               productPrice: productprice,
+                              productNewPrice: productnewprice,
+                              productDiscountFlag: productdiscount,
+                              productDiscountPercent: productdiscountpercent,
                               productImg: productimg,
                               productType: producttype,
                               productDesc: productdesc,
@@ -243,6 +255,9 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
 class SingleProduct extends StatefulWidget {
   final String productName;
   final double productPrice;
+  final String productNewPrice;
+  final String productDiscountFlag;
+  final String productDiscountPercent;
   final String productImg;
   final String productType;
   final String productID;
@@ -269,6 +284,9 @@ class SingleProduct extends StatefulWidget {
   SingleProduct(
       {this.productName,
       this.productPrice,
+      this.productNewPrice,
+      this.productDiscountFlag,
+      this.productDiscountPercent,
       this.productImg,
       this.productID,
       this.productType,
@@ -286,6 +304,9 @@ class SingleProduct extends StatefulWidget {
   SingleProduct.mobile(
       {this.productName,
       this.productPrice,
+      this.productNewPrice,
+      this.productDiscountFlag,
+      this.productDiscountPercent,
       this.productImg,
       this.productID,
       this.productType,
@@ -308,6 +329,9 @@ class SingleProduct extends StatefulWidget {
   SingleProduct.laptop(
       {this.productName,
       this.productPrice,
+      this.productNewPrice,
+      this.productDiscountFlag,
+      this.productDiscountPercent,
       this.productImg,
       this.productID,
       this.productType,
@@ -357,17 +381,27 @@ class _SingleProductState extends State<SingleProduct> {
             .collection('cart')
             .doc(widget.productID)
             .set({
+          'ProductID':widget.productID,
+          'CustomerID':_auth.currentUser.uid,
           'Product Quantity': 1,
           'Product Name': widget.productName,
           'Price': widget.productPrice,
+          'New price': widget.productNewPrice,
+          'Discount' : widget.productDiscountFlag,
+          'Discount percent' : widget.productDiscountPercent,
           'type': widget.productType,
           'imgURL': widget.productImg
         });
+        double price;
+        if(widget.productDiscountFlag=='false')
+          price = widget.productPrice;
+        else
+          price = double.parse(widget.productNewPrice);
         await _firestore
             .collection('Customers')
             .doc(_auth.currentUser.uid)
             .update({
-          'Total': FieldValue.increment(widget.productPrice)
+          'Total': FieldValue.increment(price)
         });
         setState(() {
           cartIsPressed = true;
@@ -388,7 +422,10 @@ class _SingleProductState extends State<SingleProduct> {
                 builder: (context) => ProductDetails.Mobile(
                   // passing the values via constructor
                   product_detail_name: widget.productName,
-                  product_detail_new_price: widget.productPrice,
+                  product_detail_price: widget.productPrice,
+                  product_detail_newPrice: widget.productNewPrice,
+                  product_discount_flag: widget.productDiscountFlag,
+                  product_discount_percent: widget.productDiscountPercent,
                   product_detail_picture: widget.productImg,
                   product_detail_desc: widget.productDesc,
                   product_detail_brand: widget.productBrand,
@@ -416,7 +453,10 @@ class _SingleProductState extends State<SingleProduct> {
                 builder: (context) => ProductDetails.Laptop(
                   // passing the values via constructor
                   product_detail_name: widget.productName,
-                  product_detail_new_price: widget.productPrice,
+                  product_detail_price: widget.productPrice,
+                  product_detail_newPrice: widget.productNewPrice,
+                  product_discount_flag: widget.productDiscountFlag,
+                  product_discount_percent: widget.productDiscountPercent,
                   product_detail_picture: widget.productImg,
                   product_detail_desc: widget.productDesc,
                   product_detail_brand: widget.productBrand,
@@ -445,7 +485,10 @@ class _SingleProductState extends State<SingleProduct> {
                 builder: (context) => ProductDetails(
                   // passing the values via constructor
                   product_detail_name: widget.productName,
-                  product_detail_new_price: widget.productPrice,
+                  product_detail_price: widget.productPrice,
+                  product_detail_newPrice: widget.productNewPrice,
+                  product_discount_flag: widget.productDiscountFlag,
+                  product_discount_percent: widget.productDiscountPercent,
                   product_detail_picture: widget.productImg,
                   product_detail_desc: widget.productDesc,
                   product_detail_brand: widget.productBrand,
@@ -480,10 +523,22 @@ class _SingleProductState extends State<SingleProduct> {
               //  ======= this for price section ======
               Container(
                 alignment: Alignment.topLeft,
-                child: Text(
+                child:(widget.productDiscountFlag=='false')? Text(
                   "${widget.productPrice} EGP",
                   style: TextStyle(color: Colors.red),
-                ),
+                ):Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "${widget.productPrice}",
+                        style: TextStyle(decoration: TextDecoration.lineThrough),
+                      ),
+                      SizedBox(width: 10,),
+                      Text(
+                        "${widget.productNewPrice} EGP",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

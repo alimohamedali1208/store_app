@@ -10,8 +10,10 @@ UserCustomer customer = UserCustomer();
 class ProductDetails extends StatefulWidget {
   double customerRating = 0;
   String product_detail_name;
-  double product_detail_new_price;
-  //final product_detail_old_price;
+  double product_detail_price;
+  String product_detail_newPrice;
+  String product_discount_flag;
+  String product_discount_percent;
   var product_detail_picture;
   String product_detail_desc;
   String product_detail_brand;
@@ -37,7 +39,10 @@ class ProductDetails extends StatefulWidget {
 
   ProductDetails(
       {this.product_detail_name,
-      this.product_detail_new_price,
+      this.product_detail_price,
+      this.product_detail_newPrice,
+      this.product_discount_flag,
+      this.product_discount_percent,
       this.product_detail_picture,
       this.product_detail_desc,
       this.product_detail_brand,
@@ -54,7 +59,10 @@ class ProductDetails extends StatefulWidget {
 
   ProductDetails.Mobile(
       {this.product_detail_name,
-      this.product_detail_new_price,
+      this.product_detail_price,
+      this.product_detail_newPrice,
+      this.product_discount_flag,
+      this.product_discount_percent,
       this.product_detail_picture,
       this.product_detail_desc,
       this.product_detail_brand,
@@ -76,7 +84,10 @@ class ProductDetails extends StatefulWidget {
 
   ProductDetails.Laptop(
       {this.product_detail_name,
-      this.product_detail_new_price,
+      this.product_detail_price,
+      this.product_detail_newPrice,
+      this.product_discount_flag,
+      this.product_discount_percent,
       this.product_detail_picture,
       this.product_detail_desc,
       this.product_detail_brand,
@@ -130,17 +141,27 @@ class _ProductDetailsState extends State<ProductDetails> {
             .collection('cart')
             .doc(widget.product_detail_id)
             .set({
+          'ProductID':widget.product_detail_id,
+          'CustomerID':_auth.currentUser.uid,
           'Product Quantity': 1,
           'Product Name': widget.product_detail_name,
-          'Price': widget.product_detail_new_price,
+          'Price': widget.product_detail_price,
+          'New price': widget.product_detail_newPrice,
+          'Discount' : widget.product_discount_flag,
+          'Discount percent' : widget.product_discount_percent,
           'type': widget.product_detail_type,
-          'imgURL': widget.product_detail_picture
+          'imgURL': widget.product_detail_picture,
         });
+        double price;
+        if(widget.product_discount_flag=='false')
+          price = widget.product_detail_price;
+        else
+          price = double.parse(widget.product_detail_newPrice);
         await _firestore
             .collection('Customers')
             .doc(_auth.currentUser.uid)
             .update({
-          'Total': FieldValue.increment(widget.product_detail_new_price)
+          'Total': FieldValue.increment(price)
         });
         print('Product added to cart');
       }
@@ -217,7 +238,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           .doc(_auth.currentUser.uid)
           .collection('rated products')
           .doc(widget.product_detail_id)
-          .set({'rating': rating});
+          .set({'rating': rating, 'ProductID': widget.product_detail_id, 'CustomerID': _auth.currentUser.uid});
       print('step4 change actual rating for product');
       overallRating = (widget.rate5star +
           widget.rate4star +
@@ -404,19 +425,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, right: 100, top: 10),
-                            child: Text(
-                              "${widget.product_detail_new_price} EGP",
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: Container(
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, top: 10),
+                                child: (widget.product_discount_flag=='false')? Text(
+                                  "${widget.product_detail_price} EGP",
+                                  style: Theme.of(context).textTheme.headline6,
+                                ): Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "${widget.product_detail_price}",
+                                      style: TextStyle(decoration: TextDecoration.lineThrough, fontSize: 15),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      "${widget.product_detail_newPrice} EGP",
+                                      style: Theme.of(context).textTheme.headline6,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 18),
+                              Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 14, vertical: 2),
                                 height: 40,
@@ -424,7 +457,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 decoration: BoxDecoration(
                                     color: Colors.grey[300],
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
+                                    BorderRadius.all(Radius.circular(15))),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -441,8 +474,36 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 10.0),
+                          //   child: Container(
+                          //     padding: EdgeInsets.symmetric(
+                          //         horizontal: 14, vertical: 2),
+                          //     height: 40,
+                          //     width: 80,
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.grey[300],
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(15))),
+                          //     child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.center,
+                          //       children: [
+                          //         Text(
+                          //           "${widget.product_detail_rating}",
+                          //           style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //           ),
+                          //         ),
+                          //         Icon(
+                          //           Icons.star_outlined,
+                          //           color: Colors.yellow,
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ]),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, top: 10),

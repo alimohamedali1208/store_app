@@ -98,7 +98,7 @@ class Single_product extends StatelessWidget {
                   builder: (context) => new ProductDetails(
                     // passing the values via constructor
                     product_detail_name: prod_name,
-                    product_detail_new_price: prod_price,
+                    product_detail_price: prod_price,
                     product_detail_picture: prod_picture,
                   ),
                 ),

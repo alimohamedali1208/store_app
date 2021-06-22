@@ -61,6 +61,7 @@ class _addMobileState extends State<addMobile> {
       'Memory': memory,
       'OS': ddOS,
       'Price': price,
+      'New price': '0',
       'Quantity': quantity,
       'Rating': '0',
       '1 star rate': 0,
