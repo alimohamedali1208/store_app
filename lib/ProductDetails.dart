@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:store_app/UserCustomer.dart';
 
@@ -123,51 +124,54 @@ class _ProductDetailsState extends State<ProductDetails> {
     setState(() {
       showSpinner = true;
     });
-    print('first check if product already in cart');
-    await _firestore
-        .collection('Customers')
-        .doc(_auth.currentUser.uid)
-        .collection('cart')
-        .doc(widget.product_detail_id)
-        .get()
-        .then((DocumentSnapshot snapshot) async {
-      if (snapshot.exists) {
-        print('product already in cart');
-      } else {
-        print('insert product id in cart');
-        await _firestore
-            .collection('Customers')
-            .doc(_auth.currentUser.uid)
-            .collection('cart')
-            .doc(widget.product_detail_id)
-            .set({
-          'ProductID':widget.product_detail_id,
-          'CustomerID':_auth.currentUser.uid,
-          'Product Quantity': 1,
-          'Product Name': widget.product_detail_name,
-          'Price': widget.product_detail_price,
-          'New price': widget.product_detail_newPrice,
-          'Discount' : widget.product_discount_flag,
-          'Discount percent' : widget.product_discount_percent,
-          'type': widget.product_detail_type,
-          'imgURL': widget.product_detail_picture,
-        });
-        double price;
-        if(widget.product_discount_flag=='false')
-          price = widget.product_detail_price;
-        else
-          price = double.parse(widget.product_detail_newPrice);
-        await _firestore
-            .collection('Customers')
-            .doc(_auth.currentUser.uid)
-            .update({
-          'Total': FieldValue.increment(price)
-        });
-        print('Product added to cart');
-      }
-      setState(() {
-        showSpinner = false;
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in cart');
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('cart')
+          .doc(widget.product_detail_id)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (snapshot.exists) {
+          print('product already in cart');
+          Fluttertoast.showToast(msg: "Product already in cart");
+        } else {
+          print('insert product id in cart');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('cart')
+              .doc(widget.product_detail_id)
+              .set({
+            'ProductID': widget.product_detail_id,
+            'CustomerID': _auth.currentUser.uid,
+            'Product Quantity': 1,
+            'Product Name': widget.product_detail_name,
+            'Price': widget.product_detail_price,
+            'New price': widget.product_detail_newPrice,
+            'Discount': widget.product_discount_flag,
+            'Discount percent': widget.product_discount_percent,
+            'type': widget.product_detail_type,
+            'imgURL': widget.product_detail_picture,
+          });
+          double price;
+          if (widget.product_discount_flag == 'false')
+            price = widget.product_detail_price;
+          else
+            price = double.parse(widget.product_detail_newPrice);
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .update({'Total': FieldValue.increment(price)});
+          print('Product added to cart');
+        }
       });
+    }
+    setState(() {
+      showSpinner = false;
     });
   }
 
@@ -177,9 +181,10 @@ class _ProductDetailsState extends State<ProductDetails> {
     int ratingMul;
     int overallRating;
     double avgRating;
-    if (customer.firstName == 'temp')
+    if (customer.firstName == 'temp') {
       print('user not signed in!');
-    else {
+      Fluttertoast.showToast(msg: "You need to sign in first!");
+    } else {
       print('User is signed in!');
       print('step1 get old rating');
       await _firestore
@@ -238,7 +243,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           .doc(_auth.currentUser.uid)
           .collection('rated products')
           .doc(widget.product_detail_id)
-          .set({'rating': rating, 'ProductID': widget.product_detail_id, 'CustomerID': _auth.currentUser.uid});
+          .set({
+        'rating': rating,
+        'ProductID': widget.product_detail_id,
+        'CustomerID': _auth.currentUser.uid
+      });
       print('step4 change actual rating for product');
       overallRating = (widget.rate5star +
           widget.rate4star +
@@ -427,25 +436,40 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, top: 10),
-                                child: (widget.product_discount_flag=='false')? Text(
-                                  "${widget.product_detail_price} EGP",
-                                  style: Theme.of(context).textTheme.headline6,
-                                ): Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      "${widget.product_detail_price}",
-                                      style: TextStyle(decoration: TextDecoration.lineThrough, fontSize: 15),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                      "${widget.product_detail_newPrice} EGP",
-                                      style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                  ],
+                              Container(
+                                width: 200,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, top: 10),
+                                  child:
+                                      (widget.product_discount_flag == 'false')
+                                          ? Text(
+                                              "${widget.product_detail_price} EGP",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6,
+                                            )
+                                          : Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  "${widget.product_detail_price}",
+                                                  style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      fontSize: 15),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  "${widget.product_detail_newPrice} EGP",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline6,
+                                                ),
+                                              ],
+                                            ),
                                 ),
                               ),
                               SizedBox(width: 18),
@@ -457,7 +481,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 decoration: BoxDecoration(
                                     color: Colors.grey[300],
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
+                                        BorderRadius.all(Radius.circular(15))),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -476,34 +500,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ),
                             ],
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 10.0),
-                          //   child: Container(
-                          //     padding: EdgeInsets.symmetric(
-                          //         horizontal: 14, vertical: 2),
-                          //     height: 40,
-                          //     width: 80,
-                          //     decoration: BoxDecoration(
-                          //         color: Colors.grey[300],
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(15))),
-                          //     child: Row(
-                          //       mainAxisAlignment: MainAxisAlignment.center,
-                          //       children: [
-                          //         Text(
-                          //           "${widget.product_detail_rating}",
-                          //           style: TextStyle(
-                          //             fontWeight: FontWeight.bold,
-                          //           ),
-                          //         ),
-                          //         Icon(
-                          //           Icons.star_outlined,
-                          //           color: Colors.yellow,
-                          //         )
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
                         ]),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, top: 10),
@@ -558,7 +554,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                           padding: const EdgeInsets.only(
                             left: 15.0,
                             right: 60,
-                            top: 10,
                           ),
                           child: Text(
                               "\u2022 Quantity: ${widget.product_detail_quantity}"),
@@ -567,7 +562,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             padding: const EdgeInsets.only(
                               left: 15.0,
                               right: 60,
-                              top: 10,
+                              bottom: 10,
                             ),
                             child: Text((() {
                               if (widget.product_detail_type == 'Mobiles')

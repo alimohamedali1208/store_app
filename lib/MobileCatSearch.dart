@@ -151,7 +151,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: null,
+                              value: "Other",
                             ),
                           ],
                           onChanged: (String value) {
@@ -184,7 +184,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: null,
+                              value: "Other",
                             ),
                           ],
                           onChanged: (String value) {
@@ -221,7 +221,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: null,
+                              value: "Other",
                             ),
                           ],
                           onChanged: (String value) {
@@ -303,7 +303,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: null,
+                              value: "Other",
                             ),
                           ],
                           onChanged: (String value) {
@@ -355,16 +355,21 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         for (var product in products) {
                           final productStorage = product.data()['Storage'];
                           final productRating = product.data()['Rating'];
-                          if (ddStorage == null || productStorage >= ddStorage) {
-                            if (ddRatings == null || productRating >= ddRatings) {
-                              final productname = product.data()['Product Name'];
+                          if (ddStorage == null ||
+                              productStorage >= ddStorage) {
+                            if (ddRatings == null ||
+                                productRating >= ddRatings) {
+                              final productname =
+                                  product.data()['Product Name'];
                               final productprice = product.data()['Price'];
                               final productimg = product.data()['imgURL'];
                               final producttype = product.data()['type'];
                               final productdesc = product.data()['Description'];
                               final productbrand = product.data()['Brand Name'];
-                              final productquantity = product.data()['Quantity'];
-                              final productseller = product.data()['Seller Email'];
+                              final productquantity =
+                                  product.data()['Quantity'];
+                              final productseller =
+                                  product.data()['Seller Email'];
                               final productrating = product.data()['Rating'];
                               final productid = product.id;
                               //stuff specific to this type of products

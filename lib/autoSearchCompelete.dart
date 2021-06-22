@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
@@ -139,7 +140,8 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           final productquantity = product.data()['Quantity'];
                           final productseller = product.data()['Seller Email'];
                           final productdiscount = product.data()['Discount'];
-                          final productdiscountpercent = product.data()['Discount percent'];
+                          final productdiscountpercent =
+                              product.data()['Discount percent'];
                           final productnewprice = product.data()['New price'];
                           final rate1star = product.data()['1 star rate'];
                           final rate2star = product.data()['2 star rate'];
@@ -363,52 +365,56 @@ class _SingleProductState extends State<SingleProduct> {
   bool cartIsPressed = false;
 
   Future addToCart() async {
-    print('first check if product already in cart');
-    await _firestore
-        .collection('Customers')
-        .doc(_auth.currentUser.uid)
-        .collection('cart')
-        .doc(widget.productID)
-        .get()
-        .then((DocumentSnapshot snapshot) async {
-      if (snapshot.exists) {
-        print('product already in cart');
-      } else {
-        print('insert product id in cart');
-        await _firestore
-            .collection('Customers')
-            .doc(_auth.currentUser.uid)
-            .collection('cart')
-            .doc(widget.productID)
-            .set({
-          'ProductID':widget.productID,
-          'CustomerID':_auth.currentUser.uid,
-          'Product Quantity': 1,
-          'Product Name': widget.productName,
-          'Price': widget.productPrice,
-          'New price': widget.productNewPrice,
-          'Discount' : widget.productDiscountFlag,
-          'Discount percent' : widget.productDiscountPercent,
-          'type': widget.productType,
-          'imgURL': widget.productImg
-        });
-        double price;
-        if(widget.productDiscountFlag=='false')
-          price = widget.productPrice;
-        else
-          price = double.parse(widget.productNewPrice);
-        await _firestore
-            .collection('Customers')
-            .doc(_auth.currentUser.uid)
-            .update({
-          'Total': FieldValue.increment(price)
-        });
-        setState(() {
-          cartIsPressed = true;
-        });
-        print('Product added to cart');
-      }
-    });
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in cart');
+
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('cart')
+          .doc(widget.productID)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (snapshot.exists) {
+          print('product already in cart');
+          Fluttertoast.showToast(msg: "Product already in cart");
+        } else {
+          print('insert product id in cart');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('cart')
+              .doc(widget.productID)
+              .set({
+            'ProductID': widget.productID,
+            'CustomerID': _auth.currentUser.uid,
+            'Product Quantity': 1,
+            'Product Name': widget.productName,
+            'Price': widget.productPrice,
+            'New price': widget.productNewPrice,
+            'Discount': widget.productDiscountFlag,
+            'Discount percent': widget.productDiscountPercent,
+            'type': widget.productType,
+            'imgURL': widget.productImg
+          });
+          double price;
+          if (widget.productDiscountFlag == 'false')
+            price = widget.productPrice;
+          else
+            price = double.parse(widget.productNewPrice);
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .update({'Total': FieldValue.increment(price)});
+          setState(() {
+            cartIsPressed = true;
+          });
+          print('Product added to cart');
+        }
+      });
+    }
   }
 
   @override
@@ -523,22 +529,28 @@ class _SingleProductState extends State<SingleProduct> {
               //  ======= this for price section ======
               Container(
                 alignment: Alignment.topLeft,
-                child:(widget.productDiscountFlag=='false')? Text(
-                  "${widget.productPrice} EGP",
-                  style: TextStyle(color: Colors.red),
-                ):Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "${widget.productPrice}",
-                        style: TextStyle(decoration: TextDecoration.lineThrough),
-                      ),
-                      SizedBox(width: 10,),
-                      Text(
-                        "${widget.productNewPrice} EGP",
+                child: (widget.productDiscountFlag == 'false')
+                    ? Text(
+                        "${widget.productPrice} EGP",
                         style: TextStyle(color: Colors.red),
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${widget.productPrice}",
+                            style: TextStyle(
+                                decoration: TextDecoration.lineThrough),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${widget.productNewPrice} EGP",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
                       ),
-                    ],),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -554,7 +566,10 @@ class _SingleProductState extends State<SingleProduct> {
                       color: Colors.amber,
                     ),
                   ),
-                  Text('${widget.productRating}', style: TextStyle(height: 1.5),),
+                  Text(
+                    '${widget.productRating}',
+                    style: TextStyle(height: 1.5),
+                  ),
                   Spacer(),
                   IconButton(
                       icon: (isPressed)
@@ -574,10 +589,12 @@ class _SingleProductState extends State<SingleProduct> {
                     width: 10,
                   ),
                   IconButton(
-                      icon: (cartIsPressed)? Icon(Icons.download_done_rounded):Icon(Icons.add_shopping_cart_outlined),
-                      tooltip: 'Add to cart',
-                      color: Colors.black,
-                      onPressed: cartIsPressed? null: ()=> addToCart(),
+                    icon: (cartIsPressed)
+                        ? Icon(Icons.download_done_rounded)
+                        : Icon(Icons.add_shopping_cart_outlined),
+                    tooltip: 'Add to cart',
+                    color: Colors.black,
+                    onPressed: cartIsPressed ? null : () => addToCart(),
                   )
                 ],
               )
