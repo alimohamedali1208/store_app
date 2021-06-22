@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class addMobile extends StatefulWidget {
@@ -476,6 +477,14 @@ class _addMobileState extends State<addMobile> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
+                  Fluttertoast.showToast(
+                      msg: "Product has been added",
+                      toastLength: Toast.LENGTH_SHORT,
+                      backgroundColor: Colors.black54,
+                      gravity: ToastGravity.BOTTOM,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
 
                   Navigator.pop(context);
                 } else {
