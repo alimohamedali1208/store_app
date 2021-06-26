@@ -183,6 +183,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     double avgRating;
     if (customer.firstName == 'temp') {
       print('user not signed in!');
+      //BASEK WAS HERE
       Fluttertoast.showToast(msg: "You need to sign in first!");
     } else {
       print('User is signed in!');
@@ -260,8 +261,8 @@ class _ProductDetailsState extends State<ProductDetails> {
           2 * widget.rate2star +
           1 * widget.rate1star);
       avgRating = ratingMul / overallRating;
-      print('avg rate before convert $avgRating');
-      print('This is it after converting ${avgRating.toStringAsPrecision(2)}');
+      // print('avg rate before convert $avgRating');
+      // print('This is it after converting ${avgRating.toStringAsPrecision(2)}');
       await _firestore
           .collection('ProductsCollection')
           .doc('${widget.product_detail_type}')

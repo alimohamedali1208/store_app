@@ -71,7 +71,7 @@ class _addMobileState extends State<addMobile> {
       '4 star rate': 0,
       '5 star rate': 0,
       'Discount': 'false',
-      'Discount percent': 0,
+      'Discount percent': '0',
       'SellerID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
       'type': 'Mobiles',
@@ -466,6 +466,7 @@ class _addMobileState extends State<addMobile> {
               onPressed: () async {
                 if (_addMobileFormKey.currentState.validate()) {
                   _addMobileFormKey.currentState.save();
+                  //Indexing for product name
                   List<String> splitlist = name.split(" ");
                   int j = splitlist[0].length + 1;
 
@@ -476,7 +477,9 @@ class _addMobileState extends State<addMobile> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
+
                   uploadImageToFirebase(context);
+
                   Fluttertoast.showToast(
                       msg: "Product has been added",
                       toastLength: Toast.LENGTH_SHORT,

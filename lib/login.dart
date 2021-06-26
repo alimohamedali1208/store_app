@@ -281,6 +281,7 @@ class _loginState extends State<login> {
                         });
                         final newuser = await _auth.signInWithEmailAndPassword(
                             email: Email, password: pass);
+                        customer.userID = _auth.currentUser.uid;
                         Navigator.pushNamed(context, loggedinhome.id);
                       }
                     }
