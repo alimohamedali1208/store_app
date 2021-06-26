@@ -6,7 +6,7 @@ class CarouselImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, left: 3.0, right: 3.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -23,13 +23,16 @@ class CarouselImages extends StatelessWidget {
             AssetImage("images/clothes.jpg"),
           ],
           autoplay: true,
-          animationCurve: Curves.easeIn,
-          animationDuration: Duration(microseconds: 10000),
+          animationCurve: Curves.fastOutSlowIn,
+          animationDuration: Duration(milliseconds: 1000),
           borderRadius: true,
           radius: Radius.circular(20),
           dotSize: 10.0,
           indicatorBgPadding: 4.0,
           dotBgColor: Colors.transparent,
+          onImageTap: (index) {
+            print("image $index");
+          },
         ),
       ),
     );
