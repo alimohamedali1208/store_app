@@ -398,9 +398,11 @@ class _registerState extends State<register> {
                   setState(() {
                     showSpinner = true;
                   });
+                  //Here we register the new user
                   try {
                     final newuser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
+                    //check if its a seller or a customer
                     if (flagSellerDatabase) {
                       await _firestore.collection('Sellers').doc(_auth.currentUser.uid).set({
                         'FirstName': fname,
