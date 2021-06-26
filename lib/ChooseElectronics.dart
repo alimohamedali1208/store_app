@@ -41,7 +41,7 @@ class _ChooseElectronicsState extends State<ChooseElectronics> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/projector.jpg',
+                      img: 'images/Projector2.png',
                       categoryName: 'Projector',
                     ),
                     onTap: () {

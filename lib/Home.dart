@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/services.dart';
+import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Drawer.dart';
 import 'autoSearchCompelete.dart';
 import 'login.dart';
@@ -40,26 +41,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Widget image_carusel = new Container(
-      height: 200.0,
-      child: Carousel(
-        boxFit: BoxFit.cover,
-        images: [
-          //AssetImage("images/mobiles.jpg"),
-          AssetImage("images/home.jpg"),
-          AssetImage("images/laptop.jpg"),
-          AssetImage("images/tv.jpg"),
-          AssetImage("images/watches.jpg"),
-          AssetImage("images/clothes.jpg"),
-        ],
-        autoplay: false,
-        animationCurve: Curves.fastOutSlowIn,
-        animationDuration: Duration(microseconds: 1000),
-        dotSize: 4.0,
-        indicatorBgPadding: 4.0,
-        dotBgColor: Colors.transparent,
-      ),
-    );
+    Widget image_carusel = CarouselImages();
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -107,14 +89,30 @@ class _HomeState extends State<Home> {
             image_carusel,
             // padding
             new Padding(padding: const EdgeInsets.all(8.0)),
-            Text('Categories'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Categories',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             // horizontal list
 
             Horizontal(),
             // grid view list
 
             new Padding(padding: const EdgeInsets.all(14)),
-            Text('Recent products'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Recent products',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
             Container(
               child: Product(),
             )

@@ -1,37 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/MobileCatSearch.dart';
 
+/*
+
+* */
 class Horizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 115.0,
+      height: 140.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          Category(
-            image_location: 'images/tablets.jpg',
-            image_caption: 'Mobiles',
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => mobileCatSearch()));
+            },
+            child: Category(
+              image_location: 'icons/mobile.png',
+              image_caption: 'Mobiles',
+            ),
           ),
-          Category(
-            image_location: 'images/cooker.jpg',
-            image_caption: 'Appliances',
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/laptop.png',
+              image_caption: 'Laptops',
+            ),
           ),
-          Category(
-            image_location: 'images/usb.jpg',
-            image_caption: 'PC Accessories',
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/stove.png',
+              image_caption: 'Appliances',
+            ),
           ),
-          Category(
-            image_location: 'images/projector.jpg',
-            image_caption: 'Electronics',
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/flashDrive.png',
+              image_caption: 'PC Accessories',
+            ),
           ),
-          Category(
-            image_location: 'images/rings.jpg',
-            image_caption: 'Jewelary',
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/electronics.png',
+              image_caption: 'Electronics',
+            ),
           ),
-          Category(
-            image_location: 'images/pants.jpg',
-            image_caption: 'Fashion',
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/camera.png',
+              image_caption: 'Cameras',
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/Ring.png',
+              image_caption: 'Jewellery ',
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              //todo Navigate
+            },
+            child: Category(
+              image_location: 'icons/shirt.png',
+              image_caption: 'Fashion',
+            ),
           ),
         ],
         //addAutomaticKeepAlives: false,
@@ -46,24 +98,43 @@ class Category extends StatelessWidget {
 
   Category({this.image_location, this.image_caption});
 
+  //Image.asset(image_location, width: 100.0, height: 80.0),
+  /*
+  * Container(
+
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(image_caption,
+                    style:
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold)),
+              ),
+            )
+            * */
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: InkWell(
-        onTap: () {Navigator.push(
-            context, MaterialPageRoute(builder: (context) => mobileCatSearch()));},
-        child: Container(
-          width: 100.0,
-          child: ListTile(
-              title: Image.asset(image_location, width: 100.0, height: 80.0),
-              subtitle: Container(
-                alignment: Alignment.topCenter,
-                child:
-                    Text(image_caption, style: new TextStyle(fontSize: 12.0)),
-              )),
-        ),
-      ),
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+          alignment: Alignment.topCenter,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.grey[200]),
+          width: 130.0,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10.0,
+                ),
+                child: Image.asset(image_location, width: 100.0, height: 80.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(image_caption,
+                    style:
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          )),
     );
   }
 }

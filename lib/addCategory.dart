@@ -121,7 +121,7 @@ class _addCategoryState extends State<addCategory> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/projector.jpg',
+                      img: 'images/Projector.png',
                       categoryName: 'Electronics',
                     ),
                     onTap: () {
@@ -135,7 +135,7 @@ class _addCategoryState extends State<addCategory> {
                 Expanded(
                   child: GestureDetector(
                     child: productCard(
-                      img: 'images/Laptop_CAT.png',
+                      img: 'images/mac.png',
                       categoryName: 'Laptops',
                     ),
                     onTap: () {

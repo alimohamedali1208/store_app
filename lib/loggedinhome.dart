@@ -6,6 +6,7 @@ import 'package:store_app/Cart.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/autoSearchCompelete.dart';
+import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Favorites.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 import 'package:store_app/components/Product.dart';
@@ -50,26 +51,7 @@ class _loggedinhomeState extends State<loggedinhome> {
 
   @override
   Widget build(BuildContext context) {
-    Widget image_carusel = new Container(
-      height: 200.0,
-      child: Carousel(
-        boxFit: BoxFit.cover,
-        images: [
-          //AssetImage("images/mobiles.jpg"),
-          AssetImage("images/home.jpg"),
-          AssetImage("images/laptop.jpg"),
-          AssetImage("images/tv.jpg"),
-          AssetImage("images/watches.jpg"),
-          AssetImage("images/clothes.jpg"),
-        ],
-        autoplay: false,
-        animationCurve: Curves.fastOutSlowIn,
-        animationDuration: Duration(microseconds: 1000),
-        dotSize: 4.0,
-        indicatorBgPadding: 4.0,
-        dotBgColor: Colors.transparent,
-      ),
-    );
+    Widget image_carusel = CarouselImages();
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -147,15 +129,6 @@ class _loggedinhomeState extends State<loggedinhome> {
                       Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
                 ),
               ),
-
-              InkWell(
-                child: ListTile(
-                  onTap: () {},
-                  title: Text('Categories'),
-                  leading: Icon(Icons.category, color: Colors.blueGrey[900]),
-                ),
-              ),
-
               InkWell(
                 child: ListTile(
                   onTap: () {
@@ -202,14 +175,24 @@ class _loggedinhomeState extends State<loggedinhome> {
             image_carusel,
             // padding
             new Padding(padding: const EdgeInsets.all(8.0)),
-            Text('Categories'),
+            Text(
+              'Categories',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             // horizontal list
 
             Horizontal(),
             // grid view list
 
             new Padding(padding: const EdgeInsets.all(14)),
-            Text('Recentproducts'),
+            Text('Recent products',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                )),
             Container(
               height: 320.0,
               child: Product(),

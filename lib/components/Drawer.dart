@@ -45,14 +45,6 @@ class MyDrawer extends StatelessWidget {
           InkWell(
             child: ListTile(
               onTap: () {},
-              title: Text('Categories'),
-              leading: Icon(Icons.category, color: Colors.black),
-            ),
-          ),
-
-          InkWell(
-            child: ListTile(
-              onTap: () {},
               title: Text('Favorites'),
               leading: Icon(Icons.favorite, color: Colors.black),
             ),

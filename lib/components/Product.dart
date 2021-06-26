@@ -33,7 +33,7 @@ class _ProductState extends State<Product> {
       "old_price": 50000,
       "price": 49000
     },
-    {
+    /*{
       "name": "Shoes",
       "picture": "images/shoes.jpg",
       "old_price": 700,
@@ -44,7 +44,7 @@ class _ProductState extends State<Product> {
       "picture": "images/reciever.jpg",
       "old_price": 300,
       "price": 250
-    },
+    },*/
   ];
 
   @override
@@ -87,7 +87,7 @@ class Single_product extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: 5.0,
+      /*elevation: 5.0,*/
       child: Hero(
         tag: prod_name,
         child: Material(
