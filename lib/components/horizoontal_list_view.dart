@@ -117,7 +117,7 @@ class Category extends StatelessWidget {
       child: Container(
           alignment: Alignment.topCenter,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10), color: Colors.grey[200]),
+              borderRadius: BorderRadius.circular(10), color: Colors.grey[300]),
           width: 130.0,
           child: Column(
             children: [

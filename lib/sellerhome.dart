@@ -179,7 +179,8 @@ class _sellerhomeState extends State<sellerhome> {
                   final productname = product.data()['Product Name'];
                   final productprice = product.data()['Price'];
                   final productdiscount = product.data()['Discount'];
-                  final productdiscountpercent = product.data()['Discount percent'];
+                  final productdiscountpercent =
+                      product.data()['Discount percent'];
                   final productnewprice = product.data()['New price'];
                   final productimg = product.data()['imgURL'];
                   final producttype = product.data()['type'];
@@ -246,7 +247,7 @@ class SingleProduct extends StatefulWidget {
 
 class _SingleProductState extends State<SingleProduct> {
   final _formKey = GlobalKey<FormState>();
-  double oldPrice ;
+  double oldPrice;
   File _image;
   double offer;
   Future getImage() async {
@@ -275,22 +276,27 @@ class _SingleProductState extends State<SingleProduct> {
             //  ======= this for price section ======
             Container(
               alignment: Alignment.topLeft,
-              child:(widget.productDiscountFlag=='false')? Text(
-                "${widget.productPrice} EGP",
-                style: TextStyle(color: Colors.red),
-              ):Row(
-                children: [
-                  Text(
-                    "${widget.productPrice} EGP",
-                    style: TextStyle(decoration: TextDecoration.lineThrough),
-                  ),
-                  SizedBox(width: 10,),
-                  Text(
-                    "${widget.productNewPrice} EGP",
-                    style: TextStyle(color: Colors.red),
-                  )
-                ],
-              ),
+              child: (widget.productDiscountFlag == 'false')
+                  ? Text(
+                      "${widget.productPrice} EGP",
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          "${widget.productPrice} EGP",
+                          style:
+                              TextStyle(decoration: TextDecoration.lineThrough),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${widget.productNewPrice} EGP",
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
+                    ),
             ),
             Row(
               children: <Widget>[
@@ -468,10 +474,11 @@ class _SingleProductState extends State<SingleProduct> {
                                               labelText: "Add offer percentage",
                                             ),
                                             onSaved: (value) {
-                                              if(value == null)
+                                              if (value == null)
                                                 print('nope');
                                               else
-                                              offer = double.parse(value.trim());
+                                                offer =
+                                                    double.parse(value.trim());
                                             },
                                           ),
                                         ),
@@ -492,76 +499,161 @@ class _SingleProductState extends State<SingleProduct> {
                                               style: TextStyle(
                                                   color: Colors.black),
                                             ),
-                                            onPressed: () async{
+                                            onPressed: () async {
                                               _formKey.currentState.save();
                                               Navigator.of(context).pop();
 
-                                              if(offer == 0 || offer == null){
+                                              if (offer == 0 || offer == null) {
                                                 Fluttertoast.showToast(
-                                                    msg: "Discount has been removed",
-                                                    toastLength: Toast.LENGTH_SHORT,
-                                                    backgroundColor: Colors.black54,
-                                                    gravity: ToastGravity.BOTTOM,
+                                                    msg:
+                                                        "Discount has been removed",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    backgroundColor:
+                                                        Colors.black54,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
                                                     textColor: Colors.white,
-                                                    fontSize: 16.0
-                                                );
-                                                double newPrice = widget.productPrice - double.parse(widget.productNewPrice);
+                                                    fontSize: 16.0);
+                                                double newPrice = widget
+                                                        .productPrice -
+                                                    double.parse(
+                                                        widget.productNewPrice);
                                                 await FirebaseFirestore.instance
-                                                    .collection('ProductsCollection')
+                                                    .collection(
+                                                        'ProductsCollection')
                                                     .doc(widget.productType)
                                                     .collection('Products')
                                                     .doc(widget.productID)
-                                                    .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
+                                                    .update({
+                                                  'Discount': 'false',
+                                                  'Discount percent': '0',
+                                                  'New price': '0'
+                                                });
                                                 await FirebaseFirestore.instance
                                                     .collectionGroup('cart')
-                                                    .where('ProductID', isEqualTo: widget.productID).get().then((value) {
-                                                  value.docs.forEach((element) async{
-                                                    final cid = element.data()['CustomerID'].toString().trim();
-                                                    print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                        .collection('cart').doc(element.id).update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid).update(
-                                                        {'Total': FieldValue.increment(newPrice)});
+                                                    .where('ProductID',
+                                                        isEqualTo:
+                                                            widget.productID)
+                                                    .get()
+                                                    .then((value) {
+                                                  value.docs
+                                                      .forEach((element) async {
+                                                    final cid = element
+                                                        .data()['CustomerID']
+                                                        .toString()
+                                                        .trim();
+                                                    print(
+                                                        'This is the element data for customer ${element.data()['CustomerID']}');
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Customers')
+                                                        .doc(cid)
+                                                        .collection('cart')
+                                                        .doc(element.id)
+                                                        .update({
+                                                      'Discount': 'false',
+                                                      'Discount percent': '0',
+                                                      'New price': '0'
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Customers')
+                                                        .doc(cid)
+                                                        .update({
+                                                      'Total':
+                                                          FieldValue.increment(
+                                                              newPrice)
+                                                    });
+                                                  });
+                                                });
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "$offer% Discount has been added",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    backgroundColor:
+                                                        Colors.black54,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0);
+                                                String newPrice = (widget
+                                                            .productPrice -
+                                                        ((offer / 100) *
+                                                            widget
+                                                                .productPrice))
+                                                    .toString();
+                                                oldPrice = double.parse(
+                                                    widget.productNewPrice);
+                                                print('here look $oldPrice');
+                                                await FirebaseFirestore.instance
+                                                    .collection(
+                                                        'ProductsCollection')
+                                                    .doc(widget.productType)
+                                                    .collection('Products')
+                                                    .doc(widget.productID)
+                                                    .update({
+                                                  'Discount': 'true',
+                                                  'Discount percent': '$offer',
+                                                  'New price': newPrice
+                                                });
+                                                await FirebaseFirestore.instance
+                                                    .collectionGroup('cart')
+                                                    .where('ProductID',
+                                                        isEqualTo:
+                                                            widget.productID)
+                                                    .get()
+                                                    .then((value) {
+                                                  value.docs
+                                                      .forEach((element) async {
+                                                    final cid = element
+                                                        .data()['CustomerID']
+                                                        .toString()
+                                                        .trim();
+                                                    print(
+                                                        'This is the element data for customer ${element.data()['CustomerID']}');
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Customers')
+                                                        .doc(cid)
+                                                        .collection('cart')
+                                                        .doc(element.id)
+                                                        .update({
+                                                      'Discount': 'true',
+                                                      'Discount percent':
+                                                          '$offer',
+                                                      'New price': newPrice
+                                                    });
+                                                    //todo: This shit still needs work, logic is not correct
+                                                    if (oldPrice == 0)
+                                                      oldPrice = double.parse(
+                                                              newPrice) *
+                                                          2;
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Customers')
+                                                        .doc(cid)
+                                                        .update({
+                                                      'Total':
+                                                          FieldValue.increment(
+                                                              -oldPrice)
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Customers')
+                                                        .doc(cid)
+                                                        .update({
+                                                      'Total':
+                                                          FieldValue.increment(
+                                                              double.parse(
+                                                                  newPrice))
+                                                    });
                                                   });
                                                 });
                                               }
-                                              else{
-                                              Fluttertoast.showToast(
-                                                  msg: "$offer% Discount has been added",
-                                                  toastLength: Toast.LENGTH_SHORT,
-                                                  backgroundColor: Colors.black54,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0
-                                              );
-                                              String newPrice = (widget.productPrice - ((offer/100) * widget.productPrice)).toString();
-                                              oldPrice = double.parse(widget.productNewPrice);
-                                              print('here look $oldPrice');
-                                              await FirebaseFirestore.instance
-                                                  .collection('ProductsCollection')
-                                                  .doc(widget.productType)
-                                                  .collection('Products')
-                                                  .doc(widget.productID)
-                                                  .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
-                                              await FirebaseFirestore.instance
-                                                  .collectionGroup('cart')
-                                                  .where('ProductID', isEqualTo: widget.productID).get().then((value) {
-                                                    value.docs.forEach((element) async{
-                                                      final cid = element.data()['CustomerID'].toString().trim();
-                                                      print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                        .collection('cart').doc(element.id).update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
-                                                      //todo: This shit still needs work, logic is not correct
-                                                      if(oldPrice == 0)
-                                                        oldPrice = double.parse(newPrice)*2;
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).update(
-                                                          {'Total': FieldValue.increment(-oldPrice)});
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).update(
-                                                          {'Total': FieldValue.increment(double.parse(newPrice))});
-                                                    });
-                                              });
-                                            }
-                                              },
+                                            },
                                           ),
                                         ],
                                       );
@@ -607,9 +699,7 @@ class _SingleProductState extends State<SingleProduct> {
                   color: Colors.blue,
                   textColor: Colors.white,
                 ),
-                SizedBox(
-                  width: 10,
-                ),
+                Spacer(),
                 FlatButton(
                   onPressed: () async {
                     await FirebaseFirestore.instance
@@ -624,26 +714,41 @@ class _SingleProductState extends State<SingleProduct> {
                         backgroundColor: Colors.black54,
                         gravity: ToastGravity.BOTTOM,
                         textColor: Colors.white,
-                        fontSize: 16.0
-                    );
+                        fontSize: 16.0);
                     await FirebaseFirestore.instance
                         .collectionGroup('cart')
-                        .where('ProductID', isEqualTo: widget.productID).get().then((value) {
-                      value.docs.forEach((element) async{
-                        final cid = element.data()['CustomerID'].toString().trim();
-                        print('This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                            .collection('cart').doc(element.id).delete();
+                        .where('ProductID', isEqualTo: widget.productID)
+                        .get()
+                        .then((value) {
+                      value.docs.forEach((element) async {
+                        final cid =
+                            element.data()['CustomerID'].toString().trim();
+                        print(
+                            'This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(cid)
+                            .collection('cart')
+                            .doc(element.id)
+                            .delete();
                       });
                     });
                     await FirebaseFirestore.instance
                         .collectionGroup('rated products')
-                        .where('ProductID', isEqualTo: widget.productID).get().then((value) {
-                      value.docs.forEach((element) async{
-                        final cid = element.data()['CustomerID'].toString().trim();
-                        print('This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                            .collection('cart').doc(element.id).delete();
+                        .where('ProductID', isEqualTo: widget.productID)
+                        .get()
+                        .then((value) {
+                      value.docs.forEach((element) async {
+                        final cid =
+                            element.data()['CustomerID'].toString().trim();
+                        print(
+                            'This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(cid)
+                            .collection('cart')
+                            .doc(element.id)
+                            .delete();
                       });
                     });
                     Reference firebaseStorageRef =
@@ -658,10 +763,9 @@ class _SingleProductState extends State<SingleProduct> {
                   color: Colors.red,
                   textColor: Colors.white,
                 ),
+                Spacer(flex: 3),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                  height: 40,
-                  width: 80,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15))),

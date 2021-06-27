@@ -37,6 +37,11 @@ class _FavoritesState extends State<Favorites> {
                   ),
                   height: 100,
                   width: 100,
+                  child: Center(
+                      child: Text(
+                    "Image here",
+                    style: TextStyle(color: Colors.white),
+                  )),
                 ),
               ),
               Column(
@@ -60,20 +65,22 @@ class _FavoritesState extends State<Favorites> {
                       ),
                     ),
                   ),
-                  OutlineButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                  Container(
+                    child: OutlineButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        //todo move product to cart
+                      },
+                      borderSide: BorderSide(color: Colors.black),
+                      highlightedBorderColor: Colors.grey,
+                      child: Text("Move To Cart"),
                     ),
-                    onPressed: () {},
-                    borderSide: BorderSide(color: Colors.black),
-                    highlightedBorderColor: Color(0xFF731800),
-                    child: Text("Move To Cart"),
                   )
                 ],
               ),
-              SizedBox(
-                width: 100,
-              ),
+              Spacer(),
               IconButton(
                   onPressed: () {
                     //todo some delete action

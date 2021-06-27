@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Cart extends StatefulWidget {
-
   @override
   _CartState createState() => _CartState();
 }
@@ -27,11 +26,6 @@ class _CartState extends State<Cart> {
           backgroundColor: Color(0xFF731800),
           elevation: 0.0,
           title: Text("Shopping Cart"),
-          actions: <Widget>[
-            new IconButton(
-                icon: Icon(Icons.search, color: Colors.white),
-                onPressed: () {}),
-          ],
         ),
       ),
       body: Column(
@@ -57,7 +51,8 @@ class _CartState extends State<Cart> {
                         final productname = product.data()['Product Name'];
                         final productprice = product.data()['Price'] as num;
                         final productdiscount = product.data()['Discount'];
-                        final productdiscountpercent = product.data()['Discount percent'];
+                        final productdiscountpercent =
+                            product.data()['Discount percent'];
                         final productnewprice = product.data()['New price'];
                         final productimg = product.data()['imgURL'];
                         final producttype = product.data()['type'];
@@ -132,14 +127,15 @@ class SingleCartProduct extends StatelessWidget {
   final cart_prod_type;
   final cart_prod_id;
 
-  const SingleCartProduct({this.cart_prod_name,
-    this.cart_prod_picture,
-    this.cart_prod_price,
-    this.cart_prod_newPrice,
-    this.cart_prod_discount,
-    this.cart_prod_discountPercent,
-    this.cart_prod_type,
-    this.cart_prod_id});
+  const SingleCartProduct(
+      {this.cart_prod_name,
+      this.cart_prod_picture,
+      this.cart_prod_price,
+      this.cart_prod_newPrice,
+      this.cart_prod_discount,
+      this.cart_prod_discountPercent,
+      this.cart_prod_type,
+      this.cart_prod_id});
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +159,7 @@ class SingleCartProduct extends StatelessWidget {
               color: Colors.red[300],
               onPressed: () async {
                 double oldPrice;
-                if(cart_prod_discount=='false')
+                if (cart_prod_discount == 'false')
                   oldPrice = cart_prod_price;
                 else
                   oldPrice = double.parse(cart_prod_newPrice);
@@ -207,20 +203,29 @@ class SingleCartProduct extends StatelessWidget {
             //  ======= this for price section ======
             Container(
               alignment: Alignment.topLeft,
-              child: (cart_prod_discount=='false')? Text(
-                "${cart_prod_price} EGP",
-                style: TextStyle(color: Colors.red),
-              ):Row(
-                children: [
-                Text(
-                "${cart_prod_price} EGP",
-                style: TextStyle(decoration: TextDecoration.lineThrough),),
-              SizedBox(width: 10,),
-              Text(
-                "${cart_prod_newPrice} EGP",
-                style: TextStyle(color: Colors.red,),)
-                ],
-              ),
+              child: (cart_prod_discount == 'false')
+                  ? Text(
+                      "${cart_prod_price} EGP",
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          "${cart_prod_price} EGP",
+                          style:
+                              TextStyle(decoration: TextDecoration.lineThrough),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${cart_prod_newPrice} EGP",
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        )
+                      ],
+                    ),
             ),
           ],
         ),
@@ -228,4 +233,3 @@ class SingleCartProduct extends StatelessWidget {
     );
   }
 }
-
