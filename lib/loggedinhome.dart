@@ -63,11 +63,15 @@ class _loggedinhomeState extends State<loggedinhome> {
                 bottom: Radius.circular(20),
               ),
             ),
-            backgroundColor: Colors.green[900],
+            backgroundColor: Color(0xFF731800),
             elevation: 0.0,
             title: Text(
               "ElweKalA",
-              style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25, fontWeight: FontWeight.bold,),
+              style: TextStyle(
+                fontFamily: 'Zanzabar',
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             actions: <Widget>[
               IconButton(

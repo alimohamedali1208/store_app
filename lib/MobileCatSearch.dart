@@ -534,9 +534,6 @@ class _SingleProductState extends State<SingleProduct> {
                             isPressed = true;
                         });
                       }),
-                  SizedBox(
-                    width: 10,
-                  ),
                   IconButton(
                       icon: const Icon(Icons.add_shopping_cart_outlined),
                       tooltip: 'Add to cart',

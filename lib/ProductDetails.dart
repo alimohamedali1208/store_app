@@ -183,7 +183,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     double avgRating;
     if (customer.firstName == 'temp') {
       print('user not signed in!');
-      //BASEK WAS HERE
+      //BASEL WAS HERE
       Fluttertoast.showToast(msg: "You need to sign in first!");
     } else {
       print('User is signed in!');
@@ -315,10 +315,6 @@ class _ProductDetailsState extends State<ProductDetails> {
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search, color: Colors.black), onPressed: () {}),
-        ],
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
@@ -425,56 +421,60 @@ class _ProductDetailsState extends State<ProductDetails> {
                             style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
-                        Row(children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15.0, right: 20, top: 10),
-                            child: Text(
-                              "Price",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 200,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, top: 10),
-                                  child:
-                                      (widget.product_discount_flag == 'false')
-                                          ? Text(
-                                              "${widget.product_detail_price} EGP",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6,
-                                            )
-                                          : Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  "${widget.product_detail_price}",
-                                                  style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                      fontSize: 15),
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "${widget.product_detail_newPrice} EGP",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6,
-                                                ),
-                                              ],
-                                            ),
-                                ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15.0, right: 20, top: 10),
+                              child: Text(
+                                "Price",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              SizedBox(width: 18),
-                              Container(
+                            ),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            Container(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 10),
+                                child: (widget.product_discount_flag == 'false')
+                                    ? Text(
+                                        "${widget.product_detail_price} EGP",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            "${widget.product_detail_price}",
+                                            style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                fontSize: 15),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "${widget.product_detail_newPrice} EGP",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6,
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ),
+                            Spacer(
+                              flex: 60,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 14, vertical: 2),
                                 height: 40,
@@ -499,9 +499,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ]),
+                            ),
+                          ],
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, top: 10),
                           child: Text(
