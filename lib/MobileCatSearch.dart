@@ -11,8 +11,8 @@ class mobileCatSearch extends StatefulWidget {
 class _mobileCatSearchState extends State<mobileCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  int ddStorage, ddRatings;
-  String ddCamera, ddBattery, ddOS, ddSearchBrand, ddMemory;
+  int ddStorage;
+  String ddCamera, ddBattery, ddOS, ddSearchBrand, ddMemory, ddRatings;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +85,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: 'Other',
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -151,7 +151,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: "Other",
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -184,7 +184,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: "Other",
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -221,7 +221,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: "Other",
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -239,37 +239,37 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         decoration: BoxDecoration(
                             color: Colors.white70,
                             borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<int>(
+                        child: DropdownButton<String>(
                           style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.w600),
                           items: [
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('>1 Star'),
-                              value: 1,
+                              value: '1',
                             ),
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('>2 Stars'),
-                              value: 2,
+                              value: '2',
                             ),
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('>3 Stars'),
-                              value: 3,
+                              value: '3',
                             ),
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('>4 Stars'),
-                              value: 4,
+                              value: '4',
                             ),
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('5 Stars'),
-                              value: 5,
+                              value: '5',
                             ),
-                            DropdownMenuItem<int>(
+                            DropdownMenuItem<String>(
                               child: Text('No Reviews'),
                               value: null,
                             ),
                           ],
-                          onChanged: (int value) {
+                          onChanged: (String value) {
                             setState(() {
                               ddRatings = value;
                             });
@@ -303,7 +303,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
-                              value: "Other",
+                              value: null,
                             ),
                           ],
                           onChanged: (String value) {
@@ -358,7 +358,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                           if (ddStorage == null ||
                               productStorage >= ddStorage) {
                             if (ddRatings == null ||
-                                productRating >= ddRatings) {
+                                double.parse(productRating) >= double.parse(ddRatings)) {
                               final productname =
                                   product.data()['Product Name'];
                               final productprice = product.data()['Price'];
