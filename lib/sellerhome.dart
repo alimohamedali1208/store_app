@@ -505,151 +505,54 @@ class _SingleProductState extends State<SingleProduct> {
 
                                               if (offer == 0 || offer == null) {
                                                 Fluttertoast.showToast(
-                                                    msg:
-                                                        "Discount has been removed",
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    backgroundColor:
-                                                        Colors.black54,
-                                                    gravity:
-                                                        ToastGravity.BOTTOM,
+                                                    msg: "Discount has been removed",
+                                                    toastLength: Toast.LENGTH_SHORT,
+                                                    backgroundColor: Colors.black54,
+                                                    gravity: ToastGravity.BOTTOM,
                                                     textColor: Colors.white,
-                                                    fontSize: 16.0);
-                                                double newPrice = widget
-                                                        .productPrice -
-                                                    double.parse(
-                                                        widget.productNewPrice);
-                                                await FirebaseFirestore.instance
-                                                    .collection(
-                                                        'ProductsCollection')
-                                                    .doc(widget.productType)
-                                                    .collection('Products')
-                                                    .doc(widget.productID)
-                                                    .update({
-                                                  'Discount': 'false',
-                                                  'Discount percent': '0',
-                                                  'New price': '0'
-                                                });
-                                                await FirebaseFirestore.instance
-                                                    .collectionGroup('cart')
-                                                    .where('ProductID',
-                                                        isEqualTo:
-                                                            widget.productID)
-                                                    .get()
-                                                    .then((value) {
-                                                  value.docs
-                                                      .forEach((element) async {
-                                                    final cid = element
-                                                        .data()['CustomerID']
-                                                        .toString()
-                                                        .trim();
-                                                    print(
-                                                        'This is the element data for customer ${element.data()['CustomerID']}');
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Customers')
-                                                        .doc(cid)
-                                                        .collection('cart')
-                                                        .doc(element.id)
-                                                        .update({
-                                                      'Discount': 'false',
-                                                      'Discount percent': '0',
-                                                      'New price': '0'
-                                                    });
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Customers')
-                                                        .doc(cid)
-                                                        .update({
-                                                      'Total':
-                                                          FieldValue.increment(
-                                                              newPrice)
-                                                    });
+                                                    fontSize: 16.0,);
+                                                double newPrice = widget.productPrice - double.parse(widget.productNewPrice);
+                                                await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.productType)
+                                                    .collection('Products').doc(widget.productID)
+                                                    .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
+                                                await FirebaseFirestore.instance.collectionGroup('cart').where('ProductID', isEqualTo: widget.productID)
+                                                    .get().then((value) {
+                                                      value.docs.forEach((element) async {
+                                                    final cid = element.data()['CustomerID'].toString().trim();
+                                                    print('This is the element data for customer ${element.data()['CustomerID']}');
+                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id)
+                                                        .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
+                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
+                                                        .update({'Total': FieldValue.increment(newPrice)});
                                                   });
                                                 });
                                               } else {
                                                 Fluttertoast.showToast(
-                                                    msg:
-                                                        "$offer% Discount has been added",
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    backgroundColor:
-                                                        Colors.black54,
-                                                    gravity:
-                                                        ToastGravity.BOTTOM,
+                                                    msg: "$offer% Discount has been added",
+                                                    toastLength: Toast.LENGTH_SHORT,
+                                                    backgroundColor: Colors.black54,
+                                                    gravity: ToastGravity.BOTTOM,
                                                     textColor: Colors.white,
-                                                    fontSize: 16.0);
-                                                String newPrice = (widget
-                                                            .productPrice -
-                                                        ((offer / 100) *
-                                                            widget
-                                                                .productPrice))
-                                                    .toString();
-                                                oldPrice = double.parse(
-                                                    widget.productNewPrice);
+                                                    fontSize: 16.0,);
+                                                String newPrice = (widget.productPrice - ((offer / 100) * widget.productPrice)).toString();
+                                                oldPrice = double.parse(widget.productNewPrice);
                                                 print('here look $oldPrice');
-                                                await FirebaseFirestore.instance
-                                                    .collection(
-                                                        'ProductsCollection')
-                                                    .doc(widget.productType)
-                                                    .collection('Products')
-                                                    .doc(widget.productID)
-                                                    .update({
-                                                  'Discount': 'true',
-                                                  'Discount percent': '$offer',
-                                                  'New price': newPrice
-                                                });
-                                                await FirebaseFirestore.instance
-                                                    .collectionGroup('cart')
-                                                    .where('ProductID',
-                                                        isEqualTo:
-                                                            widget.productID)
-                                                    .get()
-                                                    .then((value) {
-                                                  value.docs
-                                                      .forEach((element) async {
-                                                    final cid = element
-                                                        .data()['CustomerID']
-                                                        .toString()
-                                                        .trim();
-                                                    print(
-                                                        'This is the element data for customer ${element.data()['CustomerID']}');
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Customers')
-                                                        .doc(cid)
-                                                        .collection('cart')
-                                                        .doc(element.id)
-                                                        .update({
-                                                      'Discount': 'true',
-                                                      'Discount percent':
-                                                          '$offer',
-                                                      'New price': newPrice
-                                                    });
+                                                await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.productType).collection('Products').doc(widget.productID)
+                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
+                                                await FirebaseFirestore.instance.collectionGroup('cart')
+                                                    .where('ProductID', isEqualTo: widget.productID).get().then((value) {
+                                                  value.docs.forEach((element) async {
+                                                    final cid = element.data()['CustomerID'].toString().trim();
+                                                    print('This is the element data for customer ${element.data()['CustomerID']}');
+                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id)
+                                                        .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
                                                     //todo: This shit still needs work, logic is not correct
                                                     if (oldPrice == 0)
-                                                      oldPrice = double.parse(
-                                                              newPrice) *
-                                                          2;
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Customers')
-                                                        .doc(cid)
-                                                        .update({
-                                                      'Total':
-                                                          FieldValue.increment(
-                                                              -oldPrice)
-                                                    });
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Customers')
-                                                        .doc(cid)
-                                                        .update({
-                                                      'Total':
-                                                          FieldValue.increment(
-                                                              double.parse(
-                                                                  newPrice))
-                                                    });
+                                                      oldPrice = double.parse(newPrice) * 2;
+                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
+                                                        .update({'Total': FieldValue.increment(-oldPrice)});
+                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
+                                                        .update({'Total': FieldValue.increment(double.parse(newPrice))});
                                                   });
                                                 });
                                               }
