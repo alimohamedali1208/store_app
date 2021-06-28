@@ -38,9 +38,6 @@ class _sellerhomeState extends State<sellerhome> {
   final _firestore = FirebaseFirestore.instance;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   UserSeller seller = UserSeller();
-  //String name;
-  //int price;
-  //String picURL;
 
   //Showing snackbar
   void _showSnackbar(String msg) {
@@ -247,7 +244,7 @@ class SingleProduct extends StatefulWidget {
 
 class _SingleProductState extends State<SingleProduct> {
   final _formKey = GlobalKey<FormState>();
-  double oldPrice;
+
   File _image;
   double offer;
   Future getImage() async {
@@ -511,7 +508,6 @@ class _SingleProductState extends State<SingleProduct> {
                                                     gravity: ToastGravity.BOTTOM,
                                                     textColor: Colors.white,
                                                     fontSize: 16.0,);
-                                                double newPrice = widget.productPrice - double.parse(widget.productNewPrice);
                                                 await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.productType)
                                                     .collection('Products').doc(widget.productID)
                                                     .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
@@ -520,13 +516,24 @@ class _SingleProductState extends State<SingleProduct> {
                                                       value.docs.forEach((element) async {
                                                     final cid = element.data()['CustomerID'].toString().trim();
                                                     print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id)
-                                                        .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                        .update({'Total': FieldValue.increment(newPrice)});
+                                                    String changeFlag = element.data()['ChangeFlag'];
+                                                    if(changeFlag == 'false') {
+                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
+                                                          .doc(element.id).update({'ChangeFlag': 'true'});
+                                                      final discountFlag = element.data()['Discount'];
+                                                      String oldPrice;
+                                                      if (discountFlag == 'true'){
+                                                        oldPrice = element.data()['New price'];}
+                                                      else{
+                                                        oldPrice = element.data()['Price'].toString();}
+                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid)
+                                                          .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+                                                    }
                                                   });
                                                 });
-                                              } else {
+                                              }
+                                              // Inserting new discount
+                                              else {
                                                 Fluttertoast.showToast(
                                                     msg: "$offer% Discount has been added",
                                                     toastLength: Toast.LENGTH_SHORT,
@@ -535,8 +542,6 @@ class _SingleProductState extends State<SingleProduct> {
                                                     textColor: Colors.white,
                                                     fontSize: 16.0,);
                                                 String newPrice = (widget.productPrice - ((offer / 100) * widget.productPrice)).toString();
-                                                oldPrice = double.parse(widget.productNewPrice);
-                                                print('here look $oldPrice');
                                                 await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.productType).collection('Products').doc(widget.productID)
                                                     .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
                                                 await FirebaseFirestore.instance.collectionGroup('cart')
@@ -544,15 +549,21 @@ class _SingleProductState extends State<SingleProduct> {
                                                   value.docs.forEach((element) async {
                                                     final cid = element.data()['CustomerID'].toString().trim();
                                                     print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id)
-                                                        .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
-                                                    //todo: This shit still needs work, logic is not correct
-                                                    if (oldPrice == 0)
-                                                      oldPrice = double.parse(newPrice) * 2;
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                        .update({'Total': FieldValue.increment(-oldPrice)});
-                                                    await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                        .update({'Total': FieldValue.increment(double.parse(newPrice))});
+                                                    String changeFlag = element.data()['ChangeFlag'];
+                                                    //Check if cart was modified before
+                                                    if(changeFlag == 'false') {
+                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
+                                                          .doc(element.id).update({'ChangeFlag': 'true'});
+                                                      final discountFlag = element.data()['Discount'];
+                                                      String oldPrice;
+                                                      //Check if it had a discount
+                                                      if (discountFlag == 'true'){
+                                                        oldPrice = element.data()['New price'];}
+                                                      else{
+                                                        oldPrice = element.data()['Price'].toString();}
+                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid)
+                                                          .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+                                                    }
                                                   });
                                                 });
                                               }
@@ -605,6 +616,7 @@ class _SingleProductState extends State<SingleProduct> {
                 Spacer(),
                 FlatButton(
                   onPressed: () async {
+                    //Deleting product from products collection
                     await FirebaseFirestore.instance
                         .collection('ProductsCollection')
                         .doc(widget.productType)
@@ -618,49 +630,28 @@ class _SingleProductState extends State<SingleProduct> {
                         gravity: ToastGravity.BOTTOM,
                         textColor: Colors.white,
                         fontSize: 16.0);
-                    await FirebaseFirestore.instance
-                        .collectionGroup('cart')
-                        .where('ProductID', isEqualTo: widget.productID)
-                        .get()
-                        .then((value) {
+                    //Decreasing the counter of that type of products in sellers account
+                    FirebaseFirestore.instance.collection('Sellers').doc(FirebaseAuth.instance.currentUser.uid).update({'Type${widget.productType}': FieldValue.increment(-1)});
+                    //removing product from customers: cart, rated products, and favorites
+                    await FirebaseFirestore.instance.collectionGroup('cart').where('ProductID', isEqualTo: widget.productID)
+                        .get().then((value) {
                       value.docs.forEach((element) async {
-                        final cid =
-                            element.data()['CustomerID'].toString().trim();
-                        print(
-                            'This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(cid)
-                            .collection('cart')
-                            .doc(element.id)
-                            .delete();
+                        final cid = element.data()['CustomerID'].toString().trim();
+                        print('This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id).delete();
                       });
                     });
-                    await FirebaseFirestore.instance
-                        .collectionGroup('rated products')
-                        .where('ProductID', isEqualTo: widget.productID)
-                        .get()
-                        .then((value) {
+                    await FirebaseFirestore.instance.collectionGroup('rated products').where('ProductID', isEqualTo: widget.productID)
+                        .get().then((value) {
                       value.docs.forEach((element) async {
-                        final cid =
-                            element.data()['CustomerID'].toString().trim();
-                        print(
-                            'This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(cid)
-                            .collection('cart')
-                            .doc(element.id)
-                            .delete();
+                        final cid = element.data()['CustomerID'].toString().trim();
+                        print('This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('rated products').doc(element.id).delete();
                       });
                     });
-                    Reference firebaseStorageRef =
-                        FirebaseStorage.instance.ref();
-                    firebaseStorageRef
-                        .child(
-                            "ProductImage/${widget.productType}/${widget.productID}/${widget.productName}")
-                        .delete()
-                        .whenComplete(() => print('delete success'));
+                    //Deleting product picture from cloud storage
+                    Reference firebaseStorageRef = FirebaseStorage.instance.ref();
+                    firebaseStorageRef.child("ProductImage/${widget.productType}/${widget.productID}/${widget.productName}").delete().whenComplete(() => print('delete success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,

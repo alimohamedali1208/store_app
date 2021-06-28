@@ -412,7 +412,12 @@ class _registerState extends State<register> {
                         'Email': email,
                         'Password': pass,
                         'CompanyName': companyName,
-                        'TaxCard': tax
+                        'TaxCard': tax,
+                        'TypeMobiles':0,
+                        'TypeOtherElectronics':0,
+                        'TypeLaptops':0,
+                        'TypeAirConditioner':0,
+                        'TypeFridges':0
                       });
                       seller.firstName = fname;
                       seller.lastName = lname;

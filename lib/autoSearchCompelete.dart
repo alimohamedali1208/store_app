@@ -397,6 +397,7 @@ class _SingleProductState extends State<SingleProduct> {
             'Discount': widget.productDiscountFlag,
             'Discount percent': widget.productDiscountPercent,
             'type': widget.productType,
+            'ChangeFlag': 'false',
             'imgURL': widget.productImg
           });
           double price;

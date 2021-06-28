@@ -94,6 +94,7 @@ class _addMobileState extends State<addMobile> {
           .doc(productID)
           .update({'imgURL': picURL});
     });
+    _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeMobiles': FieldValue.increment(1)});
   }
 
   //toggling auto validate

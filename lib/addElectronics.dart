@@ -44,8 +44,16 @@ class _addElectronicsState extends State<addElectronics> {
       'CreatedAt': Timestamp.now(),
       'Description': description,
       'Price': price,
+      'New price': '0',
       'Quantity': quantity,
-      'Rating': 0,
+      'Rating': '0',
+      '1 star rate': 0,
+      '2 star rate': 0,
+      '3 star rate': 0,
+      '4 star rate': 0,
+      '5 star rate': 0,
+      'Discount': 'false',
+      'Discount percent': '0',
       'SellerID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
       'type': 'OtherElectronics',
@@ -68,6 +76,7 @@ class _addElectronicsState extends State<addElectronics> {
           .doc(productID)
           .update({'imgURL': picURL});
     });
+    _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeOtherElectronics': FieldValue.increment(1)});
   }
 
   //toggling auto validate

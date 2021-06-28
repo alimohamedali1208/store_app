@@ -232,8 +232,7 @@ class _loginState extends State<login> {
                   try {
                     //If user was a seller
                     if (flagSeller) {
-                      final DBRow =
-                          await _firestore.collection('Sellers').get();
+                      final DBRow = await _firestore.collection('Sellers').get();
                       for (var usern in DBRow.docs) {
                         final firstname = usern.get('FirstName');
                         final lastname = usern.get('LastName');
