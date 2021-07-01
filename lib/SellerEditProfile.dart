@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -227,24 +228,6 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                         padding: const EdgeInsets.all(8),
                         child: TextFormField(
                           autovalidate: validate,
-                          validator: validateEmail,
-                          enabled: flagSellerTextFields,
-                          initialValue: seller.email,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            hintText: 'somone@something.com',
-                            border: OutlineInputBorder(),
-                          ),
-                          onSaved: (value) {
-                            email = value.trim();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: TextFormField(
-                          autovalidate: validate,
                           enabled: flagSellerTextFields,
                           initialValue: seller.company,
                           validator: validateCompanyName,
@@ -317,48 +300,22 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
               onPressed: () async {
                 if (_sellerEditProfileFormKey.currentState.validate()) {
                   _sellerEditProfileFormKey.currentState.save();
-                  /*setState(() {
+                  setState(() {
                     showSpinner = true;
-                  });*/
-                  /*if (flagSellerDatabase) {
-                    _firestore.collection('Sellers').add({
-                      'FirstName': fname,
-                      'LastName': lname,
-                      'Phone': phone,
-                      'Email': email,
-                      'CompanyName': companyName,
-                      'TaxCard': tax
-                    });
-                    seller.firstName = fname;
-                    seller.lastName = lname;
-                  } else {
-                    _firestore.collection('Customers').add({
-                      'FirstName': fname,
-                      'LastName': lname,
-                      'Phone': phone,
-                      'Email': email,
-                    });
-                    customer.firstName = fname;
-                    customer.lastName = lname;
-                  }
-                  try {
-                    final newuser = await _auth.createUserWithEmailAndPassword(
-                        email: email, password: seller.getPass);
-                    if (flagSellerDatabase) {
-                      Navigator.pushNamed(context, sellerhome.id);
-                    } else {
-                      Navigator.pushNamed(context, loggedinhome.id);
-                    }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  } catch (e) {
-                    print(e);
-                    setState(() {
-                      showSpinner = false;
-                    });
-                    _showSnackbar("Something went wrong!");
-                  }*/
+                  });
+                  seller.firstName = fname;
+                  seller.lastName = lname;
+                  seller.company = companyName;
+                  seller.phone = phone;
+                  seller.tax = tax;
+                  await _firestore.collection('Sellers').doc(_auth.currentUser.uid).update(
+                      {'FirstName': fname, 'LastName':lname, 'CompanyName':companyName, 'Phone':phone, 'TaxCard':tax});
+                  setState(() {
+                    showSpinner = false;
+                  });
+                  Fluttertoast.showToast(msg: 'Profile updated', backgroundColor: Colors.black54);
+                  Navigator.pop(context);
+
                 } else {
                   _toggleValidate();
                   _showSnackbar(

@@ -140,8 +140,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           final productquantity = product.data()['Quantity'];
                           final productseller = product.data()['Seller Email'];
                           final productdiscount = product.data()['Discount'];
-                          final productdiscountpercent =
-                              product.data()['Discount percent'];
+                          final productdiscountpercent = product.data()['Discount percent'];
                           final productnewprice = product.data()['New price'];
                           final rate1star = product.data()['1 star rate'];
                           final rate2star = product.data()['2 star rate'];

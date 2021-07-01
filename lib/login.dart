@@ -228,7 +228,7 @@ class _loginState extends State<login> {
                   setState(() {
                     showSpinner = true;
                   });
-                  _loginFormKey.currentState.save();
+                   _loginFormKey.currentState.save();
                   try {
                     //If user was a seller
                     if (flagSeller) {
@@ -237,9 +237,18 @@ class _loginState extends State<login> {
                         final firstname = usern.get('FirstName');
                         final lastname = usern.get('LastName');
                         final email = usern.get('Email');
+                        final company = usern.get('CompanyName');
+                        final taxCard = usern.get('TaxCard');
+                        final phone = usern.get('Phone');
+                        final sex = usern.get('Sex');
                         if (email == Email) {
                           seller.firstName = firstname;
                           seller.lastName = lastname;
+                          seller.email = email;
+                          seller.company = company;
+                          seller.phone = phone;
+                          seller.sex = sex;
+                          seller.tax = taxCard;
                         }
                       }
                       if (seller.firstName == 'temp') {
@@ -295,7 +304,7 @@ class _loginState extends State<login> {
                   _toggleValidate();
                   _showSnackbar(
                       "Something went wrong, check the errors above please");
-                }
+                 }
               },
             ),
           ),

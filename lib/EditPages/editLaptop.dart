@@ -4,9 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../productClass.dart';
+
 class editLaptops extends StatefulWidget {
+  ProductClass pRD;
+
+  editLaptops({this.pRD});
+
   @override
   _editLaptopsState createState() => _editLaptopsState();
 }
@@ -130,21 +137,6 @@ class _editLaptopsState extends State<editLaptops> {
       body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.camera_alt,
-                ),
-                Container(
-                  child: _image == null
-                      ? Text('No image selected.')
-                      : Image.file(_image),
-                ),
-              ],
-            ),
-          ),
-          Container(
             alignment: Alignment.center,
             child: Form(
               key: _addLaptopFormKey,
@@ -155,6 +147,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.name,
                       decoration: InputDecoration(
                         labelText: 'Laptop name',
                         border: OutlineInputBorder(),
@@ -169,6 +162,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.gpu,
                       decoration: InputDecoration(
                         labelText: 'GPU',
                         border: OutlineInputBorder(),
@@ -183,6 +177,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.cpu,
                       decoration: InputDecoration(
                         labelText: 'CPU',
                         border: OutlineInputBorder(),
@@ -198,6 +193,7 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
+                      initialValue: widget.pRD.description,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Description',
@@ -218,6 +214,7 @@ class _editLaptopsState extends State<editLaptops> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              initialValue: widget.pRD.memory,
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
@@ -259,6 +256,7 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.price.toString(),
                       enableInteractiveSelection: false,
                       inputFormatters: [
                         WhitelistingTextInputFormatter(RegExp("[0-9]")),
@@ -277,6 +275,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
+                      initialValue: widget.pRD.quantity,
                       validator: validateEmpty,
                       enableInteractiveSelection: false,
                       inputFormatters: [
@@ -296,6 +295,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
+                      initialValue: widget.pRD.screenSize,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Screen size',
@@ -311,6 +311,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
+                      initialValue: widget.pRD.battery,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Battery',
@@ -331,6 +332,7 @@ class _editLaptopsState extends State<editLaptops> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              initialValue: widget.pRD.storage.toString(),
                               decoration: InputDecoration(
                                 labelText: 'Storage',
                                 border: OutlineInputBorder(),
@@ -450,12 +452,6 @@ class _editLaptopsState extends State<editLaptops> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Pick Image',
-        backgroundColor: Color(0xFF731800),
-        child: Icon(Icons.add_a_photo),
-      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -487,23 +483,8 @@ class _editLaptopsState extends State<editLaptops> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return new AlertDialog(
-                          title: new Text("Upload"),
-                          content: new Text(
-                              "Your product is being uploaded right now"),
-                          actions: <Widget>[
-                            new MaterialButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(context);
-                              },
-                              child: new Text("Close"),
-                            )
-                          ],
-                        );
-                      });
+                  Fluttertoast.showToast(msg: 'Product has been updated', backgroundColor: Colors.black54);
+                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

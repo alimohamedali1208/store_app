@@ -1,14 +1,19 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:store_app/productClass.dart';
 
 class editMobile extends StatefulWidget {
-  String pID;
+  ProductClass pRD;
+  String product_detail_name;
+  double product_detail_price;
+  String product_detail_desc;
+  String product_detail_brand;
+  String product_detail_quantity;
 
-  editMobile({this.pID});
+  editMobile({this.pRD});
 
   @override
   _editMobileState createState() => _editMobileState();
@@ -36,7 +41,7 @@ class _editMobileState extends State<editMobile> {
         .collection('ProductsCollection')
         .doc('Mobiles')
         .collection('Products')
-        .doc('${widget.pID}')
+        .doc('${widget.pRD.id}')
         .update({
       'Brand Name': ddBrand,
       'Product Name': name,
@@ -44,6 +49,7 @@ class _editMobileState extends State<editMobile> {
       'Battery': battery,
       'Camera': camera,
       'Storage': storage,
+      'Storage Unit': ddStorageCapacity,
       'Screen Size': screenSize,
       'Memory': memory,
       'OS': ddOS,
@@ -105,6 +111,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.name,
                       decoration: InputDecoration(
                         labelText: 'phone name',
                         border: OutlineInputBorder(),
@@ -120,6 +127,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.battery,
                       decoration: InputDecoration(
                         labelText: 'Battery size',
                         border: OutlineInputBorder(),
@@ -135,6 +143,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: widget.pRD.camera,
                       decoration: InputDecoration(
                         labelText: 'Camera',
                         border: OutlineInputBorder(),
@@ -150,6 +159,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
+                      initialValue: widget.pRD.description,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Description',
@@ -170,11 +180,12 @@ class _editMobileState extends State<editMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              initialValue: widget.pRD.memory,
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (String value) {
+                              onSaved: (String value) {
                                 memory = value.trim();
                               },
                             )),
@@ -211,6 +222,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      initialValue: (widget.pRD.price).toString(),
                       enableInteractiveSelection: false,
                       inputFormatters: [
                         WhitelistingTextInputFormatter(RegExp("[0-9]")),
@@ -229,6 +241,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
+                      initialValue: widget.pRD.quantity,
                       validator: validateEmpty,
                       enableInteractiveSelection: false,
                       inputFormatters: [
@@ -248,6 +261,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
+                      initialValue: widget.pRD.screenSize,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Screen size',
@@ -268,11 +282,12 @@ class _editMobileState extends State<editMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              initialValue: widget.pRD.storage.toString(),
                               decoration: InputDecoration(
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (value) {
+                              onSaved: (value) {
                                 storage = int.parse(value.trim());
                               },
                             )),
@@ -398,7 +413,7 @@ class _editMobileState extends State<editMobile> {
                 top: Radius.circular(30),
               )),
               child: Text(
-                'Add product',
+                'Update product',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {
@@ -415,7 +430,7 @@ class _editMobileState extends State<editMobile> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   updateProduct(context);
-
+                  Fluttertoast.showToast(msg: 'Product has been updated', backgroundColor: Colors.black54);
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();
