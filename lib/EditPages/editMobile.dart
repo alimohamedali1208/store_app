@@ -7,12 +7,6 @@ import 'package:store_app/productClass.dart';
 
 class editMobile extends StatefulWidget {
   ProductClass pRD;
-  String product_detail_name;
-  double product_detail_price;
-  String product_detail_desc;
-  String product_detail_brand;
-  String product_detail_quantity;
-
   editMobile({this.pRD});
 
   @override
@@ -431,6 +425,7 @@ class _editMobileState extends State<editMobile> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   updateProduct(context);
                   Fluttertoast.showToast(msg: 'Product has been updated', backgroundColor: Colors.black54);
+                  removeEditedProductFromCart();
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();
@@ -441,5 +436,30 @@ class _editMobileState extends State<editMobile> {
         ),
       ),
     );
+  }
+
+  Future removeEditedProductFromCart() async {
+    await FirebaseFirestore.instance.collectionGroup('cart')
+        .where('ProductID', isEqualTo: widget.pRD.id).get().then((value) {
+      value.docs.forEach((element) async {
+        final cid = element.data()['CustomerID'].toString().trim();
+        print('This is the element data for customer ${element.data()['CustomerID']}');
+        String changeFlag = element.data()['ChangeFlag'];
+        //Check if cart was modified before
+        if(changeFlag == 'false') {
+          await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
+              .doc(element.id).update({'ChangeFlag': 'true'});
+          final discountFlag = element.data()['Discount'];
+          String oldPrice;
+          //Check if it had a discount
+          if (discountFlag == 'true'){
+            oldPrice = element.data()['New price'];}
+          else{
+            oldPrice = element.data()['Price'].toString();}
+          await FirebaseFirestore.instance.collection('Customers').doc(cid)
+              .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+        }
+      });
+    });
   }
 }

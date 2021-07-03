@@ -470,28 +470,9 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails.Mobile(
+              builder: (context) => ProductDetails(
                 // passing the values via constructor
-                product_detail_name: widget.productName,
-                product_detail_price: widget.productPrice,
-                product_detail_picture: widget.productImg,
-                product_detail_desc: widget.productDesc,
-                product_detail_brand: widget.productBrand,
-                product_detail_quantity: widget.productQuantity,
-                product_detail_seller: widget.productSeller,
-                product_detail_id: widget.productID,
-                product_detail_type: widget.productType,
-                product_detail_rating: widget.productRating,
-                mobile_storage: widget.productStorage,
-                mobile_battery: widget.productBattery,
-                mobile_camera: widget.productCamera,
-                mobile_memory: widget.productMemory,
-                mobile_os: widget.productOS,
-                rate1star: widget.rate1star,
-                rate2star: widget.rate2star,
-                rate3star: widget.rate3star,
-                rate4star: widget.rate4star,
-                rate5star: widget.rate5star,
+
               ),
             ),
           );

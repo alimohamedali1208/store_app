@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:store_app/Cart.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserCustomer.dart';
@@ -9,7 +8,6 @@ import 'package:store_app/autoSearchCompelete.dart';
 import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Favorites.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
-import 'package:store_app/components/Product.dart';
 
 UserCustomer customer = UserCustomer();
 
@@ -199,7 +197,7 @@ class _loggedinhomeState extends State<loggedinhome> {
                 )),
             Container(
               height: 320.0,
-              child: Product(),
+              child: Text('To be continued')
             )
           ],
         ),

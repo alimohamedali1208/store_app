@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Drawer.dart';
+import 'package:store_app/components/recentProductsView.dart';
 import 'autoSearchCompelete.dart';
 import 'login.dart';
 // my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
-import 'package:store_app/components/Product.dart';
 
 class Home extends StatefulWidget {
   static String id = 'Home';
@@ -114,7 +113,7 @@ class _HomeState extends State<Home> {
                   )),
             ),
             Container(
-              child: Product(),
+              child: RecenProductsView(),
             )
           ],
         ),

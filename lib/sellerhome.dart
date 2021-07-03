@@ -174,41 +174,41 @@ class _sellerhomeState extends State<sellerhome> {
               var productview;
               List<SingleProduct> productsview = [];
               for (var product in products) {
-                ProductClass productThing = ProductClass();
+                ProductClass productInfo = ProductClass();
                 if (_auth.currentUser.uid == product.data()['SellerID']) {
-                  productThing.name = product.data()['Product Name'];
-                  productThing.description = product.data()['Description'];
-                  productThing.price = (product.data()['Price']).toDouble();
-                  productThing.discount = product.data()['Discount'];
-                  productThing.discountPercentage = product.data()['Discount percent'];
-                  productThing.newPrice = product.data()['New price'];
-                  productThing.img = product.data()['imgURL'];
-                  productThing.type = product.data()['type'];
-                  productThing.rate = product.data()['Rating'];
-                  productThing.quantity = product.data()['Quantity'];
-                  productThing.id = product.id;
-                  if(productThing.type == 'Mobiles'){
-                    productThing.storage = product.data()['Storage'];
-                    productThing.battery = product.data()['Battery'];
-                    productThing.memory = product.data()['Memory'];
-                    productThing.camera = product.data()['Camera'];
-                    productThing.os = product.data()['OS'];
-                    productThing.brand = product.data()['Brand Name'];
-                    productThing.screenSize = product.data()['Screen Size'];
-                    productThing.storageUnit = product.data()['Storage Unit'];
+                  productInfo.name = product.data()['Product Name'];
+                  productInfo.description = product.data()['Description'];
+                  productInfo.price = (product.data()['Price']).toDouble();
+                  productInfo.discount = product.data()['Discount'];
+                  productInfo.discountPercentage = product.data()['Discount percent'];
+                  productInfo.newPrice = product.data()['New price'];
+                  productInfo.img = product.data()['imgURL'];
+                  productInfo.type = product.data()['type'];
+                  productInfo.rate = product.data()['Rating'];
+                  productInfo.quantity = product.data()['Quantity'];
+                  productInfo.id = product.id;
+                  if(productInfo.type == 'Mobiles'){
+                    productInfo.storage = product.data()['Storage'];
+                    productInfo.battery = product.data()['Battery'];
+                    productInfo.memory = product.data()['Memory'];
+                    productInfo.camera = product.data()['Camera'];
+                    productInfo.os = product.data()['OS'];
+                    productInfo.brand = product.data()['Brand Name'];
+                    productInfo.screenSize = product.data()['Screen Size'];
+                    productInfo.storageUnit = product.data()['Storage Unit'];
                   }
-                  else if(productThing.type == 'Laptops'){
-                    productThing.storage = product.data()['Storage'];
-                    productThing.battery = product.data()['Battery'];
-                    productThing.memory = product.data()['Memory'];
-                    productThing.os = product.data()['OS'];
-                    productThing.brand = product.data()['Brand Name'];
-                    productThing.screenSize = product.data()['ScreenSize'];
-                    productThing.cpu = product.data()['CPU'];
-                    productThing.gpu = product.data()['GPU'];
+                  else if(productInfo.type == 'Laptops'){
+                    productInfo.storage = product.data()['Storage'];
+                    productInfo.battery = product.data()['Battery'];
+                    productInfo.memory = product.data()['Memory'];
+                    productInfo.os = product.data()['OS'];
+                    productInfo.brand = product.data()['Brand Name'];
+                    productInfo.screenSize = product.data()['ScreenSize'];
+                    productInfo.cpu = product.data()['CPU'];
+                    productInfo.gpu = product.data()['GPU'];
                   }
                    productview = SingleProduct(
-                    prd: productThing,
+                    prd: productInfo,
                   );
                   productsview.add(productview);
                 }
@@ -414,8 +414,7 @@ class _SingleProductState extends State<SingleProduct> {
                                               if (value == null)
                                                 print('nope');
                                               else
-                                                offer =
-                                                    double.parse(value.trim());
+                                                offer = double.parse(value.trim());
                                             },
                                           ),
                                         ),
@@ -432,80 +431,59 @@ class _SingleProductState extends State<SingleProduct> {
                                           ),
                                           TextButton(
                                             child: Text(
+                                              "Remove Discount",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: (widget.prd.discount == 'false')? null: () async{
+                                              Fluttertoast.showToast(
+                                                msg: "Discount has been removed",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                backgroundColor: Colors.black54,
+                                                gravity: ToastGravity.BOTTOM,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0,);
+                                              await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.prd.type)
+                                                  .collection('Products').doc(widget.prd.id)
+                                                  .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
+                                              //Remove edited product from any customer cart
+                                              await removeEditedProductFromCart();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
                                               "OK",
                                               style: TextStyle(
                                                   color: Colors.black),
                                             ),
                                             onPressed: () async {
                                               _formKey.currentState.save();
-                                              Navigator.of(context).pop();
-
-                                              if (offer == 0 || offer == null) {
+                                              if(offer == 0 || offer == null){
                                                 Fluttertoast.showToast(
-                                                    msg: "Discount has been removed",
-                                                    toastLength: Toast.LENGTH_SHORT,
-                                                    backgroundColor: Colors.black54,
-                                                    gravity: ToastGravity.BOTTOM,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0,);
+                                                  msg: "Insert number first",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor: Colors.black54,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0,);
+                                              }
+                                              else {
+                                                // Inserting new discount
+                                                Fluttertoast.showToast(
+                                                  msg: "$offer% Discount has been added",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor: Colors.black54,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0,);
+                                                String newPrice = (widget.prd.price - ((offer / 100) * widget.prd.price)).toString();
                                                 await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.prd.type)
                                                     .collection('Products').doc(widget.prd.id)
-                                                    .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
-                                                await FirebaseFirestore.instance.collectionGroup('cart').where('ProductID', isEqualTo: widget.prd.id)
-                                                    .get().then((value) {
-                                                      value.docs.forEach((element) async {
-                                                    final cid = element.data()['CustomerID'].toString().trim();
-                                                    print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                    String changeFlag = element.data()['ChangeFlag'];
-                                                    if(changeFlag == 'false') {
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
-                                                          .doc(element.id).update({'ChangeFlag': 'true'});
-                                                      final discountFlag = element.data()['Discount'];
-                                                      String oldPrice;
-                                                      if (discountFlag == 'true'){
-                                                        oldPrice = element.data()['New price'];}
-                                                      else{
-                                                        oldPrice = element.data()['Price'].toString();}
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                          .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
-                                                    }
-                                                  });
+                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice
                                                 });
-                                              }
-                                              // Inserting new discount
-                                              else {
-                                                Fluttertoast.showToast(
-                                                    msg: "$offer% Discount has been added",
-                                                    toastLength: Toast.LENGTH_SHORT,
-                                                    backgroundColor: Colors.black54,
-                                                    gravity: ToastGravity.BOTTOM,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0,);
-                                                String newPrice = (widget.prd.price - ((offer / 100) * widget.prd.price)).toString();
-                                                await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.prd.type).collection('Products').doc(widget.prd.id)
-                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
-                                                await FirebaseFirestore.instance.collectionGroup('cart')
-                                                    .where('ProductID', isEqualTo: widget.prd.id).get().then((value) {
-                                                  value.docs.forEach((element) async {
-                                                    final cid = element.data()['CustomerID'].toString().trim();
-                                                    print('This is the element data for customer ${element.data()['CustomerID']}');
-                                                    String changeFlag = element.data()['ChangeFlag'];
-                                                    //Check if cart was modified before
-                                                    if(changeFlag == 'false') {
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
-                                                          .doc(element.id).update({'ChangeFlag': 'true'});
-                                                      final discountFlag = element.data()['Discount'];
-                                                      String oldPrice;
-                                                      //Check if it had a discount
-                                                      if (discountFlag == 'true'){
-                                                        oldPrice = element.data()['New price'];}
-                                                      else{
-                                                        oldPrice = element.data()['Price'].toString();}
-                                                      await FirebaseFirestore.instance.collection('Customers').doc(cid)
-                                                          .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
-                                                    }
-                                                  });
-                                                });
+                                                Navigator.of(context).pop();
+                                                //Remove edited product from any customer cart
+                                                await removeEditedProductFromCart();
                                               }
                                             },
                                           ),
@@ -625,5 +603,30 @@ class _SingleProductState extends State<SingleProduct> {
         ),
       ),
     );
+  }
+
+  Future removeEditedProductFromCart() async {
+    await FirebaseFirestore.instance.collectionGroup('cart')
+        .where('ProductID', isEqualTo: widget.prd.id).get().then((value) {
+      value.docs.forEach((element) async {
+        final cid = element.data()['CustomerID'].toString().trim();
+        print('This is the element data for customer ${element.data()['CustomerID']}');
+        String changeFlag = element.data()['ChangeFlag'];
+        //Check if cart was modified before
+        if(changeFlag == 'false') {
+          await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
+              .doc(element.id).update({'ChangeFlag': 'true'});
+          final discountFlag = element.data()['Discount'];
+          String oldPrice;
+          //Check if it had a discount
+          if (discountFlag == 'true'){
+            oldPrice = element.data()['New price'];}
+          else{
+            oldPrice = element.data()['Price'].toString();}
+          await FirebaseFirestore.instance.collection('Customers').doc(cid)
+              .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+        }
+      });
+    });
   }
 }

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
+import 'package:store_app/productClass.dart';
 
 class autoSearchCompelete extends StatefulWidget {
   @override
@@ -131,111 +132,45 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         var productview;
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
-                          final productname = product.data()['Product Name'];
-                          final productprice = product.data()['Price'];
-                          final productimg = product.data()['imgURL'];
-                          final producttype = product.data()['type'];
-                          final productdesc = product.data()['Description'];
-                          final productbrand = product.data()['Brand Name'];
-                          final productquantity = product.data()['Quantity'];
-                          final productseller = product.data()['Seller Email'];
-                          final productdiscount = product.data()['Discount'];
-                          final productdiscountpercent = product.data()['Discount percent'];
-                          final productnewprice = product.data()['New price'];
-                          final rate1star = product.data()['1 star rate'];
-                          final rate2star = product.data()['2 star rate'];
-                          final rate3star = product.data()['3 star rate'];
-                          final rate4star = product.data()['4 star rate'];
-                          final rate5star = product.data()['5 star rate'];
-                          final productrating = product.data()['Rating'];
-                          final productid = product.id;
+                          ProductClass productInfo = ProductClass();
+                          productInfo.name = product.data()['Product Name'];
+                          productInfo.price = product.data()['Price'];
+                          productInfo.img = product.data()['imgURL'];
+                          productInfo.type = product.data()['type'];
+                          productInfo.description = product.data()['Description'];
+                          productInfo.brand = product.data()['Brand Name'];
+                          productInfo.quantity = product.data()['Quantity'];
+                          productInfo.sellerEmail = product.data()['Seller Email'];
+                          productInfo.discount = product.data()['Discount'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.newPrice = product.data()['New price'];
+                          productInfo.rate1star = product.data()['1 star rate'];
+                          productInfo.rate2star = product.data()['2 star rate'];
+                          productInfo.rate3star = product.data()['3 star rate'];
+                          productInfo.rate4star = product.data()['4 star rate'];
+                          productInfo.rate5star = product.data()['5 star rate'];
+                          productInfo.rate = product.data()['Rating'];
+                          productInfo.id = product.id;
                           //now stuff that's specific for every product type
-                          if (producttype == 'Mobiles') {
-                            final productStorage = product.data()['Storage'];
-                            final productbattery = product.data()['Battery'];
-                            final productmemory = product.data()['Memory'];
-                            final productcamera = product.data()['Camera'];
-                            final productos = product.data()['OS'];
-                            productview = SingleProduct.mobile(
-                              productName: productname,
-                              productPrice: productprice,
-                              productNewPrice: productnewprice,
-                              productDiscountFlag: productdiscount,
-                              productDiscountPercent: productdiscountpercent,
-                              productImg: productimg,
-                              productType: producttype,
-                              productDesc: productdesc,
-                              productBrand: productbrand,
-                              productQuantity: productquantity,
-                              productSeller: productseller,
-                              productID: productid,
-                              productRating: productrating,
-                              productOS: productos,
-                              productMemory: productmemory,
-                              productCamera: productcamera,
-                              productStorage: productStorage,
-                              productBattery: productbattery,
-                              rate1star: rate1star,
-                              rate2star: rate2star,
-                              rate3star: rate3star,
-                              rate4star: rate4star,
-                              rate5star: rate5star,
-                            );
-                          } else if (producttype == 'Laptops') {
-                            final productStorage = product.data()['Storage'];
-                            final productbattery = product.data()['Battery'];
-                            final productmemory = product.data()['Memory'];
-                            final productcpu = product.data()['CPU'];
-                            final productgpu = product.data()['GPU'];
-                            final productos = product.data()['OS'];
-                            productview = SingleProduct.laptop(
-                              productName: productname,
-                              productPrice: productprice,
-                              productNewPrice: productnewprice,
-                              productDiscountFlag: productdiscount,
-                              productDiscountPercent: productdiscountpercent,
-                              productImg: productimg,
-                              productType: producttype,
-                              productDesc: productdesc,
-                              productBrand: productbrand,
-                              productQuantity: productquantity,
-                              productSeller: productseller,
-                              productID: productid,
-                              rate1star: rate1star,
-                              rate2star: rate2star,
-                              rate3star: rate3star,
-                              rate4star: rate4star,
-                              rate5star: rate5star,
-                              productRating: productrating,
-                              productOS: productos,
-                              productMemory: productmemory,
-                              productCPU: productcpu,
-                              productGPU: productgpu,
-                              productStorage: productStorage,
-                              productBattery: productbattery,
-                            );
-                          } else {
-                            productview = SingleProduct(
-                              productName: productname,
-                              productPrice: productprice,
-                              productNewPrice: productnewprice,
-                              productDiscountFlag: productdiscount,
-                              productDiscountPercent: productdiscountpercent,
-                              productImg: productimg,
-                              productType: producttype,
-                              productDesc: productdesc,
-                              productBrand: productbrand,
-                              productQuantity: productquantity,
-                              productSeller: productseller,
-                              productID: productid,
-                              rate1star: rate1star,
-                              rate2star: rate2star,
-                              rate3star: rate3star,
-                              rate4star: rate4star,
-                              rate5star: rate5star,
-                              productRating: productrating,
-                            );
+                          if (productInfo.type == 'Mobiles') {
+                            productInfo.storage = product.data()['Storage'];
+                            productInfo.battery = product.data()['Battery'];
+                            productInfo.memory = product.data()['Memory'];
+                            productInfo.camera = product.data()['Camera'];
+                            productInfo.os = product.data()['OS'];
+
+                          } else if (productInfo.type == 'Laptops') {
+                            productInfo.storage = product.data()['Storage'];
+                            productInfo.battery = product.data()['Battery'];
+                            productInfo.memory = product.data()['Memory'];
+                            productInfo.cpu = product.data()['CPU'];
+                            productInfo.gpu = product.data()['GPU'];
+                            productInfo.os = product.data()['OS'];
+
                           }
+                            productview = SingleProduct(
+                              prd: productInfo,
+                            );
                           productsview.add(productview);
                         }
                         return ListView(
@@ -254,104 +189,10 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
 }
 
 class SingleProduct extends StatefulWidget {
-  final String productName;
-  final double productPrice;
-  final String productNewPrice;
-  final String productDiscountFlag;
-  final String productDiscountPercent;
-  final String productImg;
-  final String productType;
-  final String productID;
-  final String productDesc;
-  final String productBrand;
-  final String productQuantity;
-  final String productSeller;
-  final String productRating;
-  final int rate1star;
-  final int rate2star;
-  final int rate3star;
-  final int rate4star;
-  final int rate5star;
-  //mobile/laptop stuff
-  int productStorage;
-  String productBattery;
-  String productMemory;
-  String productCamera;
-  String productOS;
-  //laptop stuff
-  String productCPU;
-  String productGPU;
+  ProductClass prd;
 
   SingleProduct(
-      {this.productName,
-      this.productPrice,
-      this.productNewPrice,
-      this.productDiscountFlag,
-      this.productDiscountPercent,
-      this.productImg,
-      this.productID,
-      this.productType,
-      this.productDesc,
-      this.productBrand,
-      this.productQuantity,
-      this.productSeller,
-      this.productRating,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
-
-  SingleProduct.mobile(
-      {this.productName,
-      this.productPrice,
-      this.productNewPrice,
-      this.productDiscountFlag,
-      this.productDiscountPercent,
-      this.productImg,
-      this.productID,
-      this.productType,
-      this.productDesc,
-      this.productBrand,
-      this.productQuantity,
-      this.productSeller,
-      this.productRating,
-      this.productStorage,
-      this.productOS,
-      this.productBattery,
-      this.productCamera,
-      this.productMemory,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
-
-  SingleProduct.laptop(
-      {this.productName,
-      this.productPrice,
-      this.productNewPrice,
-      this.productDiscountFlag,
-      this.productDiscountPercent,
-      this.productImg,
-      this.productID,
-      this.productType,
-      this.productDesc,
-      this.productBrand,
-      this.productQuantity,
-      this.productSeller,
-      this.productRating,
-      this.productStorage,
-      this.productOS,
-      this.productBattery,
-      this.productCPU,
-      this.productGPU,
-      this.productMemory,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
+      {this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -373,7 +214,7 @@ class _SingleProductState extends State<SingleProduct> {
           .collection('Customers')
           .doc(_auth.currentUser.uid)
           .collection('cart')
-          .doc(widget.productID)
+          .doc(widget.prd.id)
           .get()
           .then((DocumentSnapshot snapshot) async {
         if (snapshot.exists) {
@@ -385,25 +226,25 @@ class _SingleProductState extends State<SingleProduct> {
               .collection('Customers')
               .doc(_auth.currentUser.uid)
               .collection('cart')
-              .doc(widget.productID)
+              .doc(widget.prd.id)
               .set({
-            'ProductID': widget.productID,
+            'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Quantity': 1,
-            'Product Name': widget.productName,
-            'Price': widget.productPrice,
-            'New price': widget.productNewPrice,
-            'Discount': widget.productDiscountFlag,
-            'Discount percent': widget.productDiscountPercent,
-            'type': widget.productType,
+            'Product Name': widget.prd.name,
+            'Price': widget.prd.price,
+            'New price': widget.prd.newPrice,
+            'Discount': widget.prd.discount,
+            'Discount percent': widget.prd.discountPercentage,
+            'type': widget.prd.type,
             'ChangeFlag': 'false',
-            'imgURL': widget.productImg
+            'imgURL': widget.prd.img
           });
           double price;
-          if (widget.productDiscountFlag == 'false')
-            price = widget.productPrice;
+          if (widget.prd.discount == 'false')
+            price = widget.prd.price;
           else
-            price = double.parse(widget.productNewPrice);
+            price = double.parse(widget.prd.newPrice);
           await _firestore
               .collection('Customers')
               .doc(_auth.currentUser.uid)
@@ -422,123 +263,41 @@ class _SingleProductState extends State<SingleProduct> {
     return Card(
       child: InkWell(
         onTap: () {
-          if (widget.productType == 'Mobiles') {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => ProductDetails.Mobile(
-                  // passing the values via constructor
-                  product_detail_name: widget.productName,
-                  product_detail_price: widget.productPrice,
-                  product_detail_newPrice: widget.productNewPrice,
-                  product_discount_flag: widget.productDiscountFlag,
-                  product_discount_percent: widget.productDiscountPercent,
-                  product_detail_picture: widget.productImg,
-                  product_detail_desc: widget.productDesc,
-                  product_detail_brand: widget.productBrand,
-                  product_detail_quantity: widget.productQuantity,
-                  product_detail_seller: widget.productSeller,
-                  rate1star: widget.rate1star,
-                  rate2star: widget.rate2star,
-                  rate3star: widget.rate3star,
-                  rate4star: widget.rate4star,
-                  rate5star: widget.rate5star,
-                  product_detail_rating: widget.productRating,
-                  product_detail_type: widget.productType,
-                  product_detail_id: widget.productID,
-                  mobile_storage: widget.productStorage,
-                  mobile_battery: widget.productBattery,
-                  mobile_camera: widget.productCamera,
-                  mobile_memory: widget.productMemory,
-                  mobile_os: widget.productOS,
-                ),
-              ),
-            );
-          } else if (widget.productType == 'Laptops') {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => ProductDetails.Laptop(
-                  // passing the values via constructor
-                  product_detail_name: widget.productName,
-                  product_detail_price: widget.productPrice,
-                  product_detail_newPrice: widget.productNewPrice,
-                  product_discount_flag: widget.productDiscountFlag,
-                  product_discount_percent: widget.productDiscountPercent,
-                  product_detail_picture: widget.productImg,
-                  product_detail_desc: widget.productDesc,
-                  product_detail_brand: widget.productBrand,
-                  product_detail_quantity: widget.productQuantity,
-                  product_detail_seller: widget.productSeller,
-                  rate1star: widget.rate1star,
-                  rate2star: widget.rate2star,
-                  rate3star: widget.rate3star,
-                  rate4star: widget.rate4star,
-                  rate5star: widget.rate5star,
-                  product_detail_rating: widget.productRating,
-                  product_detail_type: widget.productType,
-                  product_detail_id: widget.productID,
-                  mobile_storage: widget.productStorage,
-                  mobile_battery: widget.productBattery,
-                  CPU: widget.productCPU,
-                  GPU: widget.productGPU,
-                  mobile_memory: widget.productMemory,
-                  mobile_os: widget.productOS,
-                ),
-              ),
-            );
-          } else {
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => ProductDetails(
                   // passing the values via constructor
-                  product_detail_name: widget.productName,
-                  product_detail_price: widget.productPrice,
-                  product_detail_newPrice: widget.productNewPrice,
-                  product_discount_flag: widget.productDiscountFlag,
-                  product_discount_percent: widget.productDiscountPercent,
-                  product_detail_picture: widget.productImg,
-                  product_detail_desc: widget.productDesc,
-                  product_detail_brand: widget.productBrand,
-                  product_detail_quantity: widget.productQuantity,
-                  product_detail_seller: widget.productSeller,
-                  rate1star: widget.rate1star,
-                  rate2star: widget.rate2star,
-                  rate3star: widget.rate3star,
-                  rate4star: widget.rate4star,
-                  rate5star: widget.rate5star,
-                  product_detail_rating: widget.productRating,
-                  product_detail_type: widget.productType,
-                  product_detail_id: widget.productID,
+                  pRD: widget.prd,
                 ),
               ),
             );
-          }
         },
         child: ListTile(
           //    ======= the leading image section =======
           leading: FadeInImage.assetNetwork(
             placeholder: 'images/PlaceHolder.gif',
-            image: (widget.productImg == null)
+            image: (widget.prd.img == null)
                 ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                : widget.productImg,
+                : widget.prd.img,
             height: 80,
             width: 80,
           ),
-          title: Text(widget.productName),
+          title: Text(widget.prd.name),
           subtitle: Column(
             children: <Widget>[
               //  ======= this for price section ======
               Container(
                 alignment: Alignment.topLeft,
-                child: (widget.productDiscountFlag == 'false')
+                child: (widget.prd.discount == 'false')
                     ? Text(
-                        "${widget.productPrice} EGP",
+                        "${widget.prd.price} EGP",
                         style: TextStyle(color: Colors.red),
                       )
                     : Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "${widget.productPrice}",
+                            "${widget.prd.price}",
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough),
                           ),
@@ -546,7 +305,7 @@ class _SingleProductState extends State<SingleProduct> {
                             width: 10,
                           ),
                           Text(
-                            "${widget.productNewPrice} EGP",
+                            "${widget.prd.newPrice} EGP",
                             style: TextStyle(color: Colors.red),
                           ),
                         ],
@@ -556,7 +315,7 @@ class _SingleProductState extends State<SingleProduct> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   RatingBarIndicator(
-                    rating: double.parse(widget.productRating),
+                    rating: double.parse(widget.prd.rate),
                     itemSize: 20.0,
                     direction: Axis.horizontal,
                     itemCount: 5,
@@ -567,7 +326,7 @@ class _SingleProductState extends State<SingleProduct> {
                     ),
                   ),
                   Text(
-                    '${widget.productRating}',
+                    '${widget.prd.rate}',
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/MobileCatSearch.dart';
+import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 
 /*
 
@@ -24,7 +25,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => laptopCatSearch()));
             },
             child: Category(
               image_location: 'icons/laptop.png',

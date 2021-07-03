@@ -1,7 +1,16 @@
 class ProductClass{
+  String _sellerEmail;
+  int _rate1star, _rate2star, _rate3star, _rate4star, _rate5star;
   String _name, _newPrice, _discount, _discountPercentage, _type, _rate, _quantity, _description, _brand, _color, _os, _storageUnit, _screenSize, _memory, _img,
   _id, _battery, _camera, _gpu, _cpu;
-  double _price; int _storage;
+  num _price; int _storage;
+
+
+  String get sellerEmail => _sellerEmail;
+
+  set sellerEmail(String value) {
+    _sellerEmail = value;
+  }
 
   get gpu => _gpu;
 
@@ -53,9 +62,9 @@ class ProductClass{
 
   get newPrice => _newPrice;
 
-  double get price => _price;
+  num get price => _price;
 
-  set price(double value) {
+  set price(num value) {
     _price = value;
   }
 
@@ -133,5 +142,35 @@ class ProductClass{
 
   set cpu(value) {
     _cpu = value;
+  }
+
+  get rate1star => _rate1star;
+
+  set rate1star(value) {
+    _rate1star = value;
+  }
+
+  get rate2star => _rate2star;
+
+  set rate2star(value) {
+    _rate2star = value;
+  }
+
+  get rate3star => _rate3star;
+
+  set rate3star(value) {
+    _rate3star = value;
+  }
+
+  get rate4star => _rate4star;
+
+  set rate4star(value) {
+    _rate4star = value;
+  }
+
+  get rate5star => _rate5star;
+
+  set rate5star(value) {
+    _rate5star = value;
   }
 }

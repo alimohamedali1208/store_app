@@ -5,109 +5,16 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:store_app/UserCustomer.dart';
+import 'package:store_app/productClass.dart';
 
 UserCustomer customer = UserCustomer();
 
 class ProductDetails extends StatefulWidget {
-  double customerRating = 0;
-  String product_detail_name;
-  double product_detail_price;
-  String product_detail_newPrice;
-  String product_discount_flag;
-  String product_discount_percent;
-  var product_detail_picture;
-  String product_detail_desc;
-  String product_detail_brand;
-  String product_detail_quantity;
-  String product_detail_seller;
-  int rate1star;
-  int rate2star;
-  int rate3star;
-  int rate4star;
-  int rate5star;
-  String product_detail_rating;
-  String product_detail_type;
-  String product_detail_id;
-  //mobile/laptop Type Stuff
-  int mobile_storage;
-  String mobile_battery;
-  String mobile_memory;
-  String mobile_camera;
-  String mobile_os;
-  //Laptops Stuff
-  String GPU;
-  String CPU;
+  ProductClass pRD;
 
   ProductDetails(
-      {this.product_detail_name,
-      this.product_detail_price,
-      this.product_detail_newPrice,
-      this.product_discount_flag,
-      this.product_discount_percent,
-      this.product_detail_picture,
-      this.product_detail_desc,
-      this.product_detail_brand,
-      this.product_detail_quantity,
-      this.product_detail_seller,
-      this.product_detail_rating,
-      this.product_detail_type,
-      this.product_detail_id,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
+      {this.pRD});
 
-  ProductDetails.Mobile(
-      {this.product_detail_name,
-      this.product_detail_price,
-      this.product_detail_newPrice,
-      this.product_discount_flag,
-      this.product_discount_percent,
-      this.product_detail_picture,
-      this.product_detail_desc,
-      this.product_detail_brand,
-      this.product_detail_quantity,
-      this.product_detail_seller,
-      this.product_detail_rating,
-      this.product_detail_type,
-      this.product_detail_id,
-      this.mobile_battery,
-      this.mobile_camera,
-      this.mobile_memory,
-      this.mobile_os,
-      this.mobile_storage,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
-
-  ProductDetails.Laptop(
-      {this.product_detail_name,
-      this.product_detail_price,
-      this.product_detail_newPrice,
-      this.product_discount_flag,
-      this.product_discount_percent,
-      this.product_detail_picture,
-      this.product_detail_desc,
-      this.product_detail_brand,
-      this.product_detail_quantity,
-      this.product_detail_seller,
-      this.product_detail_rating,
-      this.product_detail_type,
-      this.product_detail_id,
-      this.mobile_battery,
-      this.CPU,
-      this.GPU,
-      this.mobile_memory,
-      this.mobile_os,
-      this.mobile_storage,
-      this.rate1star,
-      this.rate2star,
-      this.rate3star,
-      this.rate4star,
-      this.rate5star});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -132,7 +39,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           .collection('Customers')
           .doc(_auth.currentUser.uid)
           .collection('cart')
-          .doc(widget.product_detail_id)
+          .doc(widget.pRD.id)
           .get()
           .then((DocumentSnapshot snapshot) async {
         if (snapshot.exists) {
@@ -144,24 +51,24 @@ class _ProductDetailsState extends State<ProductDetails> {
               .collection('Customers')
               .doc(_auth.currentUser.uid)
               .collection('cart')
-              .doc(widget.product_detail_id)
+              .doc(widget.pRD.id)
               .set({
-            'ProductID': widget.product_detail_id,
+            'ProductID': widget.pRD.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Quantity': 1,
-            'Product Name': widget.product_detail_name,
-            'Price': widget.product_detail_price,
-            'New price': widget.product_detail_newPrice,
-            'Discount': widget.product_discount_flag,
-            'Discount percent': widget.product_discount_percent,
-            'type': widget.product_detail_type,
-            'imgURL': widget.product_detail_picture,
+            'Product Name': widget.pRD.name,
+            'Price': widget.pRD.price,
+            'New price': widget.pRD.newPrice,
+            'Discount': widget.pRD.discount,
+            'Discount percent': widget.pRD.discountPercentage,
+            'type': widget.pRD.type,
+            'imgURL': widget.pRD.img,
           });
           double price;
-          if (widget.product_discount_flag == 'false')
-            price = widget.product_detail_price;
+          if (widget.pRD.discount == 'false')
+            price = widget.pRD.price;
           else
-            price = double.parse(widget.product_detail_newPrice);
+            price = double.parse(widget.pRD.newPrice);
           await _firestore
               .collection('Customers')
               .doc(_auth.currentUser.uid)
@@ -192,7 +99,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           .collection('Customers')
           .doc(_auth.currentUser.uid)
           .collection('rated products')
-          .doc(widget.product_detail_id)
+          .doc(widget.pRD.id)
           .get()
           .then((DocumentSnapshot snapshot) async {
         if (snapshot.exists) {
@@ -201,7 +108,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               .collection('Customers')
               .doc(_auth.currentUser.uid)
               .collection('rated products')
-              .doc(widget.product_detail_id)
+              .doc(widget.pRD.id)
               .get()
               .then((value) {
             oldRating = value.data()['rating'];
@@ -210,31 +117,31 @@ class _ProductDetailsState extends State<ProductDetails> {
           print('step2 change how many stars');
           await _firestore
               .collection('ProductsCollection')
-              .doc('${widget.product_detail_type}')
+              .doc('${widget.pRD.type}')
               .collection('Products')
-              .doc(widget.product_detail_id)
+              .doc(widget.pRD.id)
               .update({
             '$oldRating star rate': FieldValue.increment(-1),
             '$rating star rate': FieldValue.increment(1)
           });
           if (oldRating == 1) {
-            widget.rate1star--;
+            widget.pRD.rate1star--;
           } else if (oldRating == 2) {
-            widget.rate2star--;
+            widget.pRD.rate2star--;
           } else if (oldRating == 3) {
-            widget.rate3star--;
+            widget.pRD.rate3star--;
           } else if (oldRating == 4) {
-            widget.rate4star--;
+            widget.pRD.rate4star--;
           } else {
-            widget.rate5star--;
+            widget.pRD.rate5star--;
           }
         } else {
           print('step2 document not found just change no. of stars');
           await _firestore
               .collection('ProductsCollection')
-              .doc('${widget.product_detail_type}')
+              .doc('${widget.pRD.type}')
               .collection('Products')
-              .doc(widget.product_detail_id)
+              .doc(widget.pRD.id)
               .update({'$rating star rate': FieldValue.increment(1)});
         }
       });
@@ -243,51 +150,51 @@ class _ProductDetailsState extends State<ProductDetails> {
           .collection('Customers')
           .doc(_auth.currentUser.uid)
           .collection('rated products')
-          .doc(widget.product_detail_id)
+          .doc(widget.pRD.id)
           .set({
         'rating': rating,
-        'ProductID': widget.product_detail_id,
+        'ProductID': widget.pRD.id,
         'CustomerID': _auth.currentUser.uid
       });
       print('step4 change actual rating for product');
-      overallRating = (widget.rate5star +
-          widget.rate4star +
-          widget.rate3star +
-          widget.rate2star +
-          widget.rate1star);
-      ratingMul = (5 * widget.rate5star +
-          4 * widget.rate4star +
-          3 * widget.rate3star +
-          2 * widget.rate2star +
-          1 * widget.rate1star);
+      overallRating = (widget.pRD.rate1star +
+          widget.pRD.rate2star +
+          widget.pRD.rate3star +
+          widget.pRD.rate4star +
+          widget.pRD.rate5star);
+      ratingMul = (5 * widget.pRD.rate5star +
+          4 * widget.pRD.rate4star +
+          3 * widget.pRD.rate3star +
+          2 * widget.pRD.rate2star +
+          1 * widget.pRD.rate1star);
       avgRating = ratingMul / overallRating;
       // print('avg rate before convert $avgRating');
       // print('This is it after converting ${avgRating.toStringAsPrecision(2)}');
       await _firestore
           .collection('ProductsCollection')
-          .doc('${widget.product_detail_type}')
+          .doc('${widget.pRD.type}')
           .collection('Products')
-          .doc('${widget.product_detail_id}')
+          .doc('${widget.pRD.id}')
           .update({"Rating": avgRating.toStringAsPrecision(2)});
     }
     print('finished');
   }
 
   String getMobileSpecs() {
-    return "\u2022 Storage: ${widget.mobile_storage}\n"
-        "\u2022 OS: ${widget.mobile_os}\n"
-        "\u2022 Battery: ${widget.mobile_battery}\n"
-        "\u2022 Camera: ${widget.mobile_camera}\n"
-        "\u2022 Memory: ${widget.mobile_memory}";
+    return "\u2022 Storage: ${widget.pRD.storage}\n"
+        "\u2022 OS: ${widget.pRD.os}\n"
+        "\u2022 Battery: ${widget.pRD.battery}\n"
+        "\u2022 Camera: ${widget.pRD.camera}\n"
+        "\u2022 Memory: ${widget.pRD.memory}";
   }
 
   String getLaptopSpecs() {
-    return "\u2022 Storage: ${widget.mobile_storage}\n"
-        "\u2022 OS: ${widget.mobile_os}\n"
-        "\u2022 Battery: ${widget.mobile_battery}\n"
-        "\u2022 CPU: ${widget.CPU}\n"
-        "\u2022 GPU: ${widget.GPU}\n"
-        "\u2022 Memory: ${widget.mobile_memory}";
+    return "\u2022 Storage: ${widget.pRD.storage}\n"
+        "\u2022 OS: ${widget.pRD.os}\n"
+        "\u2022 Battery: ${widget.pRD.battery}\n"
+        "\u2022 CPU: ${widget.pRD.cpu}\n"
+        "\u2022 GPU: ${widget.pRD.gpu}\n"
+        "\u2022 Memory: ${widget.pRD.memory}";
   }
 
   @override
@@ -307,7 +214,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.white70,
-        title: Text(widget.product_detail_name,
+        title: Text(widget.pRD.name,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -341,9 +248,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                             height: 250,
                             width: 250,
                             placeholder: 'images/PlaceHolder.gif',
-                            image: (widget.product_detail_picture == null)
+                            image: (widget.pRD.img == null)
                                 ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                                : widget.product_detail_picture,
+                                : widget.pRD.img,
                           ),
                         ),
                       ),
@@ -417,7 +324,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0, top: 10),
                           child: Text(
-                            widget.product_detail_name,
+                            widget.pRD.name,
                             style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
@@ -439,9 +346,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: 10.0, top: 10),
-                                child: (widget.product_discount_flag == 'false')
+                                child: (widget.pRD.discount == 'false')
                                     ? Text(
-                                        "${widget.product_detail_price} EGP",
+                                        "${widget.pRD.price} EGP",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,
@@ -450,7 +357,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
-                                            "${widget.product_detail_price}",
+                                            "${widget.pRD.price}",
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,
@@ -460,7 +367,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             width: 10,
                                           ),
                                           Text(
-                                            "${widget.product_detail_newPrice} EGP",
+                                            "${widget.pRD.newPrice} EGP",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6,
@@ -487,7 +394,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "${widget.product_detail_rating}",
+                                      "${widget.pRD.rate}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -512,7 +419,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 10.0, right: 60, top: 10),
-                          child: Text(widget.product_detail_desc),
+                          child: Text(widget.pRD.description),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -525,7 +432,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               padding: const EdgeInsets.only(
                                   left: 10.0, top: 10, bottom: 10),
                               child: Text(
-                                "Sold by ${widget.product_detail_seller}",
+                                "Sold by ${widget.pRD.sellerEmail}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
@@ -549,7 +456,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             top: 10,
                           ),
                           child: Text(
-                              "\u2022 Brand: ${widget.product_detail_brand}"),
+                              "\u2022 Brand: ${widget.pRD.brand}"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -557,7 +464,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             right: 60,
                           ),
                           child: Text(
-                              "\u2022 Quantity: ${widget.product_detail_quantity}"),
+                              "\u2022 Quantity: ${widget.pRD.quantity}"),
                         ),
                         Padding(
                             padding: const EdgeInsets.only(
@@ -566,9 +473,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                               bottom: 10,
                             ),
                             child: Text((() {
-                              if (widget.product_detail_type == 'Mobiles')
+                              if (widget.pRD.type == 'Mobiles')
                                 return getMobileSpecs();
-                              else if (widget.product_detail_type == 'Laptops')
+                              else if (widget.pRD.type == 'Laptops')
                                 return getLaptopSpecs();
                               else
                                 return 'other';
@@ -585,7 +492,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
                         RatingBar.builder(
-                          initialRating: widget.customerRating,
                           minRating: 1,
                           glow: false,
                           itemSize: 35.0,
@@ -599,15 +505,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                           onRatingUpdate: (rating) {
                             if (rating == 1.0) {
-                              widget.rate1star++;
+                              widget.pRD.rate1star++;
                             } else if (rating == 2.0) {
-                              widget.rate2star++;
+                              widget.pRD.rate2star++;
                             } else if (rating == 3.0) {
-                              widget.rate3star++;
+                              widget.pRD.rate3star++;
                             } else if (rating == 4.0) {
-                              widget.rate4star++;
+                              widget.pRD.rate4star++;
                             } else {
-                              widget.rate5star++;
+                              widget.pRD.rate5star++;
                             }
                             updateProductRating(rating.toInt());
                           },
