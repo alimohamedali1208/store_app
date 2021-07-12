@@ -21,6 +21,7 @@ import 'package:store_app/EditPages/editProjector.dart';
 import 'package:store_app/EditPages/editStorageDevice.dart';
 import 'package:store_app/EditPages/editTV.dart';
 import 'package:store_app/Home.dart';
+import 'package:store_app/SellerAddOfferOnCategory.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/addCategory.dart';
@@ -82,24 +83,34 @@ class _sellerhomeState extends State<sellerhome> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80),
-          child: AppBar(
-            title: Column(
-              children: [
-                SizedBox(height: 30),
-                Text(seller.firstName),
-              ],
+        appBar: AppBar(
+          title: Text(seller.firstName),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
             ),
-            centerTitle: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(30),
-              ),
-            ),
-            backgroundColor: Color(0xFF731800),
-            actions: <Widget>[],
           ),
+          backgroundColor: Color(0xFF731800),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddOfferOnCategory()));
+                  },
+                  child: Text(
+                    "Add offer on category",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+            )
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -180,14 +191,15 @@ class _sellerhomeState extends State<sellerhome> {
                   productInfo.description = product.data()['Description'];
                   productInfo.price = (product.data()['Price']).toDouble();
                   productInfo.discount = product.data()['Discount'];
-                  productInfo.discountPercentage = product.data()['Discount percent'];
+                  productInfo.discountPercentage =
+                      product.data()['Discount percent'];
                   productInfo.newPrice = product.data()['New price'];
                   productInfo.img = product.data()['imgURL'];
                   productInfo.type = product.data()['type'];
                   productInfo.rate = product.data()['Rating'];
                   productInfo.quantity = product.data()['Quantity'];
                   productInfo.id = product.id;
-                  if(productInfo.type == 'Mobiles'){
+                  if (productInfo.type == 'Mobiles') {
                     productInfo.storage = product.data()['Storage'];
                     productInfo.battery = product.data()['Battery'];
                     productInfo.memory = product.data()['Memory'];
@@ -196,8 +208,7 @@ class _sellerhomeState extends State<sellerhome> {
                     productInfo.brand = product.data()['Brand Name'];
                     productInfo.screenSize = product.data()['Screen Size'];
                     productInfo.storageUnit = product.data()['Storage Unit'];
-                  }
-                  else if(productInfo.type == 'Laptops'){
+                  } else if (productInfo.type == 'Laptops') {
                     productInfo.storage = product.data()['Storage'];
                     productInfo.battery = product.data()['Battery'];
                     productInfo.memory = product.data()['Memory'];
@@ -207,7 +218,7 @@ class _sellerhomeState extends State<sellerhome> {
                     productInfo.cpu = product.data()['CPU'];
                     productInfo.gpu = product.data()['GPU'];
                   }
-                   productview = SingleProduct(
+                  productview = SingleProduct(
                     prd: productInfo,
                   );
                   productsview.add(productview);
@@ -235,9 +246,7 @@ class _sellerhomeState extends State<sellerhome> {
 class SingleProduct extends StatefulWidget {
   ProductClass prd;
 
-  SingleProduct(
-      {this.prd});
-
+  SingleProduct({this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -312,53 +321,108 @@ class _SingleProductState extends State<SingleProduct> {
                               TextButton(
                                   onPressed: () {
                                     if (widget.prd.type == 'Laptops') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editLaptops(pRD: widget.prd,)));
-                                    } else if (widget.prd.type == 'AirConditioner') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editAirConditioner()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => editLaptops(
+                                                    pRD: widget.prd,
+                                                  )));
+                                    } else if (widget.prd.type ==
+                                        'AirConditioner') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editAirConditioner()));
                                     } else if (widget.prd.type == 'Cameras') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editCameras()));
-                                    } else if (widget.prd.type == 'CameraAccessories') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editCameraAccessory()));
-                                    } else if (widget.prd.type == 'CameraAccessories') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editCameraAccessory()));
-                                    } else if (widget.prd.type == 'OtherElectronics') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editElectronics()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameras()));
+                                    } else if (widget.prd.type ==
+                                        'CameraAccessories') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameraAccessory()));
+                                    } else if (widget.prd.type ==
+                                        'CameraAccessories') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editCameraAccessory()));
+                                    } else if (widget.prd.type ==
+                                        'OtherElectronics') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editElectronics()));
                                     } else if (widget.prd.type == 'Fashion') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editFashion()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editFashion()));
                                     } else if (widget.prd.type == 'Fridges') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editFridge()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editFridge()));
                                     } else if (widget.prd.type == 'Jewelry') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editJewelary()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editJewelary()));
                                     } else if (widget.prd.type == 'Mobiles') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editMobile(pRD: widget.prd,)));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => editMobile(
+                                                    pRD: widget.prd,
+                                                  )));
                                     } else if (widget.prd.type == 'OtherHome') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editHomeAppliances()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editHomeAppliances()));
                                     } else if (widget.prd.type == 'OtherPC') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editPCAccessories()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editPCAccessories()));
                                     } else if (widget.prd.type == 'Printers') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editPrinter()));
-                                    } else if (widget.prd.type == 'Projectors') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editProjector()));
-                                    } else if (widget.prd.type == 'StorageDevice') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editStorageDevice()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editPrinter()));
+                                    } else if (widget.prd.type ==
+                                        'Projectors') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editProjector()));
+                                    } else if (widget.prd.type ==
+                                        'StorageDevice') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editStorageDevice()));
                                     } else if (widget.prd.type == 'TV') {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => editTV()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => editTV()));
                                     }
                                   },
                                   child: Row(
@@ -414,7 +478,8 @@ class _SingleProductState extends State<SingleProduct> {
                                               if (value == null)
                                                 print('nope');
                                               else
-                                                offer = double.parse(value.trim());
+                                                offer =
+                                                    double.parse(value.trim());
                                             },
                                           ),
                                         ),
@@ -435,20 +500,37 @@ class _SingleProductState extends State<SingleProduct> {
                                               style: TextStyle(
                                                   color: Colors.black),
                                             ),
-                                            onPressed: (widget.prd.discount == 'false')? null: () async{
-                                              Fluttertoast.showToast(
-                                                msg: "Discount has been removed",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                backgroundColor: Colors.black54,
-                                                gravity: ToastGravity.BOTTOM,
-                                                textColor: Colors.white,
-                                                fontSize: 16.0,);
-                                              await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.prd.type)
-                                                  .collection('Products').doc(widget.prd.id)
-                                                  .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'});
-                                              //Remove edited product from any customer cart
-                                              await removeEditedProductFromCart();
-                                            },
+                                            onPressed: (widget.prd.discount ==
+                                                    'false')
+                                                ? null
+                                                : () async {
+                                                    Fluttertoast.showToast(
+                                                      msg:
+                                                          "Discount has been removed",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      backgroundColor:
+                                                          Colors.black54,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0,
+                                                    );
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'ProductsCollection')
+                                                        .doc(widget.prd.type)
+                                                        .collection('Products')
+                                                        .doc(widget.prd.id)
+                                                        .update({
+                                                      'Discount': 'false',
+                                                      'Discount percent': '0',
+                                                      'New price': '0'
+                                                    });
+                                                    //Remove edited product from any customer cart
+                                                    await removeEditedProductFromCart();
+                                                  },
                                           ),
                                           TextButton(
                                             child: Text(
@@ -458,28 +540,45 @@ class _SingleProductState extends State<SingleProduct> {
                                             ),
                                             onPressed: () async {
                                               _formKey.currentState.save();
-                                              if(offer == 0 || offer == null){
+                                              if (offer == 0 || offer == null) {
                                                 Fluttertoast.showToast(
                                                   msg: "Insert number first",
-                                                  toastLength: Toast.LENGTH_SHORT,
-                                                  backgroundColor: Colors.black54,
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      Colors.black54,
                                                   gravity: ToastGravity.BOTTOM,
                                                   textColor: Colors.white,
-                                                  fontSize: 16.0,);
-                                              }
-                                              else {
+                                                  fontSize: 16.0,
+                                                );
+                                              } else {
                                                 // Inserting new discount
                                                 Fluttertoast.showToast(
-                                                  msg: "$offer% Discount has been added",
-                                                  toastLength: Toast.LENGTH_SHORT,
-                                                  backgroundColor: Colors.black54,
+                                                  msg:
+                                                      "$offer% Discount has been added",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      Colors.black54,
                                                   gravity: ToastGravity.BOTTOM,
                                                   textColor: Colors.white,
-                                                  fontSize: 16.0,);
-                                                String newPrice = (widget.prd.price - ((offer / 100) * widget.prd.price)).toString();
-                                                await FirebaseFirestore.instance.collection('ProductsCollection').doc(widget.prd.type)
-                                                    .collection('Products').doc(widget.prd.id)
-                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice
+                                                  fontSize: 16.0,
+                                                );
+                                                String newPrice = (widget
+                                                            .prd.price -
+                                                        ((offer / 100) *
+                                                            widget.prd.price))
+                                                    .toString();
+                                                await FirebaseFirestore.instance
+                                                    .collection(
+                                                        'ProductsCollection')
+                                                    .doc(widget.prd.type)
+                                                    .collection('Products')
+                                                    .doc(widget.prd.id)
+                                                    .update({
+                                                  'Discount': 'true',
+                                                  'Discount percent': '$offer',
+                                                  'New price': newPrice
                                                 });
                                                 Navigator.of(context).pop();
                                                 //Remove edited product from any customer cart
@@ -549,27 +648,57 @@ class _SingleProductState extends State<SingleProduct> {
                         textColor: Colors.white,
                         fontSize: 16.0);
                     //Decreasing the counter of that type of products in sellers account
-                    FirebaseFirestore.instance.collection('Sellers').doc(FirebaseAuth.instance.currentUser.uid).update({'Type${widget.prd.type}': FieldValue.increment(-1)});
+                    FirebaseFirestore.instance
+                        .collection('Sellers')
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .update({
+                      'Type${widget.prd.type}': FieldValue.increment(-1)
+                    });
                     //removing product from customers: cart, rated products, and favorites
-                    await FirebaseFirestore.instance.collectionGroup('cart').where('ProductID', isEqualTo: widget.prd.id)
-                        .get().then((value) {
+                    await FirebaseFirestore.instance
+                        .collectionGroup('cart')
+                        .where('ProductID', isEqualTo: widget.prd.id)
+                        .get()
+                        .then((value) {
                       value.docs.forEach((element) async {
-                        final cid = element.data()['CustomerID'].toString().trim();
-                        print('This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart').doc(element.id).delete();
+                        final cid =
+                            element.data()['CustomerID'].toString().trim();
+                        print(
+                            'This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(cid)
+                            .collection('cart')
+                            .doc(element.id)
+                            .delete();
                       });
                     });
-                    await FirebaseFirestore.instance.collectionGroup('rated products').where('ProductID', isEqualTo: widget.prd.id)
-                        .get().then((value) {
+                    await FirebaseFirestore.instance
+                        .collectionGroup('rated products')
+                        .where('ProductID', isEqualTo: widget.prd.id)
+                        .get()
+                        .then((value) {
                       value.docs.forEach((element) async {
-                        final cid = element.data()['CustomerID'].toString().trim();
-                        print('This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('rated products').doc(element.id).delete();
+                        final cid =
+                            element.data()['CustomerID'].toString().trim();
+                        print(
+                            'This is the element data for customer ${element.data()['CustomerID']}');
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(cid)
+                            .collection('rated products')
+                            .doc(element.id)
+                            .delete();
                       });
                     });
                     //Deleting product picture from cloud storage
-                    Reference firebaseStorageRef = FirebaseStorage.instance.ref();
-                    firebaseStorageRef.child("ProductImage/${widget.prd.type}/${widget.prd.id}/${widget.prd.name}").delete().whenComplete(() => print('delete success'));
+                    Reference firebaseStorageRef =
+                        FirebaseStorage.instance.ref();
+                    firebaseStorageRef
+                        .child(
+                            "ProductImage/${widget.prd.type}/${widget.prd.id}/${widget.prd.name}")
+                        .delete()
+                        .whenComplete(() => print('delete success'));
                   },
                   child: Text('Delete'),
                   color: Colors.red,
@@ -606,24 +735,35 @@ class _SingleProductState extends State<SingleProduct> {
   }
 
   Future removeEditedProductFromCart() async {
-    await FirebaseFirestore.instance.collectionGroup('cart')
-        .where('ProductID', isEqualTo: widget.prd.id).get().then((value) {
+    await FirebaseFirestore.instance
+        .collectionGroup('cart')
+        .where('ProductID', isEqualTo: widget.prd.id)
+        .get()
+        .then((value) {
       value.docs.forEach((element) async {
         final cid = element.data()['CustomerID'].toString().trim();
-        print('This is the element data for customer ${element.data()['CustomerID']}');
+        print(
+            'This is the element data for customer ${element.data()['CustomerID']}');
         String changeFlag = element.data()['ChangeFlag'];
         //Check if cart was modified before
-        if(changeFlag == 'false') {
-          await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
-              .doc(element.id).update({'ChangeFlag': 'true'});
+        if (changeFlag == 'false') {
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
+              .collection('cart')
+              .doc(element.id)
+              .update({'ChangeFlag': 'true'});
           final discountFlag = element.data()['Discount'];
           String oldPrice;
           //Check if it had a discount
-          if (discountFlag == 'true'){
-            oldPrice = element.data()['New price'];}
-          else{
-            oldPrice = element.data()['Price'].toString();}
-          await FirebaseFirestore.instance.collection('Customers').doc(cid)
+          if (discountFlag == 'true') {
+            oldPrice = element.data()['New price'];
+          } else {
+            oldPrice = element.data()['Price'].toString();
+          }
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
               .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
         }
       });
