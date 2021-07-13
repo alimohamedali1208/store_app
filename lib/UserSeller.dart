@@ -8,6 +8,8 @@ class UserSeller {
       _company,
       _tax;
 
+  static var typeList = [];
+
   String get firstName => _firstName;
 
   set firstName(String value) {

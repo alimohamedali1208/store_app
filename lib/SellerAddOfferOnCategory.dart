@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/UserSeller.dart';
 
 class AddOfferOnCategory extends StatefulWidget {
   @override
@@ -67,13 +68,10 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                           onChanged: (String newValue) {
                             setState(() {
                               ddCategory = newValue;
+                              print(ddCategory);
                             });
                           },
-                          items: <String>[
-                            'Mobiles',
-                            'Printers',
-                            'Laptops',
-                          ].map<DropdownMenuItem<String>>((String value) {
+                          items: UserSeller.typeList.map<DropdownMenuItem<String>>((var value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),

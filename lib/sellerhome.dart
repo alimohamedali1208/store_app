@@ -67,6 +67,7 @@ class _sellerhomeState extends State<sellerhome> {
                   Navigator.pushNamed(context, Home.id);
                   seller.lastName = 'temp';
                   seller.firstName = 'temp';
+                  UserSeller.typeList.clear();
                 },
                 child: new Text('Yes'),
               ),
@@ -164,9 +165,10 @@ class _sellerhomeState extends State<sellerhome> {
                 child: ListTile(
                   onTap: () {
                     _auth.signOut();
-                    Navigator.pushNamed(context, Home.id);
                     seller.lastName = 'temp';
                     seller.firstName = 'temp';
+                    UserSeller.typeList.clear();
+                    Navigator.pushNamed(context, Home.id);
                   },
                   title: Text('Log out'),
                   leading: Icon(Icons.logout, color: Colors.black),
@@ -443,6 +445,35 @@ class _SingleProductState extends State<SingleProduct> {
                               TextButton(
                                   onPressed: () async {
                                     await getImage();
+                                    Fluttertoast.showToast(
+                                        msg: "Uploading new product picture");
+                                    if(_image == null){}
+                                    else {
+                                      Reference firebaseStorageRef = FirebaseStorage
+                                          .instance
+                                          .ref()
+                                          .child('ProductImage/${widget.prd
+                                          .type}/${widget.prd.id}/${widget.prd
+                                          .name}');
+                                      UploadTask uploadTask = firebaseStorageRef
+                                          .putFile(_image);
+                                      TaskSnapshot taskSnapshot = await uploadTask
+                                          .whenComplete(() => null);
+                                      //update product img url
+                                      String picURL;
+                                      await taskSnapshot.ref.getDownloadURL()
+                                          .then((value) => picURL = value);
+                                      FirebaseFirestore.instance
+                                          .collection('ProductsCollection')
+                                          .doc(widget.prd.type)
+                                          .collection('Products')
+                                          .doc(widget.prd.id)
+                                          .update({'imgURL': picURL});
+
+                                      Fluttertoast.showToast(
+                                          msg: "Uploading new product picture");
+                                    }
+
                                   },
                                   child: Row(
                                     children: [

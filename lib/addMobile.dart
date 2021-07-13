@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:store_app/UserSeller.dart';
 
 class addMobile extends StatefulWidget {
   @override
@@ -95,6 +96,7 @@ class _addMobileState extends State<addMobile> {
           .update({'imgURL': picURL});
     });
     _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeMobiles': FieldValue.increment(1)});
+    UserSeller.typeList.add("Mobiles");
   }
 
   //toggling auto validate

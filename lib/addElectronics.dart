@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:store_app/UserSeller.dart';
 
 class addElectronics extends StatefulWidget {
   @override
@@ -77,6 +78,7 @@ class _addElectronicsState extends State<addElectronics> {
           .update({'imgURL': picURL});
     });
     _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeOtherElectronics': FieldValue.increment(1)});
+    UserSeller.typeList.add("OtherElectronics");
   }
 
   //toggling auto validate

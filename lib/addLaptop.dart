@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'UserSeller.dart';
+
 class addLaptop extends StatefulWidget {
   @override
   _addLaptopState createState() => _addLaptopState();
@@ -93,6 +95,8 @@ class _addLaptopState extends State<addLaptop> {
           .doc(productID)
           .update({'imgURL': picURL});
     });
+    _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeLaptops': FieldValue.increment(1)});
+    UserSeller.typeList.add("Laptops");
   }
 
   //toggling auto validate
