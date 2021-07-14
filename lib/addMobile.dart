@@ -95,7 +95,10 @@ class _addMobileState extends State<addMobile> {
           .doc(productID)
           .update({'imgURL': picURL});
     });
-    _firestore.collection('Sellers').doc(_auth.currentUser.uid).update({'TypeMobiles': FieldValue.increment(1)});
+    _firestore
+        .collection('Sellers')
+        .doc(_auth.currentUser.uid)
+        .update({'TypeMobiles': FieldValue.increment(1)});
     UserSeller.typeList.add("Mobiles");
   }
 
@@ -118,23 +121,15 @@ class _addMobileState extends State<addMobile> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Add a Mobile"),
-            ],
+      appBar: AppBar(
+        title: Text("Add a Mobile"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ListView(
         children: <Widget>[
@@ -489,8 +484,7 @@ class _addMobileState extends State<addMobile> {
                       backgroundColor: Colors.black54,
                       gravity: ToastGravity.BOTTOM,
                       textColor: Colors.white,
-                      fontSize: 16.0
-                  );
+                      fontSize: 16.0);
 
                   Navigator.pop(context);
                 } else {

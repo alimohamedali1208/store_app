@@ -44,41 +44,33 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(62),
-          child: AppBar(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
             ),
-            backgroundColor: Color(0xFF731800),
-            title: Column(
-              children: [
-                SizedBox(height: 5),
-                Text(
-                  "ElweKalA",
-                  style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.search, color: Colors.white),
-                  onPressed: () {
-                    return Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => autoSearchCompelete()));
-                  }),
-              IconButton(
-                  icon: Icon(Icons.account_circle_sharp),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => login()));
-                  }),
-            ],
           ),
+          backgroundColor: Color(0xFF731800),
+          title: Text(
+            "ElweKalA",
+            style: TextStyle(fontFamily: 'Zanzabar', fontSize: 25),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search, color: Colors.white),
+                onPressed: () {
+                  return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => autoSearchCompelete()));
+                }),
+            IconButton(
+                icon: Icon(Icons.account_circle_sharp),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => login()));
+                }),
+          ],
         ),
         drawer: MyDrawer(),
         resizeToAvoidBottomInset: false,

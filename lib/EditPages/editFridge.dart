@@ -99,12 +99,7 @@ class _editFridgeState extends State<editFridge> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("edit a Fridge"),
-            ],
-          ),
+          title: Text("edit a Fridge"),
           centerTitle: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(

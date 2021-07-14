@@ -78,23 +78,15 @@ class _loginState extends State<login> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Login"),
-            ],
+      appBar: AppBar(
+        title: Text("Login"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
@@ -228,11 +220,12 @@ class _loginState extends State<login> {
                   setState(() {
                     showSpinner = true;
                   });
-                   _loginFormKey.currentState.save();
+                  _loginFormKey.currentState.save();
                   try {
                     //If user was a seller
                     if (flagSeller) {
-                      final DBRow = await _firestore.collection('Sellers').get();
+                      final DBRow =
+                          await _firestore.collection('Sellers').get();
                       for (var usern in DBRow.docs) {
                         final firstname = usern.get('FirstName');
                         final lastname = usern.get('LastName');
@@ -243,9 +236,11 @@ class _loginState extends State<login> {
                         final sex = usern.get('Sex');
                         final typeMobiles = usern.get('TypeMobiles');
                         final typeLaptops = usern.get('TypeLaptops');
-                        final typeAirConditioner = usern.get('TypeAirConditioner');
+                        final typeAirConditioner =
+                            usern.get('TypeAirConditioner');
                         final typeFridges = usern.get('TypeFridges');
-                        final typeOtherElectronics = usern.get('TypeOtherElectronics');
+                        final typeOtherElectronics =
+                            usern.get('TypeOtherElectronics');
                         if (email == Email) {
                           seller.firstName = firstname;
                           seller.lastName = lastname;
@@ -254,15 +249,15 @@ class _loginState extends State<login> {
                           seller.phone = phone;
                           seller.sex = sex;
                           seller.tax = taxCard;
-                          if(typeMobiles>0)
+                          if (typeMobiles > 0)
                             UserSeller.typeList.add("Mobiles");
-                          if(typeLaptops>0)
+                          if (typeLaptops > 0)
                             UserSeller.typeList.add("Laptops");
-                          if(typeOtherElectronics>0)
+                          if (typeOtherElectronics > 0)
                             UserSeller.typeList.add("OtherElectronics");
-                          if(typeAirConditioner>0)
+                          if (typeAirConditioner > 0)
                             UserSeller.typeList.add("AirConditioner");
-                          if(typeFridges>0)
+                          if (typeFridges > 0)
                             UserSeller.typeList.add("Fridges");
                         }
                       }
@@ -319,7 +314,7 @@ class _loginState extends State<login> {
                   _toggleValidate();
                   _showSnackbar(
                       "Something went wrong, check the errors above please");
-                 }
+                }
               },
             ),
           ),

@@ -21,23 +21,15 @@ class _addCategoryState extends State<addCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Choose a Category"),
-            ],
+      appBar: AppBar(
+        title: Text("Choose a Category"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: Row(
         children: [

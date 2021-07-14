@@ -91,23 +91,15 @@ class _addProjectorState extends State<addProjector> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Add a Projector"),
-            ],
+      appBar: AppBar(
+        title: Text("Add a Projector"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ListView(
         children: <Widget>[

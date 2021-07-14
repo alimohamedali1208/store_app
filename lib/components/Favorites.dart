@@ -12,6 +12,22 @@ class _FavoritesState extends State<Favorites> {
 
   @override
   Widget build(BuildContext context) {
+    return SingleFavoritesProduct(itemName: itemName, itemPrice: itemPrice);
+  }
+}
+
+class SingleFavoritesProduct extends StatelessWidget {
+  const SingleFavoritesProduct({
+    Key key,
+    @required this.itemName,
+    @required this.itemPrice,
+  }) : super(key: key);
+
+  final String itemName;
+  final String itemPrice;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(

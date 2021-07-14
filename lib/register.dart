@@ -139,22 +139,14 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Sign Up"),
-            ],
-          ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          )),
-          backgroundColor: Color(0xFF731800),
-        ),
+      appBar: AppBar(
+        title: Text("Sign Up"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30),
+        )),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
@@ -404,7 +396,10 @@ class _registerState extends State<register> {
                         email: email, password: pass);
                     //check if its a seller or a customer
                     if (flagSellerDatabase) {
-                      await _firestore.collection('Sellers').doc(_auth.currentUser.uid).set({
+                      await _firestore
+                          .collection('Sellers')
+                          .doc(_auth.currentUser.uid)
+                          .set({
                         'FirstName': fname,
                         'LastName': lname,
                         'Phone': phone,
@@ -413,11 +408,11 @@ class _registerState extends State<register> {
                         'Password': pass,
                         'CompanyName': companyName,
                         'TaxCard': tax,
-                        'TypeMobiles':0,
-                        'TypeOtherElectronics':0,
-                        'TypeLaptops':0,
-                        'TypeAirConditioner':0,
-                        'TypeFridges':0
+                        'TypeMobiles': 0,
+                        'TypeOtherElectronics': 0,
+                        'TypeLaptops': 0,
+                        'TypeAirConditioner': 0,
+                        'TypeFridges': 0
                       });
                       seller.firstName = fname;
                       seller.lastName = lname;
@@ -426,14 +421,17 @@ class _registerState extends State<register> {
                       });
                       Navigator.pushNamed(context, sellerhome.id);
                     } else {
-                      await _firestore.collection('Customers').doc(_auth.currentUser.uid).set({
+                      await _firestore
+                          .collection('Customers')
+                          .doc(_auth.currentUser.uid)
+                          .set({
                         'FirstName': fname,
                         'LastName': lname,
                         'Phone': phone,
                         'Sex': sex,
                         'Email': email,
                         'Password': pass,
-                        'Total':0,
+                        'Total': 0,
                       }).then((_) {
                         _firestore
                             .collection("Customers")

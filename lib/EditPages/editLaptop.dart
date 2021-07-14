@@ -116,23 +116,15 @@ class _editLaptopsState extends State<editLaptops> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Edit Laptop"),
-            ],
+      appBar: AppBar(
+        title: Text("Edit Laptop"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ListView(
         children: <Widget>[
@@ -483,7 +475,9 @@ class _editLaptopsState extends State<editLaptops> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  Fluttertoast.showToast(msg: 'Product has been updated', backgroundColor: Colors.black54);
+                  Fluttertoast.showToast(
+                      msg: 'Product has been updated',
+                      backgroundColor: Colors.black54);
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();

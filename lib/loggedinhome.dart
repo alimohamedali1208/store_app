@@ -9,6 +9,8 @@ import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Favorites.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 
+import 'components/recentProductsView.dart';
+
 UserCustomer customer = UserCustomer();
 
 class loggedinhome extends StatefulWidget {
@@ -53,41 +55,38 @@ class _loggedinhomeState extends State<loggedinhome> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(62),
-          child: AppBar(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
             ),
-            backgroundColor: Color(0xFF731800),
-            elevation: 0.0,
-            title: Text(
-              "ElweKalA",
-              style: TextStyle(
-                fontFamily: 'Zanzabar',
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.search, color: Colors.white),
-                  onPressed: () {
-                    return Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => autoSearchCompelete()));
-                  }),
-              IconButton(
-                  icon: Icon(Icons.shopping_cart, color: Colors.white),
-                  onPressed: () {
-                    return Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Cart()));
-                  }),
-            ],
           ),
+          backgroundColor: Color(0xFF731800),
+          elevation: 0.0,
+          title: Text(
+            "ElweKalA",
+            style: TextStyle(
+              fontFamily: 'Zanzabar',
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search, color: Colors.white),
+                onPressed: () {
+                  return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => autoSearchCompelete()));
+                }),
+            IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  return Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Cart()));
+                }),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -196,8 +195,7 @@ class _loggedinhomeState extends State<loggedinhome> {
                   fontWeight: FontWeight.bold,
                 )),
             Container(
-              height: 320.0,
-              child: Text('To be continued')
+              child: RecenProductsView(),
             )
           ],
         ),

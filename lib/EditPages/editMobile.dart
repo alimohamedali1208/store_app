@@ -74,23 +74,15 @@ class _editMobileState extends State<editMobile> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("edit a Mobile"),
-            ],
+      appBar: AppBar(
+        title: Text("edit a Mobile"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
           ),
-          centerTitle: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          backgroundColor: Color(0xFF731800),
         ),
+        backgroundColor: Color(0xFF731800),
       ),
       body: ListView(
         children: <Widget>[
@@ -424,7 +416,9 @@ class _editMobileState extends State<editMobile> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   updateProduct(context);
-                  Fluttertoast.showToast(msg: 'Product has been updated', backgroundColor: Colors.black54);
+                  Fluttertoast.showToast(
+                      msg: 'Product has been updated',
+                      backgroundColor: Colors.black54);
                   removeEditedProductFromCart();
                   Navigator.pop(context);
                 } else {
@@ -439,24 +433,35 @@ class _editMobileState extends State<editMobile> {
   }
 
   Future removeEditedProductFromCart() async {
-    await FirebaseFirestore.instance.collectionGroup('cart')
-        .where('ProductID', isEqualTo: widget.pRD.id).get().then((value) {
+    await FirebaseFirestore.instance
+        .collectionGroup('cart')
+        .where('ProductID', isEqualTo: widget.pRD.id)
+        .get()
+        .then((value) {
       value.docs.forEach((element) async {
         final cid = element.data()['CustomerID'].toString().trim();
-        print('This is the element data for customer ${element.data()['CustomerID']}');
+        print(
+            'This is the element data for customer ${element.data()['CustomerID']}');
         String changeFlag = element.data()['ChangeFlag'];
         //Check if cart was modified before
-        if(changeFlag == 'false') {
-          await FirebaseFirestore.instance.collection('Customers').doc(cid).collection('cart')
-              .doc(element.id).update({'ChangeFlag': 'true'});
+        if (changeFlag == 'false') {
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
+              .collection('cart')
+              .doc(element.id)
+              .update({'ChangeFlag': 'true'});
           final discountFlag = element.data()['Discount'];
           String oldPrice;
           //Check if it had a discount
-          if (discountFlag == 'true'){
-            oldPrice = element.data()['New price'];}
-          else{
-            oldPrice = element.data()['Price'].toString();}
-          await FirebaseFirestore.instance.collection('Customers').doc(cid)
+          if (discountFlag == 'true') {
+            oldPrice = element.data()['New price'];
+          } else {
+            oldPrice = element.data()['Price'].toString();
+          }
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
               .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
         }
       });
