@@ -236,8 +236,7 @@ class _loginState extends State<login> {
                         final sex = usern.get('Sex');
                         final typeMobiles = usern.get('TypeMobiles');
                         final typeLaptops = usern.get('TypeLaptops');
-                        final typeAirConditioner =
-                            usern.get('TypeAirConditioner');
+                        final typeAirConditioner = usern.get('TypeAirConditioner');
                         final typeFridges = usern.get('TypeFridges');
                         final typeOtherElectronics =
                             usern.get('TypeOtherElectronics');
@@ -249,16 +248,26 @@ class _loginState extends State<login> {
                           seller.phone = phone;
                           seller.sex = sex;
                           seller.tax = taxCard;
-                          if (typeMobiles > 0)
+                          if (typeMobiles > 0) {
                             UserSeller.typeList.add("Mobiles");
-                          if (typeLaptops > 0)
+                            UserSeller.typeMobiles = typeMobiles;
+                          }
+                          if (typeLaptops > 0) {
                             UserSeller.typeList.add("Laptops");
-                          if (typeOtherElectronics > 0)
+                            UserSeller.typeLaptops = typeLaptops;
+                          }
+                          if (typeOtherElectronics > 0) {
                             UserSeller.typeList.add("OtherElectronics");
-                          if (typeAirConditioner > 0)
+                            UserSeller.typeOtherElectronics = typeOtherElectronics;
+                          }
+                          if (typeAirConditioner > 0) {
                             UserSeller.typeList.add("AirConditioner");
-                          if (typeFridges > 0)
+                            UserSeller.typeAirConditioner = typeAirConditioner;
+                          }
+                          if (typeFridges > 0) {
                             UserSeller.typeList.add("Fridges");
+                            UserSeller.typeFridges = typeFridges;
+                          }
                         }
                       }
                       if (seller.firstName == 'temp') {

@@ -8,7 +8,16 @@ class UserSeller {
       _company,
       _tax;
 
+  static int _typeMobiles = 0, _typeLaptops = 0, _typeAirConditioner = 0, _typeFridges = 0, _typeElectronics = 0, _typeOtherElectronics = 0;
+
   static var typeList = [];
+
+
+  static int get typeMobiles => _typeMobiles;
+
+  static set typeMobiles(int value) {
+    _typeMobiles = value;
+  }
 
   String get firstName => _firstName;
 
@@ -59,4 +68,34 @@ class UserSeller {
   }
 
   UserSeller();
+
+  static get typeLaptops => _typeLaptops;
+
+  static set typeLaptops(value) {
+    _typeLaptops = value;
+  }
+
+  static get typeAirConditioner => _typeAirConditioner;
+
+  static set typeAirConditioner(value) {
+    _typeAirConditioner = value;
+  }
+
+  static get typeFridges => _typeFridges;
+
+  static set typeFridges(value) {
+    _typeFridges = value;
+  }
+
+  static get typeElectronics => _typeElectronics;
+
+  static set typeElectronics(value) {
+    _typeElectronics = value;
+  }
+
+  static get typeOtherElectronics => _typeOtherElectronics;
+
+  static set typeOtherElectronics(value) {
+    _typeOtherElectronics = value;
+  }
 }

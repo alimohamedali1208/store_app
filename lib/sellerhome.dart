@@ -662,6 +662,37 @@ class _SingleProductState extends State<SingleProduct> {
                         .update({
                       'Type${widget.prd.type}': FieldValue.increment(-1)
                     });
+                    //removing it from local class
+                    if(widget.prd.type == 'Mobiles'){
+                      UserSeller.typeMobiles--;
+                      if (UserSeller.typeMobiles < 1) {
+                        UserSeller.typeList.remove("Mobiles");
+                      }
+                    }
+                    else if(widget.prd.type == 'Laptops') {
+                      UserSeller.typeLaptops--;
+                      if (UserSeller.typeLaptops < 1) {
+                        UserSeller.typeList.remove("Laptops");
+                      }
+                    }
+                    else if(widget.prd.type == 'Fridges') {
+                      UserSeller.typeFridges--;
+                      if (UserSeller.typeFridges < 1) {
+                        UserSeller.typeList.remove("Fridges");
+                      }
+                    }
+                    else if(widget.prd.type == 'AirConditioner') {
+                      UserSeller.typeAirConditioner--;
+                      if (UserSeller.typeAirConditioner < 1) {
+                        UserSeller.typeList.remove("AirConditioner");
+                      }
+                    }
+                    else if(widget.prd.type == 'OtherElectronics') {
+                      UserSeller.typeOtherElectronics--;
+                      if (UserSeller.typeOtherElectronics < 1) {
+                        UserSeller.typeList.remove("OtherElectronics");
+                      }
+                    }
                     //removing product from customers: cart, rated products, and favorites
                     await FirebaseFirestore.instance
                         .collectionGroup('cart')

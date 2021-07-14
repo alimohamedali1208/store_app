@@ -48,6 +48,9 @@ class _editMobileState extends State<editMobile> {
       'Memory': memory,
       'OS': ddOS,
       'Price': price,
+      'New price': '0',
+      'Discount' : 'false',
+      'Discount percent' : '0',
       'Quantity': quantity,
       'searchIndex': indexList,
     }).then((_) {
