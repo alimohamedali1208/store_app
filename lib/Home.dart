@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                 }),
           ],
         ),
-        drawer: MyDrawer(),
+        /*drawer: MyDrawer(),*/
         resizeToAvoidBottomInset: false,
         body: ListView(
           children: <Widget>[

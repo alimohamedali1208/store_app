@@ -283,9 +283,11 @@ class _loginState extends State<login> {
                         final firstname = usern.get('FirstName');
                         final lastname = usern.get('LastName');
                         final email = usern.get('Email');
+                        final phone = usern.get('Phone');
                         if (email == Email) {
                           customer.firstName = firstname;
                           customer.lastName = lastname;
+                          customer.phone = phone;
                         }
                       }
                       if (customer.firstName == 'temp') {

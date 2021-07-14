@@ -13,28 +13,28 @@ import 'package:email_validator/email_validator.dart';
 //           ||
 //           ▼▼
 
-class SellerEditProfile extends StatefulWidget {
+class CustomerEditProfile extends StatefulWidget {
   @override
-  _SellerEditProfileState createState() => _SellerEditProfileState();
+  _CustomerEditProfileState createState() => _CustomerEditProfileState();
 }
 
 enum SingingCharacter { Male, Female }
 
-class _SellerEditProfileState extends State<SellerEditProfile> {
+class _CustomerEditProfileState extends State<CustomerEditProfile> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  String fname, lname, phone, email, companyName, tax;
+  String fname, lname, phone, email;
   UserCustomer customer = UserCustomer();
-  UserSeller seller = UserSeller();
-  bool flagSellerDatabase = false;
-  bool flagSellerTextFields = false;
+
+  bool flagCustomerDatabase = false;
+  bool flagCustomerTextFields = false;
   bool showSpinner = false;
   bool validate = false;
   // Initially password is obscure
   bool _obscureText = true;
   SingingCharacter _character = SingingCharacter.Male;
   String dropdownValue = 'Customer';
-  final _sellerEditProfileFormKey = GlobalKey<FormState>();
+  final _customerEditProfileFormKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //toggling auto validate
@@ -117,28 +117,6 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
     return null;
   }
 
-  String validateCompanyName(String value) {
-    RegExp nameRegExp = RegExp('^[a-zA-Z\s\.]*');
-    value = value.trim();
-    if (value.isEmpty) {
-      return "Please provide a company name";
-    } else if (!nameRegExp.hasMatch(value)) {
-      return "Please provide a valid company name";
-    }
-    return null;
-  }
-
-  String validateTaxCard(String value) {
-    RegExp cardRegExp = RegExp("^[0-9]+\$");
-    value = value.trim();
-    if (value.isEmpty) {
-      return "Please provide a tax card";
-    } else if (!cardRegExp.hasMatch(value)) {
-      return "Please provide a valid card";
-    }
-    return null;
-  }
-
   ///^.{6,}$/
   @override
   Widget build(BuildContext context) {
@@ -163,7 +141,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
               child: Container(
                 alignment: Alignment.center,
                 child: Form(
-                  key: _sellerEditProfileFormKey,
+                  key: _customerEditProfileFormKey,
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -171,8 +149,8 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                         child: TextFormField(
                           autovalidate: validate,
                           validator: validateName,
-                          enabled: flagSellerTextFields,
-                          initialValue: seller.firstName,
+                          enabled: flagCustomerTextFields,
+                          initialValue: customer.firstName,
                           decoration: InputDecoration(
                             labelText: 'First Name:',
                             border: OutlineInputBorder(),
@@ -187,8 +165,8 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                         child: TextFormField(
                           autovalidate: validate,
                           validator: validateName,
-                          enabled: flagSellerTextFields,
-                          initialValue: seller.lastName,
+                          enabled: flagCustomerTextFields,
+                          initialValue: customer.lastName,
                           decoration: InputDecoration(
                             labelText: 'Last Name:',
                             border: OutlineInputBorder(),
@@ -203,8 +181,8 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                         child: TextFormField(
                           autovalidate: validate,
                           validator: validatePhone,
-                          enabled: flagSellerTextFields,
-                          initialValue: seller.phone,
+                          enabled: flagCustomerTextFields,
+                          initialValue: customer.phone,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             labelText: 'Phone:',
@@ -213,39 +191,6 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           ),
                           onSaved: (value) {
                             phone = value.trim();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: TextFormField(
-                          autovalidate: validate,
-                          enabled: flagSellerTextFields,
-                          initialValue: seller.company,
-                          validator: validateCompanyName,
-                          decoration: InputDecoration(
-                            labelText: 'Company name:',
-                            border: OutlineInputBorder(),
-                          ),
-                          onSaved: (value) {
-                            companyName = value.trim();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: TextFormField(
-                          autovalidate: validate,
-                          initialValue: seller.tax,
-                          enabled: flagSellerTextFields,
-                          validator: validateTaxCard,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Tax Card:',
-                            border: OutlineInputBorder(),
-                          ),
-                          onSaved: (value) {
-                            tax = value.trim();
                           },
                         ),
                       ),
@@ -260,7 +205,7 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           )),
                           onPressed: () {
                             setState(() {
-                              flagSellerTextFields = true;
+                              flagCustomerTextFields = true;
                             });
                           },
                           child: Text(
@@ -290,25 +235,22 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                 top: Radius.circular(30),
               )),
               onPressed: () async {
-                if (_sellerEditProfileFormKey.currentState.validate()) {
-                  _sellerEditProfileFormKey.currentState.save();
+                if (_customerEditProfileFormKey.currentState.validate()) {
+                  _customerEditProfileFormKey.currentState.save();
                   setState(() {
                     showSpinner = true;
                   });
-                  seller.firstName = fname;
-                  seller.lastName = lname;
-                  seller.company = companyName;
-                  seller.phone = phone;
-                  seller.tax = tax;
+                  customer.firstName = fname;
+                  customer.lastName = lname;
+                  customer.phone = phone;
+
                   await _firestore
-                      .collection('Sellers')
+                      .collection('Customers')
                       .doc(_auth.currentUser.uid)
                       .update({
                     'FirstName': fname,
                     'LastName': lname,
-                    'CompanyName': companyName,
                     'Phone': phone,
-                    'TaxCard': tax
                   });
                   setState(() {
                     showSpinner = false;

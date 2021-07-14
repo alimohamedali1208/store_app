@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/Cart.dart';
+import 'package:store_app/CustomerEditProfile.dart';
 import 'package:store_app/Home.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/autoSearchCompelete.dart';
@@ -113,13 +114,18 @@ class _loggedinhomeState extends State<loggedinhome> {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CustomerEditProfile()));
+                },
                 child: ListTile(
-                  title: Text('My Account'),
+                  title: Text('Edit Account'),
                   leading: Icon(Icons.person, color: Colors.blueGrey[900]),
                 ),
               ),
-              InkWell(
+              /*InkWell(
                 onTap: () {
                   return Navigator.push(
                       context, MaterialPageRoute(builder: (context) => Cart()));
@@ -129,7 +135,7 @@ class _loggedinhomeState extends State<loggedinhome> {
                   leading:
                       Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
                 ),
-              ),
+              ),*/
               InkWell(
                 child: ListTile(
                   onTap: () {
@@ -141,20 +147,20 @@ class _loggedinhomeState extends State<loggedinhome> {
                 ),
               ),
               Divider(color: Colors.black),
-              InkWell(
+              /*InkWell(
                 child: ListTile(
                   onTap: () {},
                   title: Text('Settings'),
                   leading: Icon(Icons.settings, color: Colors.blueGrey[900]),
                 ),
-              ),
-              InkWell(
+              ),*/
+              /*InkWell(
                 child: ListTile(
                   onTap: () {},
                   title: Text('Help'),
                   leading: Icon(Icons.help, color: Colors.blueGrey[900]),
                 ),
-              ),
+              ),*/
               InkWell(
                 child: ListTile(
                   onTap: () {

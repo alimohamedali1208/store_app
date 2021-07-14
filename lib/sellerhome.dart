@@ -93,25 +93,6 @@ class _sellerhomeState extends State<sellerhome> {
             ),
           ),
           backgroundColor: Color(0xFF731800),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddOfferOnCategory()));
-                  },
-                  child: Text(
-                    "Add offer on category",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-            )
-          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -128,13 +109,6 @@ class _sellerhomeState extends State<sellerhome> {
                 decoration: BoxDecoration(color: Color(0xFF731800)),
               ),
               InkWell(
-                onTap: () {},
-                child: ListTile(
-                  title: Text('Home Page'),
-                  leading: Icon(Icons.home, color: Colors.black),
-                ),
-              ),
-              InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
@@ -148,19 +122,24 @@ class _sellerhomeState extends State<sellerhome> {
               ),
               InkWell(
                 child: ListTile(
-                  onTap: () {},
-                  title: Text('Edit Products'),
-                  leading: Icon(Icons.help, color: Colors.black),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddOfferOnCategory()));
+                  },
+                  title: Text('Add offer on category'),
+                  leading: Icon(Icons.local_offer_sharp, color: Colors.black),
                 ),
               ),
               Divider(color: Colors.black),
-              InkWell(
+              /*InkWell(
                 child: ListTile(
                   onTap: () {},
                   title: Text('Settings'),
                   leading: Icon(Icons.settings, color: Colors.black),
                 ),
-              ),
+              ),*/
               InkWell(
                 child: ListTile(
                   onTap: () {
@@ -447,21 +426,20 @@ class _SingleProductState extends State<SingleProduct> {
                                     await getImage();
                                     Fluttertoast.showToast(
                                         msg: "Uploading new product picture");
-                                    if(_image == null){}
-                                    else {
-                                      Reference firebaseStorageRef = FirebaseStorage
-                                          .instance
-                                          .ref()
-                                          .child('ProductImage/${widget.prd
-                                          .type}/${widget.prd.id}/${widget.prd
-                                          .name}');
-                                      UploadTask uploadTask = firebaseStorageRef
-                                          .putFile(_image);
-                                      TaskSnapshot taskSnapshot = await uploadTask
-                                          .whenComplete(() => null);
+                                    if (_image == null) {
+                                    } else {
+                                      Reference firebaseStorageRef =
+                                          FirebaseStorage.instance.ref().child(
+                                              'ProductImage/${widget.prd.type}/${widget.prd.id}/${widget.prd.name}');
+                                      UploadTask uploadTask =
+                                          firebaseStorageRef.putFile(_image);
+                                      TaskSnapshot taskSnapshot =
+                                          await uploadTask
+                                              .whenComplete(() => null);
                                       //update product img url
                                       String picURL;
-                                      await taskSnapshot.ref.getDownloadURL()
+                                      await taskSnapshot.ref
+                                          .getDownloadURL()
                                           .then((value) => picURL = value);
                                       FirebaseFirestore.instance
                                           .collection('ProductsCollection')
@@ -473,7 +451,6 @@ class _SingleProductState extends State<SingleProduct> {
                                       Fluttertoast.showToast(
                                           msg: "Uploading new product picture");
                                     }
-
                                   },
                                   child: Row(
                                     children: [

@@ -39,7 +39,8 @@ class _CartState extends State<Cart> {
                   stream: FirebaseFirestore.instance
                       .collection('Customers')
                       .doc(_auth.currentUser.uid)
-                      .collection('cart').orderBy('ChangeFlag')
+                      .collection('cart')
+                      .orderBy('ChangeFlag')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData)
@@ -51,7 +52,8 @@ class _CartState extends State<Cart> {
                         final productname = product.data()['Product Name'];
                         final productprice = product.data()['Price'] as num;
                         final productdiscount = product.data()['Discount'];
-                        final productdiscountpercent = product.data()['Discount percent'];
+                        final productdiscountpercent =
+                            product.data()['Discount percent'];
                         final productnewprice = product.data()['New price'];
                         final productimg = product.data()['imgURL'];
                         final producttype = product.data()['type'];
@@ -103,14 +105,21 @@ class _CartState extends State<Cart> {
                   }),
             )),
             Expanded(
-                child: new MaterialButton(
-              onPressed: () {},
-              child: Text(
-                "Check Out",
-                style: TextStyle(color: Colors.white),
-              ),
-              color: Colors.grey,
-            ))
+                child: StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Customers')
+                        .doc(_auth.currentUser.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return MaterialButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Check Out",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.grey,
+                      );
+                    }))
           ],
         ),
       ),
@@ -142,109 +151,120 @@ class SingleCartProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Card(
-        child: (cart_prod_changeFlag=='false')? ListTile(
-          //    ======= the leading image section =======
-          leading: FadeInImage.assetNetwork(
-            placeholder: 'images/PlaceHolder.gif',
-            image: (cart_prod_picture == null)
-                ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                : cart_prod_picture,
-            height: 80,
-            width: 80,
-          ),
-          title: Row(
-            children: [
-              Text(cart_prod_name),
-              Spacer(),
-              IconButton(
-                icon: Icon(Icons.highlight_remove),
-                color: Colors.red[300],
-                onPressed: () async {
-                  double oldPrice;
-                  if (cart_prod_discount == 'false')
-                    oldPrice = cart_prod_price;
-                  else
-                    oldPrice = double.parse(cart_prod_newPrice);
-                  await FirebaseFirestore.instance
-                      .collection('Customers')
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .collection('cart')
-                      .doc(cart_prod_id)
-                      .delete();
-                  await FirebaseFirestore.instance
-                      .collection('Customers')
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .update({'Total': FieldValue.increment(-oldPrice)});
-                },
+    return Card(
+      child: (cart_prod_changeFlag == 'false')
+          ? ListTile(
+              //    ======= the leading image section =======
+              leading: FadeInImage.assetNetwork(
+                placeholder: 'images/PlaceHolder.gif',
+                image: (cart_prod_picture == null)
+                    ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                    : cart_prod_picture,
+                height: 80,
+                width: 80,
               ),
-            ],
-          ),
-          subtitle: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  //    ======== this for color section =========
-                  Text("Color:"),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Shipping: Free',
-                    ),
-                  ),
-                  //    ========== this for Qty section =========
-                  Text("Type:"),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "${cart_prod_type}",
-                      style: TextStyle(color: Colors.red),
-                    ),
+              title: Row(
+                children: [
+                  Text(cart_prod_name),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.highlight_remove),
+                    color: Colors.red[300],
+                    onPressed: () async {
+                      double oldPrice;
+                      if (cart_prod_discount == 'false')
+                        oldPrice = cart_prod_price;
+                      else
+                        oldPrice = double.parse(cart_prod_newPrice);
+                      await FirebaseFirestore.instance
+                          .collection('Customers')
+                          .doc(FirebaseAuth.instance.currentUser.uid)
+                          .collection('cart')
+                          .doc(cart_prod_id)
+                          .delete();
+                      await FirebaseFirestore.instance
+                          .collection('Customers')
+                          .doc(FirebaseAuth.instance.currentUser.uid)
+                          .update({'Total': FieldValue.increment(-oldPrice)});
+                    },
                   ),
                 ],
               ),
-              //  ======= this for price section ======
-              Container(
-                alignment: Alignment.topLeft,
-                child: (cart_prod_discount == 'false')
-                    ? Text(
-                  "${cart_prod_price} EGP",
-                  style: TextStyle(color: Colors.red),
-                )
-                    : Row(
-                  children: [
-                    Text(
-                      "${cart_prod_price} EGP",
-                      style:
-                      TextStyle(decoration: TextDecoration.lineThrough),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "${cart_prod_newPrice} EGP",
-                      style: TextStyle(
-                        color: Colors.red,
+              subtitle: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      //    ======== this for color section =========
+                      Text("Color:"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Shipping: Free',
+                        ),
                       ),
-                    )
+                      //    ========== this for Qty section =========
+                      Text("Type:"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "${cart_prod_type}",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //  ======= this for price section ======
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: (cart_prod_discount == 'false')
+                        ? Text(
+                            "${cart_prod_price} EGP",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : Row(
+                            children: [
+                              Text(
+                                "${cart_prod_price} EGP",
+                                style: TextStyle(
+                                    decoration: TextDecoration.lineThrough),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "${cart_prod_newPrice} EGP",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                  ),
+                ],
+              ),
+            )
+          : Container(
+              color: Colors.red[400],
+              child: ListTile(
+                title: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                            "The Product named: '$cart_prod_name' has been removed or edited, try adding it again")),
+                    IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection('Customers')
+                              .doc(FirebaseAuth.instance.currentUser.uid)
+                              .collection('cart')
+                              .doc(cart_prod_id)
+                              .delete();
+                        })
                   ],
                 ),
               ),
-            ],
-          ),
-        ):Container(
-          color: Colors.red[400],
-          child: ListTile(
-            title: Row(
-              children: [
-                Expanded(child: Text("The Product named: '$cart_prod_name' has been removed or edited, try adding it again")),
-                IconButton(icon: Icon(Icons.close), onPressed: (){
-                  FirebaseFirestore.instance.collection('Customers').doc(FirebaseAuth.instance.currentUser.uid).collection('cart').doc(cart_prod_id).delete();
-                })
-              ],
             ),
-          ),
-        ),
-      );
+    );
   }
 }
