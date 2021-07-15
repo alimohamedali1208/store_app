@@ -96,7 +96,9 @@ class _HomeState extends State<Home> {
             Horizontal(),
             // grid view list
 
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text('Recent products',
@@ -108,14 +110,21 @@ class _HomeState extends State<Home> {
             Container(
               child: RecenProductsView(),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Hot Deals',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  )),
+              child: Row(
+                children: [
+                  Text('Hot Deals ',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Image.asset("images/fire.png", width: 30.0, height: 25.0),
+                ],
+              ),
             ),
             Container(
               child: DiscountProductsView(),

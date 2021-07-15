@@ -195,23 +195,35 @@ class _loggedinhomeState extends State<loggedinhome> {
             Horizontal(),
             // grid view list
 
-            new Padding(padding: const EdgeInsets.all(14)),
-            Text('Recent products',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                )),
+            Padding(padding: const EdgeInsets.all(14)),
+            Row(
+              children: [
+                Text('Recent products ',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Icon(Icons.access_time_outlined),
+              ],
+            ),
             Container(
               child: RecenProductsView(),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Hot Deals',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  )),
+              child: Row(
+                children: [
+                  Text('Hot Deals ',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Image.asset("images/fire.png", width: 30.0, height: 25.0),
+                ],
+              ),
             ),
             Container(
               child: DiscountProductsView(),
