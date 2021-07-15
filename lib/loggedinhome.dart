@@ -10,6 +10,7 @@ import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Favorites.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 
+import 'components/discountProductsView.dart';
 import 'components/recentProductsView.dart';
 
 UserCustomer customer = UserCustomer();
@@ -202,7 +203,19 @@ class _loggedinhomeState extends State<loggedinhome> {
                 )),
             Container(
               child: RecenProductsView(),
-            )
+            ),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Hot Deals',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+            Container(
+              child: DiscountProductsView(),
+            ),
           ],
         ),
       ),

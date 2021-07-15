@@ -8,16 +8,16 @@ import 'package:store_app/ProductDetails.dart';
 
 import '../productClass.dart';
 
-class laptopCatSearch extends StatefulWidget {
+class cameraCatSearch extends StatefulWidget {
   @override
-  _laptopCatSearchState createState() => _laptopCatSearchState();
+  _cameraCatSearchState createState() => _cameraCatSearchState();
 }
 
-class _laptopCatSearchState extends State<laptopCatSearch> {
+class _cameraCatSearchState extends State<cameraCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   int ddStorage, ddRatings;
-  String ddGPU, ddBattery, ddOS, ddSearchBrand, ddMemory, ddCPU;
+  String ddSearchBrand, ddSearchType = "Cameras", ddLens;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                       },
                     ),
                     contentPadding: EdgeInsets.only(left: 25.0),
-                    hintText: 'Search for laptops',
+                    hintText: 'Search for Cameras',
                   ),
                 ),
                 SizedBox(
@@ -78,16 +78,41 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
+                              child: Text('Cameras'),
+                              value: 'Cameras',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Camera Accessories'),
+                              value: 'CameraAccessories',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              ddSearchBrand = null;
+                              ddSearchType = value;
+                            });
+                          },
+                          value: ddSearchType,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Cannon'),
+                              value: 'Cannon',
+                            ),
+                            DropdownMenuItem<String>(
                               child: Text('Sony'),
                               value: 'Sony',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Lenovo'),
-                              value: 'Lenovo',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('HP'),
-                              value: 'HP',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -96,8 +121,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              if(value=='Other')
-                                value = null;
+                              if (value == 'Other') value = null;
                               ddSearchBrand = value;
                             });
                           },
@@ -105,182 +129,49 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                           value: ddSearchBrand,
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<int>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<int>(
-                              child: Text('>1 TB'),
-                              value: 1,
-                            ),
-                            DropdownMenuItem<int>(
-                              child: Text('>2 TB'),
-                              value: 2,
-                            ),
-                          ],
-                          onChanged: (int value) {
-                            setState(() {
-                              ddStorage = value;
-                            });
-                          },
-                          hint: Text('Choose Storage'),
-                          value: ddStorage,
+                      Row(
+                        children: (ddSearchType == "Cameras")
+                        ? [
+                        Container(
+                          margin: EdgeInsets.only(left: 5, right: 5),
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: DropdownButton<String>(
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600),
+                            items: [
+                              DropdownMenuItem<String>(
+                                child: Text('2x'),
+                                value: '2x',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('4x'),
+                                value: '4x',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('8x'),
+                                value: '8x',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Other'),
+                                value: 'Other',
+                              ),
+                            ],
+                            onChanged: (String value) {
+                              setState(() {
+                                if (value == 'Other') value = null;
+                                ddLens = value;
+                              });
+                            },
+                            hint: Text('Choose lens'),
+                            value: ddLens,
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<String>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<String>(
-                              child: Text('Core i5'),
-                              value: 'Core i5',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Core i7'),
-                              value: 'Core i7',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('AMD Ryzen'),
-                              value: 'AMD Ryzen',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Other'),
-                              value: 'Other',
-                            ),
-                          ],
-                          onChanged: (String value) {
-                            setState(() {
-                              if(value=='Other')
-                                value = null;
-                              ddCPU = value;
-                            });
-                          },
-                          hint: Text('Choose CPU'),
-                          value: ddCPU,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<String>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<String>(
-                              child: Text('Nvidia'),
-                              value: 'Nvidia 1050',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('AMD'),
-                              value: 'AMD Radeon 570',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Other'),
-                              value: 'Other',
-                            ),
-                          ],
-                          onChanged: (String value) {
-                            setState(() {
-                              if(value=='Other')
-                                value = null;
-                              ddGPU = value;
-                            });
-                          },
-                          hint: Text('Choose GPU'),
-                          value: ddGPU,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<String>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<String>(
-                              child: Text('Windows'),
-                              value: 'Windows',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Mac OS'),
-                              value: 'Mac OS',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Other'),
-                              value: 'Other',
-                            ),
-                          ],
-                          onChanged: (String value) {
-                            setState(() {
-                              if(value=='Other')
-                                value = null;
-                              ddOS = value;
-                            });
-                          },
-                          hint: Text('Operating System'),
-                          value: ddOS,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<String>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<String>(
-                              child: Text('2800 mAH'),
-                              value: '2800',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('3800 mAH'),
-                              value: '3800',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('4800 mAH'),
-                              value: '4800',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Other'),
-                              value: 'Other',
-                            ),
-                          ],
-                          onChanged: (String value) {
-                            setState(() {
-                              if(value=='Other')
-                                value = null;
-                              ddBattery = value;
-                            });
-                          },
-                          hint: Text('Choose Battery'),
-                          value: ddBattery,
-                        ),
+                        ]
+                        : [],
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5, right: 5),
@@ -320,54 +211,14 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                           ],
                           onChanged: (int value) {
                             setState(() {
-                              if(value==0)
-                                value = null;
+                              if (value == 0) value = null;
                               ddRatings = value;
                             });
                           },
                           hint: Text('Choose Rating'),
                           value: ddRatings,
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: DropdownButton<String>(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600),
-                          items: [
-                            DropdownMenuItem<String>(
-                              child: Text('8 GB'),
-                              value: '8 GB',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('16 GB'),
-                              value: '16 GB',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('32 GB'),
-                              value: '32 GB',
-                            ),
-                            DropdownMenuItem<String>(
-                              child: Text('Other'),
-                              value: 'Other',
-                            ),
-                          ],
-                          onChanged: (String value) {
-                            setState(() {
-                              if(value=='Other')
-                                value = null;
-                              ddMemory = value;
-                            });
-                          },
-                          hint: Text('Choose Memory'),
-                          value: ddMemory,
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -386,16 +237,9 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
-                          .collection('ProductsCollection')
-                          .doc('Laptops')
-                          .collection('Products')
+                          .collectionGroup('Products')
+                          .where('type', isEqualTo: ddSearchType)
                           .where('searchIndex', arrayContains: searchString)
-                          .where('Brand Name', isEqualTo: ddSearchBrand)
-                          .where('OS', isEqualTo: ddOS)
-                          .where('CPU', isEqualTo: ddCPU)
-                          .where('GPU', isEqualTo: ddGPU)
-                          .where('Memory', isEqualTo: ddMemory)
-                          .where('Battery', isEqualTo: ddBattery)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasError)
@@ -410,32 +254,39 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                               ProductClass productInfo = ProductClass();
                               productInfo.storage = product.data()['Storage'];
                               productInfo.rate = product.data()['Rating'];
-                              if (ddStorage == null || productInfo.storage >= ddStorage) {
-                                if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
+                              if (ddStorage == null ||
+                                  productInfo.storage >= ddStorage) {
+                                if (ddRatings == null ||
+                                    double.parse(productInfo.rate) >= ddRatings) {
                                   productInfo.name = product.data()['Product Name'];
                                   productInfo.brand = product.data()['Brand Name'];
                                   productInfo.quantity = product.data()['Quantity'];
-                                  productInfo.description = product.data()['Description'];
+                                  productInfo.description =
+                                  product.data()['Description'];
                                   productInfo.price = product.data()['Price'];
-                                  productInfo.newPrice = product.data()['New price'];
+                                  productInfo.newPrice =
+                                  product.data()['New price'];
                                   productInfo.discount = product.data()['Discount'];
-                                  productInfo.discountPercentage = product.data()['Discount percent'];
-                                  productInfo.battery = product.data()['Battery'];
-                                  productInfo.memory = product.data()['Memory'];
-                                  productInfo.camera = product.data()['Camera'];
-                                  productInfo.os = product.data()['OS'];
-                                  productInfo.cpu = product.data()['CPU'];
-                                  productInfo.gpu = product.data()['GPU'];
-                                  productInfo.rate1star = product.data()['1 star rate'];
-                                  productInfo.rate2star = product.data()['2 star rate'];
-                                  productInfo.rate3star = product.data()['3 star rate'];
-                                  productInfo.rate4star = product.data()['4 star rate'];
-                                  productInfo.rate5star = product.data()['5 star rate'];
+                                  productInfo.discountPercentage =
+                                  product.data()['Discount percent'];
+                                  productInfo.rate1star =
+                                  product.data()['1 star rate'];
+                                  productInfo.rate2star =
+                                  product.data()['2 star rate'];
+                                  productInfo.rate3star =
+                                  product.data()['3 star rate'];
+                                  productInfo.rate4star =
+                                  product.data()['4 star rate'];
+                                  productInfo.rate5star =
+                                  product.data()['5 star rate'];
                                   productInfo.img = product.data()['imgURL'];
                                   productInfo.type = product.data()['type'];
-                                  productInfo.sellerEmail = product.data()['Seller Email'];
+                                  productInfo.sellerEmail =
+                                  product.data()['Seller Email'];
                                   productInfo.id = product.id;
-                                  final productview = SingleProduct(prd: productInfo,);
+                                  final productview = SingleProduct(
+                                    prd: productInfo,
+                                  );
                                   productsview.add(productview);
                                 }
                               }
@@ -456,8 +307,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
 class SingleProduct extends StatefulWidget {
   final ProductClass prd;
 
-  SingleProduct(
-      {this.prd});
+  SingleProduct({this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -523,8 +373,6 @@ class _SingleProductState extends State<SingleProduct> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -532,7 +380,9 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails(pRD: widget.prd,),
+              builder: (context) => ProductDetails(
+                pRD: widget.prd,
+              ),
             ),
           );
         },

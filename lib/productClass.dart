@@ -1,10 +1,23 @@
 class ProductClass{
-  String _sellerEmail;
+  String _sellerEmail, _changeFlag;
   int _rate1star, _rate2star, _rate3star, _rate4star, _rate5star;
   String _name, _newPrice, _discount, _discountPercentage, _type, _rate, _quantity, _description, _brand, _color, _os, _storageUnit, _screenSize, _memory, _img,
   _id, _battery, _camera, _gpu, _cpu;
+  //Home Appliance variables
+  String _width, _height, _depth, _weight, _horesPower;
   num _price; int _storage;
 
+  get changeFlag => _changeFlag;
+
+  set changeFlag(value) {
+    _changeFlag = value;
+  }
+
+  String get width => _width;
+
+  set width(String value) {
+    _width = value;
+  }
 
   String get sellerEmail => _sellerEmail;
 
@@ -172,5 +185,29 @@ class ProductClass{
 
   set rate5star(value) {
     _rate5star = value;
+  }
+
+  get height => _height;
+
+  get horesPower => _horesPower;
+
+  set horesPower(value) {
+    _horesPower = value;
+  }
+
+  get weight => _weight;
+
+  set weight(value) {
+    _weight = value;
+  }
+
+  get depth => _depth;
+
+  set depth(value) {
+    _depth = value;
+  }
+
+  set height(value) {
+    _height = value;
   }
 }

@@ -258,6 +258,49 @@ class _SingleProductState extends State<SingleProduct> {
     }
   }
 
+  Future addToFav() async {
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in fav');
+
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('favorite')
+          .doc(widget.prd.id)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (snapshot.exists) {
+          print('product already in fav');
+          setState(() {
+            isPressed = false;
+          });
+        } else {
+          print('insert product id in fav');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('favorite')
+              .doc(widget.prd.id)
+              .set({
+            'ProductID': widget.prd.id,
+            'CustomerID': _auth.currentUser.uid,
+            'Product Name': widget.prd.name,
+            'Price': widget.prd.price,
+            'New price': widget.prd.newPrice,
+            'Discount': widget.prd.discount,
+            'Discount percent': widget.prd.discountPercentage,
+            'type': widget.prd.type,
+            'ChangeFlag': 'false',
+            'imgURL': widget.prd.img
+          });
+          isPressed = true;
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -268,6 +311,7 @@ class _SingleProductState extends State<SingleProduct> {
                 builder: (context) => ProductDetails(
                   // passing the values via constructor
                   pRD: widget.prd,
+                  favPressed: isPressed,
                 ),
               ),
             );
@@ -338,10 +382,7 @@ class _SingleProductState extends State<SingleProduct> {
                       color: Colors.red,
                       onPressed: () {
                         setState(() {
-                          if (isPressed)
-                            isPressed = false;
-                          else
-                            isPressed = true;
+                          addToFav();
                         });
                       }),
                   SizedBox(

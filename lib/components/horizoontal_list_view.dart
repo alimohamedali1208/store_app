@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/CategoryPages/CamerasCategoryPage.dart';
+import 'package:store_app/CategoryPages/ElectronicsCategoryPage.dart';
+import 'package:store_app/CategoryPages/FashionCategoryPage.dart';
+import 'package:store_app/CategoryPages/HomeAppliancesCategoryPage.dart';
+import 'package:store_app/CategoryPages/JewelryCategoryPage.dart';
+import 'package:store_app/CategoryPages/LaptopCategoryPage.dart';
+import 'package:store_app/CategoryPages/MobileCategoryPage.dart';
+import 'package:store_app/CategoryPages/PCAccesoriesCategoryPage.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 
@@ -16,7 +24,7 @@ class Horizontal extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => mobileCatSearch()));
+                  MaterialPageRoute(builder: (context) => mobileCategoryPage()));
             },
             child: Category(
               image_location: 'icons/mobile.png',
@@ -26,7 +34,7 @@ class Horizontal extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => laptopCatSearch()));
+                  MaterialPageRoute(builder: (context) => laptopCategorypage()));
             },
             child: Category(
               image_location: 'icons/laptop.png',
@@ -35,7 +43,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => homeAppliancesCategoryPage()));
             },
             child: Category(
               image_location: 'icons/stove.png',
@@ -44,7 +53,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => pcAccessoriesCategoryPage()));
             },
             child: Category(
               image_location: 'icons/flashDrive.png',
@@ -53,7 +63,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => electronicsCategoryPage()));
             },
             child: Category(
               image_location: 'icons/electronics.png',
@@ -62,7 +73,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => camerasCategoryPage()));
             },
             child: Category(
               image_location: 'icons/camera.png',
@@ -71,7 +83,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => jewelryCategoryPage()));
             },
             child: Category(
               image_location: 'icons/Ring.png',
@@ -80,7 +93,8 @@ class Horizontal extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //todo Navigate
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => fashionCategoryPage()));
             },
             child: Category(
               image_location: 'icons/shirt.png',

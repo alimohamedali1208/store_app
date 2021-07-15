@@ -11,9 +11,10 @@ UserCustomer customer = UserCustomer();
 
 class ProductDetails extends StatefulWidget {
   ProductClass pRD;
+  bool favPressed;
 
   ProductDetails(
-      {this.pRD});
+      {this.pRD,this.favPressed});
 
 
   @override
@@ -24,7 +25,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  bool isPressed = false;
+
   //int rate;
 
   Future addToCart() async {
@@ -280,17 +281,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 bottomLeft: Radius.circular(10))),
                         child: IconButton(
                             alignment: Alignment.center,
-                            icon: (isPressed)
+                            icon: (widget.favPressed)
                                 ? Icon(Icons.favorite)
                                 : Icon(Icons.favorite_outline),
                             tooltip: 'Add to favorites',
                             color: Colors.red,
                             onPressed: () {
                               setState(() {
-                                if (isPressed)
-                                  isPressed = false;
+                                if (widget.favPressed)
+                                  widget.favPressed = false;
                                 else
-                                  isPressed = true;
+                                  widget.favPressed = true;
                               });
                             }),
                       ),

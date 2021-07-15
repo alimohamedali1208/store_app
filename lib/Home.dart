@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Drawer.dart';
+import 'package:store_app/components/discountProductsView.dart';
 import 'package:store_app/components/recentProductsView.dart';
 import 'autoSearchCompelete.dart';
 import 'login.dart';
@@ -95,7 +96,7 @@ class _HomeState extends State<Home> {
             Horizontal(),
             // grid view list
 
-            new Padding(padding: const EdgeInsets.all(14)),
+            SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text('Recent products',
@@ -106,7 +107,19 @@ class _HomeState extends State<Home> {
             ),
             Container(
               child: RecenProductsView(),
-            )
+            ),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Hot Deals',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+            Container(
+              child: DiscountProductsView(),
+            ),
           ],
         ),
       ),
