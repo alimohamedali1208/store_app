@@ -11,10 +11,10 @@ UserCustomer customer = UserCustomer();
 
 class ProductDetails extends StatefulWidget {
   ProductClass pRD;
-  bool favPressed;
+  bool favPressed = false;
 
   ProductDetails(
-      {this.pRD,this.favPressed});
+      {this.pRD});
 
 
   @override

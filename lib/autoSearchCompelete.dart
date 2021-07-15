@@ -311,7 +311,6 @@ class _SingleProductState extends State<SingleProduct> {
                 builder: (context) => ProductDetails(
                   // passing the values via constructor
                   pRD: widget.prd,
-                  favPressed: isPressed,
                 ),
               ),
             );
