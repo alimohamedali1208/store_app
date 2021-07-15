@@ -2,16 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/productClass.dart';
+
+import '../UserCustomer.dart';
 
 class Favorites extends StatefulWidget {
   @override
   _FavoritesState createState() => _FavoritesState();
 }
 
-class _FavoritesState extends State<Favorites> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseAuth _auth = FirebaseAuth.instance;
+UserCustomer customer = UserCustomer();
 
+class _FavoritesState extends State<Favorites> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +29,8 @@ class _FavoritesState extends State<Favorites> {
           ),
           backgroundColor: Color(0xFF731800),
           elevation: 0.0,
-          title: Text("Shopping Cart"),
+          title: Text("Favorites"),
+          centerTitle: true,
         ),
       ),
       body: Column(
@@ -80,10 +85,74 @@ class _FavoritesState extends State<Favorites> {
   }
 }
 
-class SingleFavoritesProduct extends StatelessWidget {
+class SingleFavoritesProduct extends StatefulWidget {
   final ProductClass prd;
 
   SingleFavoritesProduct({this.prd});
+
+  @override
+  _SingleFavoritesProductState createState() => _SingleFavoritesProductState();
+}
+
+class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
+  bool showSpinner = false;
+
+  final _firestore = FirebaseFirestore.instance;
+
+  Future addToCart() async {
+    setState(() {
+      showSpinner = true;
+    });
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in cart');
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('cart')
+          .doc(widget.prd.id)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (snapshot.exists) {
+          print('product already in cart');
+          Fluttertoast.showToast(msg: "Product already in cart");
+        } else {
+          print('insert product id in cart');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('cart')
+              .doc(widget.prd.id)
+              .set({
+            'ProductID': widget.prd.id,
+            'CustomerID': _auth.currentUser.uid,
+            'Product Quantity': 1,
+            'Product Name': widget.prd.name,
+            'Price': widget.prd.price,
+            'New price': widget.prd.newPrice,
+            'Discount': widget.prd.discount,
+            'Discount percent': widget.prd.discountPercentage,
+            'type': widget.prd.type,
+            'imgURL': widget.prd.img,
+          });
+          double price;
+          if (widget.prd.discount == 'false')
+            price = widget.prd.price;
+          else
+            price = double.parse(widget.prd.newPrice);
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .update({'Total': FieldValue.increment(price)});
+          print('Product added to cart');
+        }
+      });
+    }
+    setState(() {
+      showSpinner = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +165,9 @@ class SingleFavoritesProduct extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: FadeInImage.assetNetwork(
                 placeholder: 'images/PlaceHolder.gif',
-                image: (prd.img == null)
+                image: (widget.prd.img == null)
                     ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                    : prd.img,
+                    : widget.prd.img,
                 height: 80,
                 width: 120,
               ),
@@ -108,7 +177,7 @@ class SingleFavoritesProduct extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    prd.name,
+                    widget.prd.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -117,15 +186,15 @@ class SingleFavoritesProduct extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.only(bottom: 8.0, left: 8, right: 8),
-                  child: (prd.discount == 'false')
+                  child: (widget.prd.discount == 'false')
                       ? Text(
-                          "${prd.price} EGP",
+                          "${widget.prd.price} EGP",
                           style: TextStyle(color: Colors.red),
                         )
                       : Row(
                           children: [
                             Text(
-                              "${prd.price} EGP",
+                              "${widget.prd.price} EGP",
                               style: TextStyle(
                                   decoration: TextDecoration.lineThrough),
                             ),
@@ -133,7 +202,7 @@ class SingleFavoritesProduct extends StatelessWidget {
                               width: 10,
                             ),
                             Text(
-                              "${prd.newPrice} EGP",
+                              "${widget.prd.newPrice} EGP",
                               style: TextStyle(
                                 color: Colors.red,
                               ),
@@ -147,7 +216,7 @@ class SingleFavoritesProduct extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     onPressed: () {
-                      //todo move product to cart
+                      addToCart();
                     },
                     borderSide: BorderSide(color: Colors.black),
                     highlightedBorderColor: Colors.grey,

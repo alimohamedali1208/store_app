@@ -12,10 +12,12 @@ import 'package:store_app/productClass.dart';
 
 class homeAppliancesCategoryPage extends StatefulWidget {
   @override
-  _homeAppliancesCategoryPageState createState() => _homeAppliancesCategoryPageState();
+  _homeAppliancesCategoryPageState createState() =>
+      _homeAppliancesCategoryPageState();
 }
 
-class _homeAppliancesCategoryPageState extends State<homeAppliancesCategoryPage> {
+class _homeAppliancesCategoryPageState
+    extends State<homeAppliancesCategoryPage> {
   final database = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,6 @@ class _homeAppliancesCategoryPageState extends State<homeAppliancesCategoryPage>
         preferredSize: Size(double.infinity, 60),
         child: AppBar(
           centerTitle: true,
-
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(20),
@@ -32,7 +33,7 @@ class _homeAppliancesCategoryPageState extends State<homeAppliancesCategoryPage>
           ),
           backgroundColor: Color(0xFF731800),
           title: Text(
-            "Home Appliances Category",
+            "Home Appliances",
             style: TextStyle(fontSize: 20),
           ),
           actions: <Widget>[
@@ -61,58 +62,67 @@ class _homeAppliancesCategoryPageState extends State<homeAppliancesCategoryPage>
                 SizedBox(height: 10),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collectionGroup('Products')
-                          .where('type', whereIn: ['AirConditioner','Fridges','TV','OtherHome'])
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError)
-                          return Text('Error: ${snapshot.error}');
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                          default:
-                            final products = snapshot.data.docs;
-                            var productview;
-                            List<SingleProduct> productsview = [];
-                            for (var product in products) {
-                              ProductClass productInfo = ProductClass();
-                              productInfo.name = product.data()['Product Name'];
-                              productInfo.price = product.data()['Price'];
-                              productInfo.img = product.data()['imgURL'];
-                              productInfo.type = product.data()['type'];
-                              productInfo.description = product.data()['Description'];
-                              productInfo.brand = product.data()['Brand Name'];
-                              productInfo.quantity = product.data()['Quantity'];
-                              productInfo.sellerEmail = product.data()['Seller Email'];
-                              productInfo.discount = product.data()['Discount'];
-                              productInfo.discountPercentage = product.data()['Discount percent'];
-                              productInfo.newPrice = product.data()['New price'];
-                              productInfo.rate1star = product.data()['1 star rate'];
-                              productInfo.rate2star = product.data()['2 star rate'];
-                              productInfo.rate3star = product.data()['3 star rate'];
-                              productInfo.rate4star = product.data()['4 star rate'];
-                              productInfo.rate5star = product.data()['5 star rate'];
-                              productInfo.color = product.data()['Color'];
-                              productInfo.width = product.data()['Width'];
-                              productInfo.weight = product.data()['Weight'];
-                              productInfo.horesPower = product.data()['Horse Power'];
-                              productInfo.height = product.data()['Height'];
-                              productInfo.depth = product.data()['Depth'];
-                              productInfo.screenSize = product.data()['Screen Size'];
-                              productInfo.rate = product.data()['Rating'];
-                              productInfo.id = product.id;
-                              productview = SingleProduct(
-                                prd: productInfo,
-                              );
-                              productsview.add(productview);
-                            }
-                            return ListView(
-                              children: productsview,
-                            );
+                  stream: FirebaseFirestore.instance
+                      .collectionGroup('Products')
+                      .where('type', whereIn: [
+                    'AirConditioner',
+                    'Fridges',
+                    'TV',
+                    'OtherHome'
+                  ]).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError)
+                      return Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        final products = snapshot.data.docs;
+                        var productview;
+                        List<SingleProduct> productsview = [];
+                        for (var product in products) {
+                          ProductClass productInfo = ProductClass();
+                          productInfo.name = product.data()['Product Name'];
+                          productInfo.price = product.data()['Price'];
+                          productInfo.img = product.data()['imgURL'];
+                          productInfo.type = product.data()['type'];
+                          productInfo.description =
+                              product.data()['Description'];
+                          productInfo.brand = product.data()['Brand Name'];
+                          productInfo.quantity = product.data()['Quantity'];
+                          productInfo.sellerEmail =
+                              product.data()['Seller Email'];
+                          productInfo.discount = product.data()['Discount'];
+                          productInfo.discountPercentage =
+                              product.data()['Discount percent'];
+                          productInfo.newPrice = product.data()['New price'];
+                          productInfo.rate1star = product.data()['1 star rate'];
+                          productInfo.rate2star = product.data()['2 star rate'];
+                          productInfo.rate3star = product.data()['3 star rate'];
+                          productInfo.rate4star = product.data()['4 star rate'];
+                          productInfo.rate5star = product.data()['5 star rate'];
+                          productInfo.color = product.data()['Color'];
+                          productInfo.width = product.data()['Width'];
+                          productInfo.weight = product.data()['Weight'];
+                          productInfo.horesPower =
+                              product.data()['Horse Power'];
+                          productInfo.height = product.data()['Height'];
+                          productInfo.depth = product.data()['Depth'];
+                          productInfo.screenSize =
+                              product.data()['Screen Size'];
+                          productInfo.rate = product.data()['Rating'];
+                          productInfo.id = product.id;
+                          productview = SingleProduct(
+                            prd: productInfo,
+                          );
+                          productsview.add(productview);
                         }
-                      },
-                    )),
+                        return ListView(
+                          children: productsview,
+                        );
+                    }
+                  },
+                )),
               ],
             ),
           ),
@@ -125,8 +135,7 @@ class _homeAppliancesCategoryPageState extends State<homeAppliancesCategoryPage>
 class SingleProduct extends StatefulWidget {
   ProductClass prd;
 
-  SingleProduct(
-      {this.prd});
+  SingleProduct({this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -199,7 +208,9 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails(pRD: widget.prd,),
+              builder: (context) => ProductDetails(
+                pRD: widget.prd,
+              ),
             ),
           );
         },
@@ -221,26 +232,26 @@ class _SingleProductState extends State<SingleProduct> {
                 alignment: Alignment.topLeft,
                 child: (widget.prd.discount == 'false')
                     ? Text(
-                  "${widget.prd.price} EGP",
-                  style: TextStyle(color: Colors.red),
-                )
+                        "${widget.prd.price} EGP",
+                        style: TextStyle(color: Colors.red),
+                      )
                     : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "${widget.prd.price}",
-                      style: TextStyle(
-                          decoration: TextDecoration.lineThrough),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "${widget.prd.newPrice} EGP",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${widget.prd.price}",
+                            style: TextStyle(
+                                decoration: TextDecoration.lineThrough),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${widget.prd.newPrice} EGP",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
