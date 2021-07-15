@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Recent products',
+              child: Text('Recently Added ',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

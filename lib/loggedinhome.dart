@@ -196,16 +196,11 @@ class _loggedinhomeState extends State<loggedinhome> {
             // grid view list
 
             Padding(padding: const EdgeInsets.all(14)),
-            Row(
-              children: [
-                Text('Recent products ',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    )),
-                Icon(Icons.access_time_outlined),
-              ],
-            ),
+            Text('Recent products ',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                )),
             Container(
               child: RecenProductsView(),
             ),
