@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:store_app/Checkout.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -111,13 +112,21 @@ class _CartState extends State<Cart> {
                         .doc(_auth.currentUser.uid)
                         .snapshots(),
                     builder: (context, snapshot) {
-                      return MaterialButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Check Out",
-                          style: TextStyle(color: Colors.white),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Checkout()));
+                          },
+                          child: Text(
+                            "Check Out",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Color(0xFF731800),
                         ),
-                        color: Colors.grey,
                       );
                     }))
           ],
