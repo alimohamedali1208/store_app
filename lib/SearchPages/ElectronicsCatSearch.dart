@@ -377,7 +377,7 @@ class _SingleProductState extends State<SingleProduct> {
           Navigator.of(context).push(
             new MaterialPageRoute(
               builder: (context) => ProductDetails(
-                pRD: widget.prd,
+                prd: widget.prd,
               ),
             ),
           );

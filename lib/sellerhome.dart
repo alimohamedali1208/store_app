@@ -306,7 +306,7 @@ class _SingleProductState extends State<SingleProduct> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => editLaptops(
-                                                    pRD: widget.prd,
+                                                    prd: widget.prd,
                                                   )));
                                     } else if (widget.prd.type ==
                                         'AirConditioner') {
@@ -365,7 +365,7 @@ class _SingleProductState extends State<SingleProduct> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => editMobile(
-                                                    pRD: widget.prd,
+                                                    prd: widget.prd,
                                                   )));
                                     } else if (widget.prd.type == 'OtherHome') {
                                       Navigator.push(
@@ -447,9 +447,11 @@ class _SingleProductState extends State<SingleProduct> {
                                           .collection('Products')
                                           .doc(widget.prd.id)
                                           .update({'imgURL': picURL});
-
                                       Fluttertoast.showToast(
                                           msg: "Uploading new product picture");
+                                      //remove edited product from Customers Cart and Favorites img
+                                      await removeEditedProductFromCart();
+                                      await removeEditedProductFromFavorites();
                                     }
                                   },
                                   child: Row(
@@ -538,6 +540,7 @@ class _SingleProductState extends State<SingleProduct> {
                                                     });
                                                     //Remove edited product from any customer cart
                                                     await removeEditedProductFromCart();
+                                                    await removeEditedProductFromFavorites();
                                                   },
                                           ),
                                           TextButton(
@@ -591,6 +594,7 @@ class _SingleProductState extends State<SingleProduct> {
                                                 Navigator.of(context).pop();
                                                 //Remove edited product from any customer cart
                                                 await removeEditedProductFromCart();
+                                                await removeEditedProductFromFavorites();
                                               }
                                             },
                                           ),
@@ -694,42 +698,9 @@ class _SingleProductState extends State<SingleProduct> {
                       }
                     }
                     //removing product from customers: cart, rated products, and favorites
-                    await FirebaseFirestore.instance
-                        .collectionGroup('cart')
-                        .where('ProductID', isEqualTo: widget.prd.id)
-                        .get()
-                        .then((value) {
-                      value.docs.forEach((element) async {
-                        final cid =
-                            element.data()['CustomerID'].toString().trim();
-                        print(
-                            'This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(cid)
-                            .collection('cart')
-                            .doc(element.id)
-                            .delete();
-                      });
-                    });
-                    await FirebaseFirestore.instance
-                        .collectionGroup('rated products')
-                        .where('ProductID', isEqualTo: widget.prd.id)
-                        .get()
-                        .then((value) {
-                      value.docs.forEach((element) async {
-                        final cid =
-                            element.data()['CustomerID'].toString().trim();
-                        print(
-                            'This is the element data for customer ${element.data()['CustomerID']}');
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(cid)
-                            .collection('rated products')
-                            .doc(element.id)
-                            .delete();
-                      });
-                    });
+                    await removeEditedProductFromFavorites();
+                    await removeFromRated();
+                    await removeEditedProductFromFavorites();
                     //Deleting product picture from cloud storage
                     Reference firebaseStorageRef =
                         FirebaseStorage.instance.ref();
@@ -773,6 +744,27 @@ class _SingleProductState extends State<SingleProduct> {
     );
   }
 
+  Future removeFromRated() async {
+    await FirebaseFirestore.instance
+        .collectionGroup('rated products')
+        .where('ProductID', isEqualTo: widget.prd.id)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        final cid =
+            element.data()['CustomerID'].toString().trim();
+        print(
+            'This is the element data for customer ${element.data()['CustomerID']}');
+        await FirebaseFirestore.instance
+            .collection('Customers')
+            .doc(cid)
+            .collection('rated products')
+            .doc(element.id)
+            .delete();
+      });
+    });
+  }
+
   Future removeEditedProductFromCart() async {
     await FirebaseFirestore.instance
         .collectionGroup('cart')
@@ -804,6 +796,30 @@ class _SingleProductState extends State<SingleProduct> {
               .collection('Customers')
               .doc(cid)
               .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+        }
+      });
+    });
+  }
+
+  Future removeEditedProductFromFavorites() async {
+    await FirebaseFirestore.instance
+        .collectionGroup('favorite')
+        .where('ProductID', isEqualTo: widget.prd.id)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        final cid = element.data()['CustomerID'].toString().trim();
+        print(
+            'This is the element data for customer ${element.data()['CustomerID']}');
+        String changeFlag = element.data()['ChangeFlag'];
+        //Check if cart was modified before
+        if (changeFlag == 'false') {
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
+              .collection('favorite')
+              .doc(element.id)
+              .update({'ChangeFlag': 'true'});
         }
       });
     });

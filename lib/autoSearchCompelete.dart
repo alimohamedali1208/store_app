@@ -252,6 +252,7 @@ class _SingleProductState extends State<SingleProduct> {
           setState(() {
             cartIsPressed = true;
           });
+          removeFromFav();
           print('Product added to cart');
         }
       });
@@ -287,6 +288,7 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
+            'Product Quantity': 1,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -295,11 +297,41 @@ class _SingleProductState extends State<SingleProduct> {
             'ChangeFlag': 'false',
             'imgURL': widget.prd.img
           });
-          isPressed = true;
+          setState(() {
+            isPressed = true;
+          });
         }
       });
     }
   }
+
+  Future removeFromFav() async {
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in fav');
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('favorite')
+          .doc(widget.prd.id)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (!snapshot.exists) {
+          print('product not in favorites');
+        } else {
+          print('remove product from fav');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('favorite')
+              .doc(widget.prd.id)
+              .delete();
+        }
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +342,7 @@ class _SingleProductState extends State<SingleProduct> {
               new MaterialPageRoute(
                 builder: (context) => ProductDetails(
                   // passing the values via constructor
-                  pRD: widget.prd,
+                  prd: widget.prd,
                 ),
               ),
             );
