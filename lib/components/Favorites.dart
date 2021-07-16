@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:store_app/productClass.dart';
 
 import '../UserCustomer.dart';
 
+bool showSpinner = false;
 class Favorites extends StatefulWidget {
   @override
   _FavoritesState createState() => _FavoritesState();
@@ -33,53 +35,56 @@ class _FavoritesState extends State<Favorites> {
           centerTitle: true,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Customers')
-                      .doc(_auth.currentUser.uid)
-                      .collection('favorite')
-                      .orderBy('ChangeFlag')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData)
-                      return Text('no products available');
-                    else {
-                      final products = snapshot.data.docs;
-                      List<SingleFavoritesProduct> productsview = [];
-                      for (var product in products) {
-                        ProductClass productInfo = ProductClass();
-                        productInfo.name = product.data()['Product Name'];
-                        productInfo.price = product.data()['Price'] as num;
-                        productInfo.discount = product.data()['Discount'];
-                        productInfo.discountPercentage =
-                            product.data()['Discount percent'];
-                        productInfo.newPrice = product.data()['New price'];
-                        productInfo.img = product.data()['imgURL'];
-                        productInfo.type = product.data()['type'];
-                        productInfo.changeFlag = product.data()['ChangeFlag'];
-                        productInfo.id = product.id;
-                        final productview = SingleFavoritesProduct(
-                          prd: productInfo,
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Customers')
+                        .doc(_auth.currentUser.uid)
+                        .collection('favorite')
+                        .orderBy('ChangeFlag')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return Text('no products available');
+                      else {
+                        final products = snapshot.data.docs;
+                        List<SingleFavoritesProduct> productsview = [];
+                        for (var product in products) {
+                          ProductClass productInfo = ProductClass();
+                          productInfo.name = product.data()['Product Name'];
+                          productInfo.quantity = product.data()['Quantity'];
+                          productInfo.price = product.data()['Price'] as num;
+                          productInfo.discount = product.data()['Discount'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.newPrice = product.data()['New price'];
+                          productInfo.img = product.data()['imgURL'];
+                          productInfo.type = product.data()['type'];
+                          productInfo.changeFlag = product.data()['ChangeFlag'];
+                          productInfo.id = product.id;
+                          final productview = SingleFavoritesProduct(
+                            prd: productInfo,
+                          );
+                          productsview.add(productview);
+                        }
+                        return ListView(
+                          children: productsview,
                         );
-                        productsview.add(productview);
                       }
-                      return ListView(
-                        children: productsview,
-                      );
-                    }
-                  },
-                )),
-              ],
+                    },
+                  )),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -95,7 +100,6 @@ class SingleFavoritesProduct extends StatefulWidget {
 }
 
 class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
-  bool showSpinner = false;
 
   final _firestore = FirebaseFirestore.instance;
 
@@ -146,6 +150,7 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
               .doc(_auth.currentUser.uid)
               .update({'Total': FieldValue.increment(price)});
           print('Product added to cart');
+          await removeFromFav();
         }
       });
     }
@@ -154,10 +159,37 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
     });
   }
 
+  Future removeFromFav() async {
+    if (customer.firstName == "temp") {
+      Fluttertoast.showToast(msg: "You need to sign in first");
+    } else {
+      print('first check if product already in fav');
+      await _firestore
+          .collection('Customers')
+          .doc(_auth.currentUser.uid)
+          .collection('favorite')
+          .doc(widget.prd.id)
+          .get()
+          .then((DocumentSnapshot snapshot) async {
+        if (!snapshot.exists) {
+          print('product not in favorites');
+        } else {
+          print('remove product from fav');
+          await _firestore
+              .collection('Customers')
+              .doc(_auth.currentUser.uid)
+              .collection('favorite')
+              .doc(widget.prd.id)
+              .delete();
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: (widget.prd.changeFlag == 'true')? [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -228,11 +260,35 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
             Spacer(),
             IconButton(
                 onPressed: () {
-                  //todo some delete action
+                  removeFromFav();
                 },
                 icon: Icon(Icons.delete)),
           ],
         )
+      ]:
+      [
+      Container(
+      color: Colors.red[400],
+      child: ListTile(
+        title: Row(
+          children: [
+            Expanded(
+                child: Text(
+                    "The Product named: ${widget.prd.name} has been removed or edited, try adding it again")),
+            IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .collection('favorite')
+                      .doc(widget.prd.id)
+                      .delete();
+                })
+          ],
+        ),
+      ),
+    ),
       ],
     );
   }

@@ -342,7 +342,7 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails(pRD: widget.prd,),
+              builder: (context) => ProductDetails(prd: widget.prd,),
             ),
           );
         },

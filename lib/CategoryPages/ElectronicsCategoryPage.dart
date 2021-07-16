@@ -198,7 +198,7 @@ class _SingleProductState extends State<SingleProduct> {
             new MaterialPageRoute(
               builder: (context) => ProductDetails(
                 // passing the values via constructor
-                pRD: widget.prd,
+                prd: widget.prd,
               ),
             ),
           );

@@ -6,8 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/productClass.dart';
 
 class editMobile extends StatefulWidget {
-  ProductClass pRD;
-  editMobile({this.pRD});
+  ProductClass prd;
+  editMobile({this.prd});
 
   @override
   _editMobileState createState() => _editMobileState();
@@ -35,7 +35,7 @@ class _editMobileState extends State<editMobile> {
         .collection('ProductsCollection')
         .doc('Mobiles')
         .collection('Products')
-        .doc('${widget.pRD.id}')
+        .doc('${widget.prd.id}')
         .update({
       'Brand Name': ddBrand,
       'Product Name': name,
@@ -100,7 +100,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.name,
+                      initialValue: widget.prd.name,
                       decoration: InputDecoration(
                         labelText: 'phone name',
                         border: OutlineInputBorder(),
@@ -116,7 +116,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.battery,
+                      initialValue: widget.prd.battery,
                       decoration: InputDecoration(
                         labelText: 'Battery size',
                         border: OutlineInputBorder(),
@@ -132,7 +132,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.camera,
+                      initialValue: widget.prd.camera,
                       decoration: InputDecoration(
                         labelText: 'Camera',
                         border: OutlineInputBorder(),
@@ -148,7 +148,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
-                      initialValue: widget.pRD.description,
+                      initialValue: widget.prd.description,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Description',
@@ -169,7 +169,7 @@ class _editMobileState extends State<editMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
-                              initialValue: widget.pRD.memory,
+                              initialValue: widget.prd.memory,
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
@@ -211,7 +211,7 @@ class _editMobileState extends State<editMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: (widget.pRD.price).toString(),
+                      initialValue: (widget.prd.price).toString(),
                       enableInteractiveSelection: false,
                       inputFormatters: [
                         WhitelistingTextInputFormatter(RegExp("[0-9]")),
@@ -230,7 +230,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
-                      initialValue: widget.pRD.quantity,
+                      initialValue: widget.prd.quantity,
                       validator: validateEmpty,
                       enableInteractiveSelection: false,
                       inputFormatters: [
@@ -250,7 +250,7 @@ class _editMobileState extends State<editMobile> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
-                      initialValue: widget.pRD.screenSize,
+                      initialValue: widget.prd.screenSize,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Screen size',
@@ -271,7 +271,7 @@ class _editMobileState extends State<editMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
-                              initialValue: widget.pRD.storage.toString(),
+                              initialValue: widget.prd.storage.toString(),
                               decoration: InputDecoration(
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),
@@ -438,7 +438,7 @@ class _editMobileState extends State<editMobile> {
   Future removeEditedProductFromCart() async {
     await FirebaseFirestore.instance
         .collectionGroup('cart')
-        .where('ProductID', isEqualTo: widget.pRD.id)
+        .where('ProductID', isEqualTo: widget.prd.id)
         .get()
         .then((value) {
       value.docs.forEach((element) async {
@@ -466,6 +466,30 @@ class _editMobileState extends State<editMobile> {
               .collection('Customers')
               .doc(cid)
               .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+        }
+      });
+    });
+  }
+
+  Future removeEditedProductFromFavorites() async {
+    await FirebaseFirestore.instance
+        .collectionGroup('favorite')
+        .where('ProductID', isEqualTo: widget.prd.id)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        final cid = element.data()['CustomerID'].toString().trim();
+        print(
+            'This is the element data for customer ${element.data()['CustomerID']}');
+        String changeFlag = element.data()['ChangeFlag'];
+        //Check if cart was modified before
+        if (changeFlag == 'false') {
+          await FirebaseFirestore.instance
+              .collection('Customers')
+              .doc(cid)
+              .collection('favorite')
+              .doc(element.id)
+              .update({'ChangeFlag': 'true'});
         }
       });
     });

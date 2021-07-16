@@ -10,9 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import '../productClass.dart';
 
 class editLaptops extends StatefulWidget {
-  ProductClass pRD;
+  ProductClass prd;
 
-  editLaptops({this.pRD});
+  editLaptops({this.prd});
 
   @override
   _editLaptopsState createState() => _editLaptopsState();
@@ -139,7 +139,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.name,
+                      initialValue: widget.prd.name,
                       decoration: InputDecoration(
                         labelText: 'Laptop name',
                         border: OutlineInputBorder(),
@@ -154,7 +154,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.gpu,
+                      initialValue: widget.prd.gpu,
                       decoration: InputDecoration(
                         labelText: 'GPU',
                         border: OutlineInputBorder(),
@@ -169,7 +169,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.cpu,
+                      initialValue: widget.prd.cpu,
                       decoration: InputDecoration(
                         labelText: 'CPU',
                         border: OutlineInputBorder(),
@@ -185,7 +185,7 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
-                      initialValue: widget.pRD.description,
+                      initialValue: widget.prd.description,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Description',
@@ -206,7 +206,7 @@ class _editLaptopsState extends State<editLaptops> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
-                              initialValue: widget.pRD.memory,
+                              initialValue: widget.prd.memory,
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
@@ -248,7 +248,7 @@ class _editLaptopsState extends State<editLaptops> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
-                      initialValue: widget.pRD.price.toString(),
+                      initialValue: widget.prd.price.toString(),
                       enableInteractiveSelection: false,
                       inputFormatters: [
                         WhitelistingTextInputFormatter(RegExp("[0-9]")),
@@ -267,7 +267,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
-                      initialValue: widget.pRD.quantity,
+                      initialValue: widget.prd.quantity,
                       validator: validateEmpty,
                       enableInteractiveSelection: false,
                       inputFormatters: [
@@ -287,7 +287,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
-                      initialValue: widget.pRD.screenSize,
+                      initialValue: widget.prd.screenSize,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Screen size',
@@ -303,7 +303,7 @@ class _editLaptopsState extends State<editLaptops> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
-                      initialValue: widget.pRD.battery,
+                      initialValue: widget.prd.battery,
                       validator: validateEmpty,
                       decoration: InputDecoration(
                         labelText: 'Battery',
@@ -324,7 +324,7 @@ class _editLaptopsState extends State<editLaptops> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
-                              initialValue: widget.pRD.storage.toString(),
+                              initialValue: widget.prd.storage.toString(),
                               decoration: InputDecoration(
                                 labelText: 'Storage',
                                 border: OutlineInputBorder(),
