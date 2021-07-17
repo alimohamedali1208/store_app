@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:store_app/OrderPlaced.dart';
 
 class Checkout extends StatefulWidget {
   @override
@@ -15,12 +16,12 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   CreditCardValidator _ccValidator = CreditCardValidator();
 
-  final _checkoutFormKey = GlobalKey<FormState>();
-  bool validate = false;
+  final _paymentFormKey = GlobalKey<FormState>();
+  bool _validate = false;
 
   void toggleValidate() {
     setState(() {
-      validate = true;
+      _validate = true;
     });
   }
 
@@ -60,7 +61,7 @@ class _CheckoutState extends State<Checkout> {
         ),
         backgroundColor: Color(0xFF731800),
         elevation: 0.0,
-        title: Text("Checkout"),
+        title: Text("Payment"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -86,7 +87,7 @@ class _CheckoutState extends State<Checkout> {
               height: 40,
             ),
             Form(
-              key: _checkoutFormKey,
+              key: _paymentFormKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +136,7 @@ class _CheckoutState extends State<Checkout> {
                           InputDecoration(hintText: 'Card Expiry Month'),
                       maxLength: 5,
                       validator: validateExpDate,
-                      autovalidate: validate,
+                      autovalidate: _validate,
                       onChanged: (value) {
                         setState(() {
                           expiryDate = value;
@@ -184,14 +185,12 @@ class _CheckoutState extends State<Checkout> {
                           ),
                         ),
                         onPressed: () {
-                          if (_checkoutFormKey.currentState.validate()) {
-                            Fluttertoast.showToast(
-                                msg: "Order Placed!",
-                                backgroundColor: Colors.black);
-                            int count = 0;
-                            Navigator.popUntil(context, (route) {
-                              return count++ == 2;
-                            });
+                          if (_paymentFormKey.currentState.validate()) {
+                            int num = 4;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OrderPlaced(num)));
                           } else {
                             toggleValidate();
                           }

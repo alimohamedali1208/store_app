@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:store_app/AddressCheckout.dart';
 import 'package:store_app/Checkout.dart';
 
 class Cart extends StatefulWidget {
@@ -116,7 +117,7 @@ class _CartState extends State<Cart> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Checkout()));
+                                    builder: (context) => AddressCheckout()));
                           },
                           child: Text(
                             "Check Out",
