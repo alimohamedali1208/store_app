@@ -102,7 +102,9 @@ class _addLaptopState extends State<addLaptop> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeLaptops': FieldValue.increment(1)});
-    UserSeller.typeList.add("Laptops");
+    if (!UserSeller.typeList.contains("Laptops")) {
+      UserSeller.typeList.add("Laptops");
+    }
   }
 
   //toggling auto validate

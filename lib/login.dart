@@ -234,12 +234,21 @@ class _loginState extends State<login> {
                         final taxCard = usern.get('TaxCard');
                         final phone = usern.get('Phone');
                         final sex = usern.get('Sex');
-                        final typeMobiles = usern.get('TypeMobiles');
-                        final typeLaptops = usern.get('TypeLaptops');
-                        final typeAirConditioner = usern.get('TypeAirConditioner');
-                        final typeFridges = usern.get('TypeFridges');
-                        final typeOtherElectronics =
-                            usern.get('TypeOtherElectronics');
+                        final typeMobiles = usern.data()['TypeMobiles'];
+                        final typeLaptops = usern.data()['TypeLaptops'];
+                        final typeAirConditioner = usern.data()['TypeAirConditioner'];
+                        final typeFridges = usern.data()['TypeFridges'];
+                        final typeTV = usern.data()['TypeTV'];
+                        final typeProjectors = usern.data()['TypeProjectors'];
+                        final typePrinters = usern.data()['TypePrinters'];
+                        final typeStorageDevices = usern.data()['TypeStorageDevices'];
+                        final typeCameras = usern.data()['TypeCameras'];
+                        final typeCameraAccessories = usern.data()['TypeCameraAccessories'];
+                        final typeFashion = usern.data()['TypeFashion'];
+                        final typeJewelry = usern.data()['TypeJewelry'];
+                        final typeOtherElectronics = usern.data()['TypeOtherElectronics'];
+                        final typeOtherPC = usern.data()['TypeOtherPC'];
+                        final typeOtherHome = usern.data()['TypeOtherHome'];
                         if (email == Email) {
                           seller.firstName = firstname;
                           seller.lastName = lastname;
@@ -248,26 +257,11 @@ class _loginState extends State<login> {
                           seller.phone = phone;
                           seller.sex = sex;
                           seller.tax = taxCard;
-                          if (typeMobiles > 0) {
-                            UserSeller.typeList.add("Mobiles");
-                            UserSeller.typeMobiles = typeMobiles;
-                          }
-                          if (typeLaptops > 0) {
-                            UserSeller.typeList.add("Laptops");
-                            UserSeller.typeLaptops = typeLaptops;
-                          }
-                          if (typeOtherElectronics > 0) {
-                            UserSeller.typeList.add("OtherElectronics");
-                            UserSeller.typeOtherElectronics = typeOtherElectronics;
-                          }
-                          if (typeAirConditioner > 0) {
-                            UserSeller.typeList.add("AirConditioner");
-                            UserSeller.typeAirConditioner = typeAirConditioner;
-                          }
-                          if (typeFridges > 0) {
-                            UserSeller.typeList.add("Fridges");
-                            UserSeller.typeFridges = typeFridges;
-                          }
+                          SetProductsList(typeMobiles, typeLaptops, typeOtherElectronics,
+                              typeAirConditioner, typeOtherHome, typeOtherPC,
+                              typeFashion, typeStorageDevices, typeJewelry,
+                              typeCameraAccessories, typeCameras, typePrinters,
+                              typeFridges, typeProjectors, typeTV);
                         }
                       }
                       if (seller.firstName == 'temp') {
@@ -332,5 +326,71 @@ class _loginState extends State<login> {
         ),
       ),
     );
+  }
+
+  void SetProductsList(typeMobiles, typeLaptops, typeOtherElectronics,
+      typeAirConditioner, typeOtherHome, typeOtherPC,
+      typeFashion, typeStorageDevices, typeJewelry,
+      typeCameraAccessories, typeCameras,
+      typePrinters, typeFridges, typeProjectors, typeTV) {
+    if (typeMobiles > 0) {
+      UserSeller.typeList.add("Mobiles");
+      UserSeller.typeMobiles = typeMobiles;
+    }
+    if (typeLaptops > 0) {
+      UserSeller.typeList.add("Laptops");
+      UserSeller.typeLaptops = typeLaptops;
+    }
+    if (typeOtherElectronics > 0) {
+      UserSeller.typeList.add("OtherElectronics");
+      UserSeller.typeOtherElectronics = typeOtherElectronics;
+    }
+    if (typeAirConditioner > 0) {
+      UserSeller.typeList.add("AirConditioner");
+      UserSeller.typeAirConditioner = typeAirConditioner;
+    }
+    if (typeOtherHome > 0) {
+      UserSeller.typeList.add("OtherHome");
+      UserSeller.typeOtherHome = typeOtherHome;
+    }
+    if (typeOtherPC > 0) {
+      UserSeller.typeList.add("OtherPC");
+      UserSeller.typeOtherPC = typeOtherPC;
+    }
+    if (typeFashion > 0) {
+      UserSeller.typeList.add("Fashion");
+      UserSeller.typeFashion = typeFashion;
+    }
+    if (typeStorageDevices > 0) {
+      UserSeller.typeList.add("StorageDevices");
+      UserSeller.typeStorageDevices = typeStorageDevices;
+    }
+    if (typeJewelry > 0) {
+      UserSeller.typeList.add("Jewelry");
+      UserSeller.typeJewelry = typeJewelry;
+    }
+    if (typeCameraAccessories > 0) {
+      UserSeller.typeList.add("CameraAccessories");
+      UserSeller.typeCameraAccessories = typeCameraAccessories;
+    }
+    if (typeCameras > 0) {
+      UserSeller.typeList.add("Cameras");
+      UserSeller.typeCameras = typeCameras;
+    }
+    if (typePrinters > 0) {
+      UserSeller.typeList.add("Printers");
+      UserSeller.typePrinters = typePrinters;
+    }
+    if (typeFridges > 0) {
+      UserSeller.typeList.add("Fridges");
+      UserSeller.typeFridges = typeFridges;
+    }
+    if (typeProjectors > 0) {
+      UserSeller.typeList.add("Projectors");
+      UserSeller.typeProjectors = typeProjectors;
+    }if (typeTV > 0) {
+      UserSeller.typeList.add("TV");
+      UserSeller.typeTV = typeTV;
+    }
   }
 }

@@ -8,7 +8,9 @@ class UserSeller {
       _company,
       _tax;
 
-  static int _typeMobiles = 0, _typeLaptops = 0, _typeAirConditioner = 0, _typeFridges = 0, _typeElectronics = 0, _typeOtherElectronics = 0;
+  static int _typeMobiles = 0, _typeLaptops = 0, _typeAirConditioner = 0, _typeFridges = 0, _typeProjectors = 0, _typeOtherElectronics = 0
+  , _typeTV =0, _typeOtherPC = 0, _typeOtherHome = 0, _typePrinters = 0, _typeStorageDevices = 0, _typeFashion = 0
+  , _typeJewelry = 0, _typeCameras = 0, _typeCameraAccessories = 0;
 
   static var typeList = [];
 
@@ -87,15 +89,70 @@ class UserSeller {
     _typeFridges = value;
   }
 
-  static get typeElectronics => _typeElectronics;
 
-  static set typeElectronics(value) {
-    _typeElectronics = value;
+  static get typeProjectors => _typeProjectors;
+
+  static set typeProjectors(value) {
+    _typeProjectors = value;
   }
 
   static get typeOtherElectronics => _typeOtherElectronics;
 
   static set typeOtherElectronics(value) {
     _typeOtherElectronics = value;
+  }
+
+  static get typeTV => _typeTV;
+
+  static set typeTV(value) {
+    _typeTV = value;
+  }
+
+  static get typeOtherPC => _typeOtherPC;
+
+  static set typeOtherPC(value) {
+    _typeOtherPC = value;
+  }
+
+  static get typeOtherHome => _typeOtherHome;
+
+  static set typeOtherHome(value) {
+    _typeOtherHome = value;
+  }
+
+  static get typePrinters => _typePrinters;
+
+  static set typePrinters(value) {
+    _typePrinters = value;
+  }
+
+  static get typeStorageDevices => _typeStorageDevices;
+
+  static set typeStorageDevices(value) {
+    _typeStorageDevices = value;
+  }
+
+  static get typeFashion => _typeFashion;
+
+  static set typeFashion(value) {
+    _typeFashion = value;
+  }
+
+  static get typeJewelry => _typeJewelry;
+
+  static set typeJewelry(value) {
+    _typeJewelry = value;
+  }
+
+  static get typeCameras => _typeCameras;
+
+  static set typeCameras(value) {
+    _typeCameras = value;
+  }
+
+  static get typeCameraAccessories => _typeCameraAccessories;
+
+  static set typeCameraAccessories(value) {
+    _typeCameraAccessories = value;
   }
 }

@@ -123,10 +123,15 @@ class _sellerhomeState extends State<sellerhome> {
               InkWell(
                 child: ListTile(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddOfferOnCategory()));
+                    if (UserSeller.typeList.isEmpty) {
+                      Fluttertoast.showToast(msg: "No products were added yet");
+                    }
+                    else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddOfferOnCategory()));
+                    }
                   },
                   title: Text('Add offer on category'),
                   leading: Icon(Icons.local_offer_sharp, color: Colors.black),

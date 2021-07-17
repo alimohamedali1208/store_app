@@ -99,7 +99,8 @@ class _addMobileState extends State<addMobile> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeMobiles': FieldValue.increment(1)});
-    UserSeller.typeList.add("Mobiles");
+    if(!UserSeller.typeList.contains("Mobiles"))
+      UserSeller.typeList.add("Mobiles");
   }
 
   //toggling auto validate
