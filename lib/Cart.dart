@@ -44,8 +44,10 @@ class _CartState extends State<Cart> {
                       .orderBy('ChangeFlag')
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData)
+                    if (!snapshot.hasData) {
+                      print("no homo ");
                       return Text('no products available');
+                    }
                     else {
                       final products = snapshot.data.docs;
                       List<SingleCartProduct> productsview = [];
@@ -60,6 +62,7 @@ class _CartState extends State<Cart> {
                         final producttype = product.data()['type'];
                         final changeflag = product.data()['ChangeFlag'];
                         final productid = product.id;
+                        print("$productname $productprice");
                         final productview = SingleCartProduct(
                           cart_prod_name: productname,
                           cart_prod_price: productprice,
@@ -84,7 +87,7 @@ class _CartState extends State<Cart> {
           ),
         ],
       ),
-      bottomNavigationBar: new Container(
+      bottomNavigationBar: Container(
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -106,13 +109,7 @@ class _CartState extends State<Cart> {
                   }),
             )),
             Expanded(
-                child: StreamBuilder<DocumentSnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Customers')
-                        .doc(_auth.currentUser.uid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return Padding(
+                child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: MaterialButton(
                           onPressed: () {
@@ -127,8 +124,8 @@ class _CartState extends State<Cart> {
                           ),
                           color: Color(0xFF731800),
                         ),
-                      );
-                    }))
+                      )
+                    )
           ],
         ),
       ),
@@ -203,22 +200,12 @@ class SingleCartProduct extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      //    ======== this for color section =========
-                      Text("Color:"),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Shipping: Free',
-                        ),
+                      Text(
+                        'Shipping: Free',
                       ),
-                      //    ========== this for Qty section =========
-                      Text("Type:"),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "${cart_prod_type}",
-                          style: TextStyle(color: Colors.red),
-                        ),
+                        child: Text("Type: ${cart_prod_type}"),
                       ),
                     ],
                   ),

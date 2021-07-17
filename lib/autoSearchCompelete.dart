@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
+import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
 class autoSearchCompelete extends StatefulWidget {
@@ -158,7 +159,6 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productInfo.memory = product.data()['Memory'];
                             productInfo.camera = product.data()['Camera'];
                             productInfo.os = product.data()['OS'];
-
                           } else if (productInfo.type == 'Laptops') {
                             productInfo.storage = product.data()['Storage'];
                             productInfo.battery = product.data()['Battery'];
@@ -166,7 +166,6 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productInfo.cpu = product.data()['CPU'];
                             productInfo.gpu = product.data()['GPU'];
                             productInfo.os = product.data()['OS'];
-
                           }
                             productview = SingleProduct(
                               prd: productInfo,
@@ -206,10 +205,13 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
-
       await _firestore
           .collection('Customers')
           .doc(_auth.currentUser.uid)
@@ -252,8 +254,8 @@ class _SingleProductState extends State<SingleProduct> {
           setState(() {
             cartIsPressed = true;
           });
-          removeFromFav();
           print('Product added to cart');
+          removeFromFav();
         }
       });
     }
@@ -261,10 +263,13 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
-
       await _firestore
           .collection('Customers')
           .doc(_auth.currentUser.uid)
