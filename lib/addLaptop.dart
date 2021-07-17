@@ -62,7 +62,7 @@ class _addLaptopState extends State<addLaptop> {
       'GPU': GPU,
       'Battery': battery,
       'Memory': memory,
-      'ScreenSize': screenSize,
+      'Screen Size': screenSize,
       'Storage': storage,
       'OS': ddOS,
       'Price': price,

@@ -39,9 +39,9 @@ class _loggedinhomeState extends State<loggedinhome> {
               new FlatButton(
                 onPressed: () {
                   _auth.signOut();
-                  Navigator.pushNamed(context, Home.id);
                   customer.firstName = 'temp';
                   customer.lastName = 'temp';
+                  Navigator.pushNamed(context, Home.id);
                 },
                 child: new Text('Yes'),
               ),

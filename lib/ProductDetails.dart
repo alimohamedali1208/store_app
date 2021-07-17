@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:store_app/UserCustomer.dart';
+import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
 UserCustomer customer = UserCustomer();
@@ -33,6 +34,10 @@ class _ProductDetailsState extends State<ProductDetails> {
       showSpinner = true;
     });
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -63,6 +68,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             'Discount': widget.prd.discount,
             'Discount percent': widget.prd.discountPercentage,
             'type': widget.prd.type,
+            'ChangeFlag': 'false',
             'imgURL': widget.prd.img,
           });
           double price;
@@ -87,6 +93,10 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');

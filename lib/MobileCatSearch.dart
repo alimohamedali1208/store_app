@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/ProductDetails.dart';
+import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
 class mobileCatSearch extends StatefulWidget {
@@ -434,6 +435,10 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -489,6 +494,10 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -502,6 +511,7 @@ class _SingleProductState extends State<SingleProduct> {
           .then((DocumentSnapshot snapshot) async {
         if (snapshot.exists) {
           print('product already in fav');
+          removeFromFav();
           setState(() {
             isPressed = false;
           });
