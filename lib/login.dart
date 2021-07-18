@@ -62,7 +62,7 @@ class _loginState extends State<login> {
     value = value.trim();
     if (value.isEmpty) {
       return "please provide an email";
-    } else if (!EmailValidator.validate(value, false, false)) {
+    } else if (!EmailValidator.validate(value)) {
       return "Please enter a valid email";
     }
     return null;
@@ -140,15 +140,14 @@ class _loginState extends State<login> {
                               FlatButton(
                                   onPressed: _togglePassword,
                                   child: Text(_obscureText ? "Show" : "Hide")),
-                              FlatButton(
+                              /*FlatButton(
                                   onPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                ResetPassword()));
+                                            builder: (context) => ResetPassword()));
                                   },
-                                  child: Text("Forget Password"))
+                                  child: Text("Forget Password"))*/
                             ],
                           ),
                         ),
@@ -302,15 +301,15 @@ class _loginState extends State<login> {
                         final newuser = await _auth.signInWithEmailAndPassword(
                             email: Email, password: pass);
                         final user = _auth.currentUser;
-                        if (user.emailVerified) {
-                          Navigator.pushNamed(context, sellerhome.id);
-                        } else {
+                        /* if (user.emailVerified) {*/
+                        Navigator.pushNamed(context, sellerhome.id);
+                        /*} else {
                           user.sendEmailVerification();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => verifyScreen()));
-                        }
+                        }*/
                       }
                     }
                     // User was a customer

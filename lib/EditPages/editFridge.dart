@@ -152,6 +152,9 @@ class _editFridgeState extends State<editFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Width',
                         border: OutlineInputBorder(),
@@ -167,6 +170,9 @@ class _editFridgeState extends State<editFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Depth',
                         border: OutlineInputBorder(),
@@ -182,6 +188,9 @@ class _editFridgeState extends State<editFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Weight',
                         border: OutlineInputBorder(),

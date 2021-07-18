@@ -60,7 +60,7 @@ class _registerState extends State<register> {
     value = value.trim();
     if (value.isEmpty) {
       return "please provide an email";
-    } else if (!EmailValidator.validate(value, false, false)) {
+    } else if (!EmailValidator.validate(value)) {
       return "Please enter a valid email";
     }
     return null;

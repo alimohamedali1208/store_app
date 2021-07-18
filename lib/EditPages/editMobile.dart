@@ -49,8 +49,8 @@ class _editMobileState extends State<editMobile> {
       'OS': ddOS,
       'Price': price,
       'New price': '0',
-      'Discount' : 'false',
-      'Discount percent' : '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
       'searchIndex': indexList,
     }).then((_) {
@@ -170,6 +170,9 @@ class _editMobileState extends State<editMobile> {
                               autovalidate: validate,
                               validator: validateEmpty,
                               initialValue: widget.prd.memory,
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                              ],
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
@@ -272,6 +275,9 @@ class _editMobileState extends State<editMobile> {
                               autovalidate: validate,
                               validator: validateEmpty,
                               initialValue: widget.prd.storage.toString(),
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                              ],
                               decoration: InputDecoration(
                                 labelText: 'Phone Storage',
                                 border: OutlineInputBorder(),

@@ -91,7 +91,7 @@ class _addAirConditionerState extends State<addAirConditioner> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeAirConditioner': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("AirConditioner"))
+    if (!UserSeller.typeList.contains("AirConditioner"))
       UserSeller.typeList.add("AirConditioner");
   }
 
@@ -167,6 +167,9 @@ class _addAirConditionerState extends State<addAirConditioner> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Width',
                         border: OutlineInputBorder(),
@@ -182,6 +185,9 @@ class _addAirConditionerState extends State<addAirConditioner> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Depth',
                         border: OutlineInputBorder(),
@@ -197,6 +203,9 @@ class _addAirConditionerState extends State<addAirConditioner> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Weight',
                         border: OutlineInputBorder(),

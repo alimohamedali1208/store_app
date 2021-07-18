@@ -95,8 +95,7 @@ class _addTVState extends State<addTV> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeTV': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("TV"))
-      UserSeller.typeList.add("TV");
+    if (!UserSeller.typeList.contains("TV")) UserSeller.typeList.add("TV");
   }
 
   //toggling auto validate
@@ -171,6 +170,9 @@ class _addTVState extends State<addTV> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Width',
                         border: OutlineInputBorder(),
@@ -186,6 +188,9 @@ class _addTVState extends State<addTV> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Depth',
                         border: OutlineInputBorder(),
@@ -201,6 +206,9 @@ class _addTVState extends State<addTV> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Weight',
                         border: OutlineInputBorder(),

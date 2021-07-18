@@ -86,7 +86,7 @@ class _addJewelaryState extends State<addJewelary> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeJewelry': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("Jewelry"))
+    if (!UserSeller.typeList.contains("Jewelry"))
       UserSeller.typeList.add("Jewelry");
   }
 
@@ -280,6 +280,9 @@ class _addJewelaryState extends State<addJewelary> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Quantity',
                         border: OutlineInputBorder(),

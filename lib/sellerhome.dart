@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:store_app/EditPages/editAirConditioner.dart';
@@ -125,8 +126,7 @@ class _sellerhomeState extends State<sellerhome> {
                   onTap: () {
                     if (UserSeller.typeList.isEmpty) {
                       Fluttertoast.showToast(msg: "No products were added yet");
-                    }
-                    else {
+                    } else {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -236,6 +236,15 @@ class SingleProduct extends StatefulWidget {
 
   @override
   _SingleProductState createState() => _SingleProductState();
+}
+
+String validateOffer(String value) {
+  if (value.isEmpty) {
+    return "Please provide a value";
+  } else if (!(int.parse(value) >= 5 && int.parse(value) < 100)) {
+    return "Offer must be between 5 and 99";
+  }
+  return null;
 }
 
 class _SingleProductState extends State<SingleProduct> {
@@ -485,9 +494,15 @@ class _SingleProductState extends State<SingleProduct> {
                                           key: _formKey,
                                           child: TextFormField(
                                             enableInteractiveSelection: false,
+                                            autovalidate: true,
+                                            validator: validateOffer,
                                             keyboardType: TextInputType.number,
+                                            inputFormatters: [
+                                              WhitelistingTextInputFormatter(
+                                                  RegExp("[0-9]")),
+                                            ],
                                             decoration: InputDecoration(
-                                              labelText: "Add offer percentage",
+                                              labelText: "Add offer value",
                                             ),
                                             onSaved: (value) {
                                               if (value == null)
@@ -672,31 +687,27 @@ class _SingleProductState extends State<SingleProduct> {
                       'Type${widget.prd.type}': FieldValue.increment(-1)
                     });
                     //removing it from local class
-                    if(widget.prd.type == 'Mobiles'){
+                    if (widget.prd.type == 'Mobiles') {
                       UserSeller.typeMobiles--;
                       if (UserSeller.typeMobiles < 1) {
                         UserSeller.typeList.remove("Mobiles");
                       }
-                    }
-                    else if(widget.prd.type == 'Laptops') {
+                    } else if (widget.prd.type == 'Laptops') {
                       UserSeller.typeLaptops--;
                       if (UserSeller.typeLaptops < 1) {
                         UserSeller.typeList.remove("Laptops");
                       }
-                    }
-                    else if(widget.prd.type == 'Fridges') {
+                    } else if (widget.prd.type == 'Fridges') {
                       UserSeller.typeFridges--;
                       if (UserSeller.typeFridges < 1) {
                         UserSeller.typeList.remove("Fridges");
                       }
-                    }
-                    else if(widget.prd.type == 'AirConditioner') {
+                    } else if (widget.prd.type == 'AirConditioner') {
                       UserSeller.typeAirConditioner--;
                       if (UserSeller.typeAirConditioner < 1) {
                         UserSeller.typeList.remove("AirConditioner");
                       }
-                    }
-                    else if(widget.prd.type == 'OtherElectronics') {
+                    } else if (widget.prd.type == 'OtherElectronics') {
                       UserSeller.typeOtherElectronics--;
                       if (UserSeller.typeOtherElectronics < 1) {
                         UserSeller.typeList.remove("OtherElectronics");
@@ -756,8 +767,7 @@ class _SingleProductState extends State<SingleProduct> {
         .get()
         .then((value) {
       value.docs.forEach((element) async {
-        final cid =
-            element.data()['CustomerID'].toString().trim();
+        final cid = element.data()['CustomerID'].toString().trim();
         print(
             'This is the element data for customer ${element.data()['CustomerID']}');
         await FirebaseFirestore.instance

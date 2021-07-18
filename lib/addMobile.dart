@@ -99,7 +99,7 @@ class _addMobileState extends State<addMobile> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeMobiles': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("Mobiles"))
+    if (!UserSeller.typeList.contains("Mobiles"))
       UserSeller.typeList.add("Mobiles");
   }
 
@@ -225,6 +225,9 @@ class _addMobileState extends State<addMobile> {
                               keyboardType: TextInputType.number,
                               autovalidate: validate,
                               validator: validateEmpty,
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                              ],
                               decoration: InputDecoration(
                                 labelText: 'Ram',
                                 border: OutlineInputBorder(),
@@ -285,6 +288,9 @@ class _addMobileState extends State<addMobile> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Quantity',
                         border: OutlineInputBorder(),

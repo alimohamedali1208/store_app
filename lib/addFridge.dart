@@ -89,7 +89,7 @@ class _addFridgeState extends State<addFridge> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeFridges': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("Fridges"))
+    if (!UserSeller.typeList.contains("Fridges"))
       UserSeller.typeList.add("Fridges");
   }
 
@@ -165,6 +165,9 @@ class _addFridgeState extends State<addFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Width',
                         border: OutlineInputBorder(),
@@ -180,6 +183,9 @@ class _addFridgeState extends State<addFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Depth',
                         border: OutlineInputBorder(),
@@ -195,6 +201,9 @@ class _addFridgeState extends State<addFridge> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Weight',
                         border: OutlineInputBorder(),

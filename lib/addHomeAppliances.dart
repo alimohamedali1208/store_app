@@ -86,7 +86,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeOtherHome': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("OtherHome"))
+    if (!UserSeller.typeList.contains("OtherHome"))
       UserSeller.typeList.add("OtherHome");
   }
 
@@ -162,6 +162,9 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Width',
                         border: OutlineInputBorder(),
@@ -177,6 +180,9 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Depth',
                         border: OutlineInputBorder(),
@@ -192,6 +198,9 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Weight',
                         border: OutlineInputBorder(),

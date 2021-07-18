@@ -27,9 +27,11 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
     return Color(0xFF731800);
   }
 
-  String validateEmpty(String value) {
+  String validateOffer(String value) {
     if (value.isEmpty) {
-      return "This field is required";
+      return "Please provide a value";
+    } else if (!(int.parse(value) >= 5 && int.parse(value) < 100)) {
+      return "Offer must be between 5 and 99";
     }
     return null;
   }
@@ -88,7 +90,6 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                                   borderSide: BorderSide(color: Colors.white)),
                               labelText: "Choose Category",
                             ),
-                            validator: validateEmpty,
                             onChanged: (String newValue) {
                               setState(() {
                                 ddCategory = newValue;
@@ -115,19 +116,19 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                         padding: const EdgeInsets.all(8),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          maxLines: null,
-                          //if we wnat to toggle validaton
-                          //autovalidate: validate,
-                          validator: validateEmpty,
+                          autovalidate: validate,
+                          validator: validateOffer,
                           enableInteractiveSelection: false,
                           inputFormatters: [
                             WhitelistingTextInputFormatter(RegExp("[0-9]")),
                           ],
                           decoration: InputDecoration(
-                            labelText: 'Offer',
-                            hintText: "Enter an offer value",
-                            border: OutlineInputBorder(),
-                          ),
+                              labelText: 'Offer',
+                              hintText: "Enter an offer value",
+                              border: OutlineInputBorder(),
+                              errorStyle: TextStyle(
+                                fontSize: 10,
+                              )),
                           onSaved: (value) {
                             offer = int.parse(value.trim());
                           },
@@ -186,32 +187,42 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                   if (_offersFormKey.currentState.validate()) {
                     _offersFormKey.currentState.save();
                     print("$ddCategory  $offer  $isChecked");
-                    Fluttertoast.showToast(msg: "Updating your $ddCategory Offer");
+                    Fluttertoast.showToast(
+                        msg: "Updating your $ddCategory Offer");
                     setState(() {
                       showSpinner = true;
                     });
-                    FirebaseFirestore.instance.collection('ProductsCollection')
-                    .doc(ddCategory).collection('Products')
-                    .where('Seller Email', isEqualTo: _auth.currentUser.email)
-                    .get().then((value) {
+                    FirebaseFirestore.instance
+                        .collection('ProductsCollection')
+                        .doc(ddCategory)
+                        .collection('Products')
+                        .where('Seller Email',
+                            isEqualTo: _auth.currentUser.email)
+                        .get()
+                        .then((value) {
                       value.docs.forEach((element) async {
                         String pid = element.id;
-                         num price = await element.data()['Price'];
-                         String newPrice = (price - ((offer / 100) * price)).toString();
-                         print("${element.id}  $price  $newPrice");
-                          await FirebaseFirestore.instance
-                              .collection('ProductsCollection')
-                              .doc(ddCategory)
-                              .collection('Products')
-                              .doc(pid)
-                              .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice});
-                          //remove product from any customer cart
-                         await removeProductFromCart(pid);
+                        num price = await element.data()['Price'];
+                        String newPrice =
+                            (price - ((offer / 100) * price)).toString();
+                        print("${element.id}  $price  $newPrice");
+                        await FirebaseFirestore.instance
+                            .collection('ProductsCollection')
+                            .doc(ddCategory)
+                            .collection('Products')
+                            .doc(pid)
+                            .update({
+                          'Discount': 'true',
+                          'Discount percent': '$offer',
+                          'New price': newPrice
+                        });
+                        //remove product from any customer cart
+                        await removeProductFromCart(pid);
                         setState(() {
                           showSpinner = false;
                         });
-                        Fluttertoast.showToast(msg: "$ddCategory products have been updated!");
-
+                        Fluttertoast.showToast(
+                            msg: "$ddCategory products have been updated!");
                       });
                     });
                   } else {
