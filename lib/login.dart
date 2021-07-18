@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:store_app/ResetPassword.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
@@ -59,7 +60,7 @@ class _loginState extends State<login> {
     value = value.trim();
     if (value.isEmpty) {
       return "please provide an email";
-    } else if (!EmailValidator.validate(value)) {
+    } else if (!EmailValidator.validate(value, false, false)) {
       return "Please enter a valid email";
     }
     return null;
@@ -120,9 +121,9 @@ class _loginState extends State<login> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: new Column(
+                          child: Column(
                             children: <Widget>[
-                              new TextFormField(
+                              TextFormField(
                                 autovalidate: validate,
                                 obscureText: _obscureText,
                                 validator: validatePassword,
@@ -134,10 +135,18 @@ class _loginState extends State<login> {
                                   pass = value.trim();
                                 },
                               ),
-                              new FlatButton(
+                              FlatButton(
                                   onPressed: _togglePassword,
-                                  child:
-                                      new Text(_obscureText ? "Show" : "Hide"))
+                                  child: Text(_obscureText ? "Show" : "Hide")),
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResetPassword()));
+                                  },
+                                  child: Text("Forget Password"))
                             ],
                           ),
                         ),
@@ -236,17 +245,21 @@ class _loginState extends State<login> {
                         final sex = usern.get('Sex');
                         final typeMobiles = usern.data()['TypeMobiles'];
                         final typeLaptops = usern.data()['TypeLaptops'];
-                        final typeAirConditioner = usern.data()['TypeAirConditioner'];
+                        final typeAirConditioner =
+                            usern.data()['TypeAirConditioner'];
                         final typeFridges = usern.data()['TypeFridges'];
                         final typeTV = usern.data()['TypeTV'];
                         final typeProjectors = usern.data()['TypeProjectors'];
                         final typePrinters = usern.data()['TypePrinters'];
-                        final typeStorageDevices = usern.data()['TypeStorageDevices'];
+                        final typeStorageDevices =
+                            usern.data()['TypeStorageDevices'];
                         final typeCameras = usern.data()['TypeCameras'];
-                        final typeCameraAccessories = usern.data()['TypeCameraAccessories'];
+                        final typeCameraAccessories =
+                            usern.data()['TypeCameraAccessories'];
                         final typeFashion = usern.data()['TypeFashion'];
                         final typeJewelry = usern.data()['TypeJewelry'];
-                        final typeOtherElectronics = usern.data()['TypeOtherElectronics'];
+                        final typeOtherElectronics =
+                            usern.data()['TypeOtherElectronics'];
                         final typeOtherPC = usern.data()['TypeOtherPC'];
                         final typeOtherHome = usern.data()['TypeOtherHome'];
                         if (email == Email) {
@@ -257,11 +270,22 @@ class _loginState extends State<login> {
                           seller.phone = phone;
                           seller.sex = sex;
                           seller.tax = taxCard;
-                          SetProductsList(typeMobiles, typeLaptops, typeOtherElectronics,
-                              typeAirConditioner, typeOtherHome, typeOtherPC,
-                              typeFashion, typeStorageDevices, typeJewelry,
-                              typeCameraAccessories, typeCameras, typePrinters,
-                              typeFridges, typeProjectors, typeTV);
+                          SetProductsList(
+                              typeMobiles,
+                              typeLaptops,
+                              typeOtherElectronics,
+                              typeAirConditioner,
+                              typeOtherHome,
+                              typeOtherPC,
+                              typeFashion,
+                              typeStorageDevices,
+                              typeJewelry,
+                              typeCameraAccessories,
+                              typeCameras,
+                              typePrinters,
+                              typeFridges,
+                              typeProjectors,
+                              typeTV);
                         }
                       }
                       if (seller.firstName == 'temp') {
@@ -328,11 +352,22 @@ class _loginState extends State<login> {
     );
   }
 
-  void SetProductsList(typeMobiles, typeLaptops, typeOtherElectronics,
-      typeAirConditioner, typeOtherHome, typeOtherPC,
-      typeFashion, typeStorageDevices, typeJewelry,
-      typeCameraAccessories, typeCameras,
-      typePrinters, typeFridges, typeProjectors, typeTV) {
+  void SetProductsList(
+      typeMobiles,
+      typeLaptops,
+      typeOtherElectronics,
+      typeAirConditioner,
+      typeOtherHome,
+      typeOtherPC,
+      typeFashion,
+      typeStorageDevices,
+      typeJewelry,
+      typeCameraAccessories,
+      typeCameras,
+      typePrinters,
+      typeFridges,
+      typeProjectors,
+      typeTV) {
     if (typeMobiles > 0) {
       UserSeller.typeList.add("Mobiles");
       UserSeller.typeMobiles = typeMobiles;
@@ -388,7 +423,8 @@ class _loginState extends State<login> {
     if (typeProjectors > 0) {
       UserSeller.typeList.add("Projectors");
       UserSeller.typeProjectors = typeProjectors;
-    }if (typeTV > 0) {
+    }
+    if (typeTV > 0) {
       UserSeller.typeList.add("TV");
       UserSeller.typeTV = typeTV;
     }

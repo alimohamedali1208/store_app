@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:store_app/ResetPassword.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -96,12 +98,14 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
   }
 
   String validateName(String value) {
-    RegExp nameRegExp = RegExp('^[a-zA-Z\s\.]*');
+    RegExp nameRegExp = RegExp('([A-Z]|[a-z])[a-zA-Z]*');
     value = value.trim();
     if (value.isEmpty) {
       return "Please provide a name";
     } else if (!nameRegExp.hasMatch(value)) {
       return "Please provide a valid name";
+    } else if (value.length < 2) {
+      return "name must be greater than 2 characters";
     }
     return null;
   }
@@ -151,6 +155,9 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                           validator: validateName,
                           enabled: flagCustomerTextFields,
                           initialValue: customer.firstName,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),
+                          ],
                           decoration: InputDecoration(
                             labelText: 'First Name:',
                             border: OutlineInputBorder(),
@@ -167,6 +174,9 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                           validator: validateName,
                           enabled: flagCustomerTextFields,
                           initialValue: customer.lastName,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),
+                          ],
                           decoration: InputDecoration(
                             labelText: 'Last Name:',
                             border: OutlineInputBorder(),
@@ -184,6 +194,9 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                           enabled: flagCustomerTextFields,
                           initialValue: customer.phone,
                           keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                          ],
                           decoration: InputDecoration(
                             labelText: 'Phone:',
                             hintText: '017775000',
@@ -210,6 +223,27 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                           },
                           child: Text(
                             'Edit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30),
+                            top: Radius.circular(30),
+                          )),
+                          color: Color(0xFF731800),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResetPassword()));
+                          },
+                          child: Text(
+                            'Change Password',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

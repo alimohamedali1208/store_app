@@ -303,7 +303,7 @@ class _registerState extends State<register> {
                                 pass = value.trim();
                               },
                             ),
-                            new FlatButton(
+                            FlatButton(
                                 onPressed: _togglePassword,
                                 child: new Text(_obscureText ? "Show" : "Hide"))
                           ],

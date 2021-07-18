@@ -7,6 +7,8 @@ import 'package:store_app/UserSeller.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
 
+import 'ResetPassword.dart';
+
 //  ABSOLUTELY DISGUSTING
 //           ||
 //           ||
@@ -265,6 +267,27 @@ class _SellerEditProfileState extends State<SellerEditProfile> {
                           },
                           child: Text(
                             'Edit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30),
+                            top: Radius.circular(30),
+                          )),
+                          color: Color(0xFF731800),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResetPassword()));
+                          },
+                          child: Text(
+                            'Change Password',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
