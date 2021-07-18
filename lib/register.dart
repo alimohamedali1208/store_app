@@ -422,13 +422,28 @@ class _registerState extends State<register> {
                         'CompanyName': companyName,
                         'TaxCard': tax,
                         'TypeMobiles': 0,
-                        'TypeOtherElectronics': 0,
+                        'TypeProjectors': 0,
+                        'TypeCameras': 0,
+                        'TypeCameraAccessories': 0,
+                        'TypeFashion': 0,
+                        'TypeJewelry': 0,
+                        'TypePrinters': 0,
+                        'TypeTV': 0,
+                        'TypeStorageDevices': 0,
                         'TypeLaptops': 0,
                         'TypeAirConditioner': 0,
-                        'TypeFridges': 0
+                        'TypeFridges': 0,
+                        'TypeOtherElectronics': 0,
+                        'TypeOtherPC': 0,
+                        'TypeOtherHome': 0,
                       });
                       seller.firstName = fname;
                       seller.lastName = lname;
+                      seller.email = email;
+                      seller.company = companyName;
+                      seller.phone = phone;
+                      seller.sex = sex;
+                      seller.tax = tax;
                       setState(() {
                         showSpinner = false;
                       });
@@ -454,6 +469,7 @@ class _registerState extends State<register> {
                       });
                       customer.firstName = fname;
                       customer.lastName = lname;
+                      customer.phone = phone;
                       customer.userID = _auth.currentUser.uid;
                       setState(() {
                         showSpinner = false;

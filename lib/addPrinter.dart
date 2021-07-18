@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:store_app/UserSeller.dart';
 
 class addPrinter extends StatefulWidget {
   @override
@@ -82,6 +84,12 @@ class _addPrinterState extends State<addPrinter> {
           .doc(productID)
           .update({'imgURL': picURL});
     });
+    _firestore
+        .collection('Sellers')
+        .doc(_auth.currentUser.uid)
+        .update({'TypePrinters': FieldValue.increment(1)});
+    if(!UserSeller.typeList.contains("Printers"))
+      UserSeller.typeList.add("Printers");
   }
 
   //toggling auto validate
@@ -390,6 +398,14 @@ class _addPrinterState extends State<addPrinter> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
+
+                  Fluttertoast.showToast(
+                      msg: "Product has been added",
+                      toastLength: Toast.LENGTH_SHORT,
+                      backgroundColor: Colors.black54,
+                      gravity: ToastGravity.BOTTOM,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
 
                   Navigator.pop(context);
                 } else {
