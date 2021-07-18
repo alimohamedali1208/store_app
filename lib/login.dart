@@ -10,6 +10,8 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:store_app/sellerhome.dart';
 
+import 'VerifyScreen.dart';
+
 class login extends StatefulWidget {
   @override
   _loginState createState() => _loginState();
@@ -137,7 +139,8 @@ class _loginState extends State<login> {
                               ),
                               FlatButton(
                                   onPressed: _togglePassword,
-                                  child: Text(_obscureText ? "Show" : "Hide")),
+                                  child:
+                                      Text(_obscureText ? "Show" : "Hide")),
                               FlatButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -299,7 +302,17 @@ class _loginState extends State<login> {
                         });
                         final newuser = await _auth.signInWithEmailAndPassword(
                             email: Email, password: pass);
-                        Navigator.pushNamed(context, sellerhome.id);
+                        final user = _auth.currentUser;
+                        if (user.emailVerified) {
+                          Navigator.pushNamed(context, sellerhome.id);
+                        }
+                        else{
+                          user.sendEmailVerification();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => verifyScreen()));
+                        }
                       }
                     }
                     // User was a customer
@@ -329,7 +342,17 @@ class _loginState extends State<login> {
                         final newuser = await _auth.signInWithEmailAndPassword(
                             email: Email, password: pass);
                         customer.userID = _auth.currentUser.uid;
-                        Navigator.pushNamed(context, loggedinhome.id);
+                        final user = _auth.currentUser;
+                        if (user.emailVerified) {
+                          Navigator.pushNamed(context, loggedinhome.id);
+                        }
+                        else{
+                          user.sendEmailVerification();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => verifyScreen()));
+                        }
                       }
                     }
                   } catch (e) {
