@@ -4,10 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
-import 'package:store_app/loggedinhome.dart';
+import 'package:store_app/VerifyScreen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:store_app/sellerhome.dart';
 
 class register extends StatefulWidget {
   @override
@@ -447,7 +446,11 @@ class _registerState extends State<register> {
                       setState(() {
                         showSpinner = false;
                       });
-                      Navigator.pushNamed(context, sellerhome.id);
+                      final user = _auth.currentUser.sendEmailVerification();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => verifyScreen()));
                     } else {
                       await _firestore
                           .collection('Customers')
@@ -474,7 +477,11 @@ class _registerState extends State<register> {
                       setState(() {
                         showSpinner = false;
                       });
-                      Navigator.pushNamed(context, loggedinhome.id);
+                      final user = _auth.currentUser.sendEmailVerification();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => verifyScreen()));
                     }
                   } catch (e) {
                     print(e);
