@@ -139,8 +139,7 @@ class _loginState extends State<login> {
                               ),
                               FlatButton(
                                   onPressed: _togglePassword,
-                                  child:
-                                      Text(_obscureText ? "Show" : "Hide")),
+                                  child: Text(_obscureText ? "Show" : "Hide")),
                               FlatButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -305,8 +304,7 @@ class _loginState extends State<login> {
                         final user = _auth.currentUser;
                         if (user.emailVerified) {
                           Navigator.pushNamed(context, sellerhome.id);
-                        }
-                        else{
+                        } else {
                           user.sendEmailVerification();
                           Navigator.push(
                               context,
@@ -345,8 +343,7 @@ class _loginState extends State<login> {
                         final user = _auth.currentUser;
                         if (user.emailVerified) {
                           Navigator.pushNamed(context, loggedinhome.id);
-                        }
-                        else{
+                        } else {
                           user.sendEmailVerification();
                           Navigator.push(
                               context,
