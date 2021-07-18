@@ -282,6 +282,7 @@ class _loginState extends State<login> {
                           Navigator.pushNamed(context, sellerhome.id);
                         }
                         else{
+                          user.sendEmailVerification();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -318,9 +319,10 @@ class _loginState extends State<login> {
                         customer.userID = _auth.currentUser.uid;
                         final user = _auth.currentUser;
                         if (user.emailVerified) {
-                          Navigator.pushNamed(context, sellerhome.id);
+                          Navigator.pushNamed(context, loggedinhome.id);
                         }
                         else{
+                          user.sendEmailVerification();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
