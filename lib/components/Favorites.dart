@@ -104,9 +104,6 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
   final _firestore = FirebaseFirestore.instance;
 
   Future addToCart() async {
-    setState(() {
-      showSpinner = true;
-    });
     if (customer.firstName == "temp") {
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
@@ -154,9 +151,6 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
         }
       });
     }
-    setState(() {
-      showSpinner = false;
-    });
   }
 
   Future removeFromFav() async {
@@ -189,7 +183,7 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: (widget.prd.changeFlag == 'true')? [
+      children: (widget.prd.changeFlag == 'false')? [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
