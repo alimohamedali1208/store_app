@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
 import 'package:store_app/loggedinhome.dart';
@@ -60,7 +61,7 @@ class _registerState extends State<register> {
     value = value.trim();
     if (value.isEmpty) {
       return "please provide an email";
-    } else if (!EmailValidator.validate(value)) {
+    } else if (!EmailValidator.validate(value, false, false)) {
       return "Please enter a valid email";
     }
     return null;
@@ -91,12 +92,14 @@ class _registerState extends State<register> {
   }
 
   String validateName(String value) {
-    RegExp nameRegExp = RegExp('^[a-zA-Z\s\.]*');
+    RegExp nameRegExp = RegExp('([A-Z]|[a-z])[a-zA-Z]*');
     value = value.trim();
     if (value.isEmpty) {
       return "Please provide a name";
     } else if (!nameRegExp.hasMatch(value)) {
       return "Please provide a valid name";
+    } else if (value.length < 2) {
+      return "name must be greater than 2 char";
     }
     return null;
   }
@@ -113,23 +116,27 @@ class _registerState extends State<register> {
   }
 
   String validateCompanyName(String value) {
-    RegExp nameRegExp = RegExp('^[a-zA-Z\s\.]*');
-    value = value.trim();
-    if (value.isEmpty) {
-      return "Please provide a company name";
-    } else if (!nameRegExp.hasMatch(value)) {
-      return "Please provide a valid company name";
+    if (flagSellerTextFields) {
+      RegExp nameRegExp = RegExp('^[a-zA-Z\s\.]*');
+      value = value.trim();
+      if (value.isEmpty) {
+        return "Please provide a company name";
+      } else if (!nameRegExp.hasMatch(value)) {
+        return "Please provide a valid company name";
+      }
     }
     return null;
   }
 
   String validateTaxCard(String value) {
-    RegExp cardRegExp = RegExp("^[0-9]+\$");
-    value = value.trim();
-    if (value.isEmpty) {
-      return "Please provide a tax card";
-    } else if (!cardRegExp.hasMatch(value)) {
-      return "Please provide a valid card";
+    if (flagSellerTextFields) {
+      RegExp cardRegExp = RegExp("^[0-9]+\$");
+      value = value.trim();
+      if (value.isEmpty) {
+        return "Please provide a tax card";
+      } else if (!cardRegExp.hasMatch(value)) {
+        return "Please provide a valid card";
+      }
     }
     return null;
   }
@@ -163,13 +170,18 @@ class _registerState extends State<register> {
                       Row(
                         children: [
                           Flexible(
-                            flex: 20,
+                            flex: 30,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: TextFormField(
                                 autovalidate: validate,
                                 validator: validateName,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter(
+                                      RegExp("[a-zA-Z]")),
+                                ],
                                 decoration: InputDecoration(
+                                  errorStyle: TextStyle(fontSize: 10),
                                   labelText: 'First Name',
                                   border: OutlineInputBorder(),
                                 ),
@@ -179,20 +191,21 @@ class _registerState extends State<register> {
                               ),
                             ),
                           ),
+                          Spacer(),
                           Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 10,
-                              )),
-                          Flexible(
-                            flex: 20,
+                            flex: 30,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: TextFormField(
                                 autovalidate: validate,
                                 validator: validateName,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter(
+                                      RegExp("[a-zA-Z]")),
+                                ],
                                 decoration: InputDecoration(
                                   labelText: 'Last Name',
+                                  errorStyle: TextStyle(fontSize: 10),
                                   border: OutlineInputBorder(),
                                 ),
                                 onSaved: (value) {
@@ -331,7 +344,7 @@ class _registerState extends State<register> {
                         child: TextFormField(
                           autovalidate: validate,
                           enabled: flagSellerTextFields,
-                          // validator: validateCompanyName,
+                          validator: validateCompanyName,
                           decoration: InputDecoration(
                             labelText: 'Company name',
                             hintText: 'Sony',
@@ -347,7 +360,7 @@ class _registerState extends State<register> {
                         child: TextFormField(
                           autovalidate: validate,
                           enabled: flagSellerTextFields,
-                          // validator: validateTaxCard,
+                          validator: validateTaxCard,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'Tax Card',
