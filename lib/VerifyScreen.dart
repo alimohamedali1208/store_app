@@ -45,32 +45,40 @@ class _verifyScreenState extends State<verifyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Verify"),
-        centerTitle: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(30),
-        )),
-        backgroundColor: Color(0xFF731800),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            "An email has been sent to ${user.email}, please follow the link in email to verify",
-            style: TextStyle(color: Colors.white10),
-          ),
-          MaterialButton(
-            onPressed: () {
-              user.sendEmailVerification();
-            },
+          Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Text(
-              "Send Another email",
-              style: TextStyle(color: Colors.white),
+              "An email has been sent to ${user.email}, please follow the link in the email to verify",
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
-            color: Color(0xFF731800),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MaterialButton(
+              onPressed: () {
+                user.sendEmailVerification();
+              },
+              child: Text(
+                "Send Another email",
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Color(0xFF731800),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
           )
         ],

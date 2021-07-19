@@ -457,7 +457,7 @@ class _editLaptopsState extends State<editLaptops> {
                 top: Radius.circular(30),
               )),
               child: Text(
-                'Add product',
+                'Save',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {

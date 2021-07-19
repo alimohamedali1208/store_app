@@ -144,7 +144,8 @@ class SingleCartProduct extends StatelessWidget {
             child: (prod_discount == 'false')
                 ? Text(
                     "${prod_price} EGP",
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
                   )
                 : Row(
                     children: [

@@ -27,14 +27,6 @@ class _editStorageDeviceState extends State<editStorageDevice> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
   Future uploadImageToFirebase(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
@@ -105,21 +97,6 @@ class _editStorageDeviceState extends State<editStorageDevice> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.camera_alt,
-                ),
-                Container(
-                  child: _image == null
-                      ? Text('No image selected.')
-                      : Image.file(_image),
-                ),
-              ],
-            ),
-          ),
           Container(
             alignment: Alignment.center,
             child: Form(
@@ -318,12 +295,6 @@ class _editStorageDeviceState extends State<editStorageDevice> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Pick Image',
-        backgroundColor: Color(0xFF731800),
-        child: Icon(Icons.add_a_photo),
-      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -337,7 +308,7 @@ class _editStorageDeviceState extends State<editStorageDevice> {
                 top: Radius.circular(30),
               )),
               child: Text(
-                'Add product',
+                'Save',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {

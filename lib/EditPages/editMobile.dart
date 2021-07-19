@@ -408,7 +408,7 @@ class _editMobileState extends State<editMobile> {
                 top: Radius.circular(30),
               )),
               child: Text(
-                'Update product',
+                'Save',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {
