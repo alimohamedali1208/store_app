@@ -131,7 +131,9 @@ class _loginState extends State<login> {
                                 validator: validatePassword,
                                 decoration: InputDecoration(
                                     suffixIcon: IconButton(
-                                      icon:(_obscureText)? Icon(Icons.remove_red_eye):Icon(Icons.remove_red_eye_outlined),
+                                      icon: (_obscureText)
+                                          ? Icon(Icons.remove_red_eye)
+                                          : Icon(Icons.remove_red_eye_outlined),
                                       onPressed: () {
                                         _togglePassword();
                                       },
@@ -154,7 +156,7 @@ class _loginState extends State<login> {
                                             builder: (context) =>
                                                 ResetPassword()));
                                   },
-                                  child: Text("Forget Password?"))
+                                  child: Text("Forget Password"))
                             ],
                           ),
                         ),

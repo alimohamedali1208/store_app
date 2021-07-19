@@ -48,8 +48,7 @@ class _CartState extends State<Cart> {
                     if (!snapshot.hasData) {
                       print("no homo ");
                       return Text('no products available');
-                    }
-                    else {
+                    } else {
                       final products = snapshot.data.docs;
                       List<SingleCartProduct> productsview = [];
                       for (var product in products) {
@@ -111,22 +110,21 @@ class _CartState extends State<Cart> {
             )),
             Expanded(
                 child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddressCheckout()));
-                          },
-                          child: Text(
-                            "Check Out",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: Color(0xFF731800),
-                        ),
-                      )
-                    )
+              padding: const EdgeInsets.all(8.0),
+              child: MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddressCheckout()));
+                },
+                child: Text(
+                  "Check Out",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Color(0xFF731800),
+              ),
+            ))
           ],
         ),
       ),
@@ -172,28 +170,31 @@ class SingleCartProduct extends StatelessWidget {
               ),
               title: Row(
                 children: [
-                  Text(cart_prod_name),
+                  Flexible(flex: 15, child: Text(cart_prod_name)),
                   Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.highlight_remove),
-                    color: Colors.red[300],
-                    onPressed: () async {
-                      double oldPrice;
-                      if (cart_prod_discount == 'false')
-                        oldPrice = cart_prod_price;
-                      else
-                        oldPrice = double.parse(cart_prod_newPrice);
-                      await FirebaseFirestore.instance
-                          .collection('Customers')
-                          .doc(FirebaseAuth.instance.currentUser.uid)
-                          .collection('cart')
-                          .doc(cart_prod_id)
-                          .delete();
-                      await FirebaseFirestore.instance
-                          .collection('Customers')
-                          .doc(FirebaseAuth.instance.currentUser.uid)
-                          .update({'Total': FieldValue.increment(-oldPrice)});
-                    },
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
+                      icon: Icon(Icons.highlight_remove),
+                      color: Colors.red[300],
+                      onPressed: () async {
+                        double oldPrice;
+                        if (cart_prod_discount == 'false')
+                          oldPrice = cart_prod_price;
+                        else
+                          oldPrice = double.parse(cart_prod_newPrice);
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .collection('cart')
+                            .doc(cart_prod_id)
+                            .delete();
+                        await FirebaseFirestore.instance
+                            .collection('Customers')
+                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .update({'Total': FieldValue.increment(-oldPrice)});
+                      },
+                    ),
                   ),
                 ],
               ),

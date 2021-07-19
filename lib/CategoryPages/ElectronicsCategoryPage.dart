@@ -44,12 +44,6 @@ class _electronicsCategoryPageState extends State<electronicsCategoryPage> {
                       MaterialPageRoute(
                           builder: (context) => electronicsCatSearch()));
                 }),
-            IconButton(
-                icon: Icon(Icons.account_circle_sharp),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => login()));
-                }),
           ],
         ),
       ),
@@ -137,10 +131,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -196,10 +187,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -244,7 +232,6 @@ class _SingleProductState extends State<SingleProduct> {
       });
     }
   }
-
 
   Future removeFromFav() async {
     if (customer.firstName == "temp") {
