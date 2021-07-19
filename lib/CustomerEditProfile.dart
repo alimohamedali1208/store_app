@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/ResetPassword.dart';
 import 'package:store_app/UserCustomer.dart';
-import 'package:store_app/UserSeller.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
 

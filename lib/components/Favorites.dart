@@ -53,7 +53,7 @@ class _FavoritesState extends State<Favorites> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData)
-                        return Text('no products available');
+                        return Center(child: CircularProgressIndicator());
                       else {
                         final products = snapshot.data.docs;
                         List<SingleFavoritesProduct> productsview = [];
@@ -134,6 +134,7 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
             'Discount percent': widget.prd.discountPercentage,
+            'ChangeFlag':'false',
             'type': widget.prd.type,
             'imgURL': widget.prd.img,
           });

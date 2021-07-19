@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/UserSeller.dart';
@@ -44,7 +45,7 @@ class _verifyScreenState extends State<verifyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: Text("Verify"),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -53,15 +54,24 @@ class _verifyScreenState extends State<verifyScreen> {
         backgroundColor: Color(0xFF731800),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-              "An email has been sent to ${user.email}, please follow the link in email to verify"),
+            "An email has been sent to ${user.email}, please follow the link in email to verify",
+            style: TextStyle(color: Colors.white10),
+          ),
           MaterialButton(
             onPressed: () {
               user.sendEmailVerification();
             },
-            child: Text("Send Another email"),
+            child: Text(
+              "Send Another email",
+              style: TextStyle(color: Colors.white),
+            ),
             color: Color(0xFF731800),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
           )
         ],
       ),

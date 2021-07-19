@@ -467,8 +467,8 @@ class _registerState extends State<register> {
                         _firestore
                             .collection("Customers")
                             .doc(_auth.currentUser.uid)
-                            .collection("rated products")
-                            .add({});
+                            .collection("orders")
+                            .add({'history':0});
                       });
                       customer.firstName = fname;
                       customer.lastName = lname;

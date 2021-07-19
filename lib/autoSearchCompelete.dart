@@ -282,6 +282,7 @@ class _SingleProductState extends State<SingleProduct> {
           setState(() {
             isPressed = false;
           });
+          removeFromFav();
         } else {
           print('insert product id in fav');
           await _firestore

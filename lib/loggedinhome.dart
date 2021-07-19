@@ -8,6 +8,7 @@ import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/autoSearchCompelete.dart';
 import 'package:store_app/components/CarouselImages.dart';
 import 'package:store_app/components/Favorites.dart';
+import 'package:store_app/components/MyOrders.dart';
 import 'package:store_app/components/horizoontal_list_view.dart';
 
 import 'components/discountProductsView.dart';
@@ -126,17 +127,17 @@ class _loggedinhomeState extends State<loggedinhome> {
                   leading: Icon(Icons.person, color: Colors.blueGrey[900]),
                 ),
               ),
-              /*InkWell(
+              InkWell(
                 onTap: () {
                   return Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Cart()));
+                      context, MaterialPageRoute(builder: (context) => myOrders()));
                 },
                 child: ListTile(
                   title: Text('My Orders'),
                   leading:
                       Icon(Icons.shopping_basket, color: Colors.blueGrey[900]),
                 ),
-              ),*/
+              ),
               InkWell(
                 child: ListTile(
                   onTap: () {

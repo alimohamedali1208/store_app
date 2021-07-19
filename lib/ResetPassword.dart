@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -8,6 +11,8 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword> {
   String email;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _resetPasswordFormKey = GlobalKey<FormState>();
   bool validate = false;
 
@@ -21,6 +26,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   void sendButtonOnPressed() {
     if (_resetPasswordFormKey.currentState.validate()) {
       _resetPasswordFormKey.currentState.save();
+      try {
+        _auth.sendPasswordResetEmail(email: email);
+        Navigator.pop(context);
+      } on Exception catch (e) {
+        Fluttertoast.showToast(msg: 'An error has Ocured while sending your email');
+      }
     } else {
       _toggleValidate();
     }

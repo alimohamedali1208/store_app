@@ -1,11 +1,12 @@
 import 'package:awesome_card/credit_card.dart';
 import 'package:awesome_card/extra/card_type.dart';
 import 'package:awesome_card/style/card_background.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:credit_card_validator/credit_card_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/OrderPlaced.dart';
 
 class Checkout extends StatefulWidget {
@@ -14,6 +15,8 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+  FirebaseFirestore _firestore  = FirebaseFirestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   CreditCardValidator _ccValidator = CreditCardValidator();
 
   final _paymentFormKey = GlobalKey<FormState>();
@@ -186,6 +189,8 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         onPressed: () {
                           if (_paymentFormKey.currentState.validate()) {
+                            //remove products from cart and adding it to history of orders
+                            emptyingCart();
                             int num = 4;
                             Navigator.push(
                                 context,
@@ -207,6 +212,30 @@ class _CheckoutState extends State<Checkout> {
         ),
       ),
     );
+  }
+
+  Future<void> emptyingCart() async {
+    print('inside function');
+    await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').get().then((value) {
+      value.docs.forEach((element) async{
+        await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('orders').add({'ProductID': element.id,
+          'CustomerID': _auth.currentUser.uid,
+          'CreatedAt': Timestamp.now(),
+          'Product Name': element.data()['Product Name'],
+          'Quantity': 1,
+          'Price': element.data()['Price'],
+          'New price': element.data()['New price'],
+          'Discount': element.data()['Discount'],
+          'imgURL': element.data()['imgURL']})
+            .then((_) async{
+          await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').doc(element.id).delete();
+        });
+      });
+    });
+    print('at end');
+    await _firestore.collection('Customers').doc(_auth.currentUser.uid).update(
+        {'Total':0});
+    print('after total');
   }
 
   String validateExpDate(String expDate) {

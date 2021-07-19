@@ -129,7 +129,13 @@ class _loginState extends State<login> {
                                 autovalidate: validate,
                                 obscureText: _obscureText,
                                 validator: validatePassword,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
+                                    suffixIcon: IconButton(
+                                      icon:(_obscureText)? Icon(Icons.remove_red_eye):Icon(Icons.remove_red_eye_outlined),
+                                      onPressed: () {
+                                        _togglePassword();
+                                      },
+                                    ),
                                     border: OutlineInputBorder(),
                                     labelText: 'Password',
                                     icon: Icon(Icons.vpn_key)),
@@ -137,17 +143,18 @@ class _loginState extends State<login> {
                                   pass = value.trim();
                                 },
                               ),
+                              // FlatButton(
+                              //     onPressed: _togglePassword,
+                              //     child: Text(_obscureText ? "Show" : "Hide")),
                               FlatButton(
-                                  onPressed: _togglePassword,
-                                  child: Text(_obscureText ? "Show" : "Hide")),
-                              /*FlatButton(
                                   onPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => ResetPassword()));
+                                            builder: (context) =>
+                                                ResetPassword()));
                                   },
-                                  child: Text("Forget Password"))*/
+                                  child: Text("Forget Password?"))
                             ],
                           ),
                         ),

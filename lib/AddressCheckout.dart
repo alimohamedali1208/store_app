@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/Checkout.dart';
 import 'package:store_app/OrderPlaced.dart';
@@ -10,6 +12,8 @@ class AddressCheckout extends StatefulWidget {
 enum SingingCharacter { Cash, Card }
 
 class _AddressCheckoutState extends State<AddressCheckout> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   SingingCharacter _paymentOption = SingingCharacter.Cash;
   final _checkoutFormKey = GlobalKey<FormState>();
   bool _validate = false;
@@ -29,6 +33,7 @@ class _AddressCheckoutState extends State<AddressCheckout> {
   void proceedButtonOnPressed() {
     if (_checkoutFormKey.currentState.validate()) {
       if (_paymentOption == SingingCharacter.Cash) {
+        emptyingCart();
         int num = 3;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => OrderPlaced(num)));
@@ -39,6 +44,30 @@ class _AddressCheckoutState extends State<AddressCheckout> {
     } else {
       toggleValidate();
     }
+  }
+
+  Future<void> emptyingCart() async {
+    print('inside function');
+    await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').get().then((value) {
+      value.docs.forEach((element) async{
+        await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('orders').add({'ProductID': element.id,
+          'CustomerID': _auth.currentUser.uid,
+          'CreatedAt': Timestamp.now(),
+          'Product Name': element.data()['Product Name'],
+          'Quantity': 1,
+          'Price': element.data()['Price'],
+          'New price': element.data()['New price'],
+          'Discount': element.data()['Discount'],
+          'imgURL': element.data()['imgURL']})
+            .then((_) async{
+          await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').doc(element.id).delete();
+        });
+      });
+    });
+    print('at end');
+    await _firestore.collection('Customers').doc(_auth.currentUser.uid).update(
+        {'Total':0});
+    print('after total');
   }
 
   @override
