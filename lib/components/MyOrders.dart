@@ -57,7 +57,8 @@ class _myOrdersState extends State<myOrders> {
                         final productnewprice = product.data()['New price'];
                         final productimg = product.data()['imgURL'];
                         final productquantity = product.data()['Quantity'];
-                        final productDate = product.data()['CreatedAt'];
+                        final productDate =
+                            product.data()['CreatedAt'].toDate();
                         final productid = product.id;
                         print("$productname $productprice");
                         final productview = SingleCartProduct(
@@ -127,7 +128,7 @@ class SingleCartProduct extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: Text(
-                  'Date: $prod_date',
+                  'Date: ${prod_date.toString().substring(0, 10)}',
                 ),
               ),
               Flexible(

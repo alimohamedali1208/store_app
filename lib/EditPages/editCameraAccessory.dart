@@ -91,7 +91,7 @@ class _editCameraAccessoryState extends State<editCameraAccessory> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a Camera Accessory"),
+        title: Text("Edit a Camera Accessory"),
         centerTitle: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
