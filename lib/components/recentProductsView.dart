@@ -39,6 +39,11 @@ class RecenProductsView extends StatelessWidget {
               productInfo.img = product.data()['imgURL'];
               productInfo.type = product.data()['type'];
               productInfo.rate = product.data()['Rating'];
+              productInfo.rate1star = product.data()['1 star rate'];
+              productInfo.rate2star = product.data()['2 star rate'];
+              productInfo.rate3star = product.data()['3 star rate'];
+              productInfo.rate4star = product.data()['4 star rate'];
+              productInfo.rate5star = product.data()['5 star rate'];
               productInfo.quantity = product.data()['Quantity'];
               productInfo.id = product.id;
               if (productInfo.type == 'Mobiles') {

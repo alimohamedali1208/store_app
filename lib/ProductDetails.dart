@@ -174,6 +174,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     if (customer.firstName == 'temp') {
       print('user not signed in!');
       //BASEL WAS HERE
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first!");
     } else {
       print('User is signed in!');
@@ -498,7 +499,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           padding: const EdgeInsets.only(
                               left: 10.0, right: 60, top: 10),
                           child: ReadMoreText(
-                            widget.prd.description.toString(),
+                            widget.prd.description,
                             trimLines: 3,
                             colorClickableText: Color(0xFF731800),
                             trimMode: TrimMode.Line,
@@ -589,18 +590,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-                            if (rating == 1.0) {
-                              widget.prd.rate1star++;
-                            } else if (rating == 2.0) {
-                              widget.prd.rate2star++;
-                            } else if (rating == 3.0) {
-                              widget.prd.rate3star++;
-                            } else if (rating == 4.0) {
-                              widget.prd.rate4star++;
+                            if (customer.firstName == 'temp') {
                             } else {
-                              widget.prd.rate5star++;
+                              if (rating == 1.0) {
+                                widget.prd.rate1star++;
+                              } else if (rating == 2.0) {
+                                widget.prd.rate2star++;
+                              } else if (rating == 3.0) {
+                                widget.prd.rate3star++;
+                              } else if (rating == 4.0) {
+                                widget.prd.rate4star++;
+                              } else {
+                                widget.prd.rate5star++;
+                              }
                             }
-                            updateProductRating(rating.toInt());
+                              updateProductRating(rating.toInt());
+
                           },
                         ),
                         SizedBox(

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/components/CarouselImages.dart';
-import 'package:store_app/components/Drawer.dart';
 import 'package:store_app/components/discountProductsView.dart';
 import 'package:store_app/components/recentProductsView.dart';
 import 'autoSearchCompelete.dart';
 import 'login.dart';
-// my own imports
 import 'package:store_app/components/horizoontal_list_view.dart';
 
 class Home extends StatefulWidget {
