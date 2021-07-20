@@ -42,12 +42,6 @@ class _sellerhomeState extends State<sellerhome> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   UserSeller seller = UserSeller();
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
   //Showing snackbar
   void _showSnackbar(String msg) {
     final snackbar = SnackBar(
