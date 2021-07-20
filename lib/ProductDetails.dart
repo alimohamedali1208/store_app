@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:readmore/readmore.dart';
 import 'package:store_app/UserCustomer.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
@@ -14,9 +15,7 @@ class ProductDetails extends StatefulWidget {
   ProductClass prd;
   bool favPressed = false;
 
-  ProductDetails(
-      {this.prd});
-
+  ProductDetails({this.prd});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -34,10 +33,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       showSpinner = true;
     });
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -93,10 +89,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -504,7 +497,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 10.0, right: 60, top: 10),
-                          child: Text(widget.prd.description),
+                          child: ReadMoreText(
+                            widget.prd.description.toString(),
+                            trimLines: 3,
+                            colorClickableText: Color(0xFF731800),
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: ' ...Show more',
+                            trimExpandedText: '  Show less',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -540,16 +541,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                             right: 60,
                             top: 10,
                           ),
-                          child: Text(
-                              "\u2022 Brand: ${widget.prd.brand}"),
+                          child: Text("\u2022 Brand: ${widget.prd.brand}"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 15.0,
                             right: 60,
                           ),
-                          child: Text(
-                              "\u2022 Quantity: ${widget.prd.quantity}"),
+                          child:
+                              Text("\u2022 Quantity: ${widget.prd.quantity}"),
                         ),
                         Padding(
                             padding: const EdgeInsets.only(
