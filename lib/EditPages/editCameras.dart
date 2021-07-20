@@ -98,7 +98,7 @@ class _editCamerasState extends State<editCameras> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a Camera"),
+        title: Text("Edit a Camera"),
         centerTitle: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

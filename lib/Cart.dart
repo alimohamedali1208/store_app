@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/AddressCheckout.dart';
 import 'package:store_app/Checkout.dart';
 
@@ -13,6 +14,12 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  bool hasProducts = false;
+
+  void navigateToCheckout() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddressCheckout()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +107,15 @@ class _CartState extends State<Cart> {
                       .doc(_auth.currentUser.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData)
+                    if (!snapshot.hasData) {
                       return Text('');
-                    else {
+                    } else {
                       final totalPrice = snapshot.data.data()['Total'];
+                      if (totalPrice == 0) {
+                        hasProducts = false;
+                      } else {
+                        hasProducts = true;
+                      }
                       return Text('$totalPrice EGP');
                     }
                   }),
@@ -113,10 +125,11 @@ class _CartState extends State<Cart> {
               padding: const EdgeInsets.all(8.0),
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddressCheckout()));
+                  if (hasProducts) {
+                    navigateToCheckout();
+                  } else {
+                    Fluttertoast.showToast(msg: "Your cart is empty");
+                  }
                 },
                 child: Text(
                   "Check Out",

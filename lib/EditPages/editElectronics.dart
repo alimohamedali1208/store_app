@@ -90,7 +90,7 @@ class _editElectronicsState extends State<editElectronics> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add an Electronic Device"),
+        title: Text("Edit an Electronic Device"),
         centerTitle: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
