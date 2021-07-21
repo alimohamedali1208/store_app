@@ -44,13 +44,13 @@ class _addJewelaryState extends State<addJewelary> {
         .doc('Jewelry')
         .collection('Products')
         .add({
-      //'Brand Name': ddBrand,
       'Product Name': name,
       'Brand Name': ddBrandName,
       'CreatedAt': Timestamp.now(),
       'Description': description,
       'Target Group': ddTargetedGroup,
       'Metal Type': ddMetalType,
+      'Size':size.toString(),
       'Price': price,
       'New price': '0',
       'Quantity': quantity,

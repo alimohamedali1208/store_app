@@ -1,10 +1,6 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../productClass.dart';
 
@@ -17,9 +13,7 @@ class editCameras extends StatefulWidget {
 }
 
 class _editCamerasState extends State<editCameras> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addCameraFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -33,15 +27,7 @@ class _editCamerasState extends State<editCameras> {
 
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('Cameras')
@@ -61,8 +47,6 @@ class _editCamerasState extends State<editCameras> {
       'Discount': 'false',
       'Discount percent': '0',
       'Quantity': quantity,
-      'Seller ID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
       'searchIndex': indexList
     }).then((_) {
       print('Update Success');
@@ -385,7 +369,7 @@ class _editCamerasState extends State<editCameras> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
 
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
                   Navigator.pop(context);
                 } else {
                   _toggleValidate();

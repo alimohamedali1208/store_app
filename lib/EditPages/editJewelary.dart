@@ -1,24 +1,24 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../productClass.dart';
 
 class editJewelary extends StatefulWidget {
+  ProductClass prd;
+  editJewelary({this.prd});
+
   @override
   _editJewelaryState createState() => _editJewelaryState();
 }
 
 class _editJewelaryState extends State<editJewelary> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addJewelleryFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, quantity;
+  String ddBrandName = 'Mestige';
   String ddTargetedGroup = 'Adults';
   String ddMetalType = 'Gold';
   String picURL;
@@ -27,50 +27,22 @@ class _editJewelaryState extends State<editJewelary> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('Jewelry')
         .collection('Products')
-        .add({
-      //'Brand Name': ddBrand,
+    .doc(widget.prd.id)
+        .update({
+      'Brand Name': ddBrandName,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Target Group': ddTargetedGroup,
       'Metal Type': ddMetalType,
+      'Size':size.toString(),
       'Price': price,
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'Jewelry',
       'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Jewelry/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('Jewelry')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
     });
   }
 
@@ -114,6 +86,7 @@ class _editJewelaryState extends State<editJewelary> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -196,6 +169,7 @@ class _editJewelaryState extends State<editJewelary> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.ClothSize,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -211,6 +185,7 @@ class _editJewelaryState extends State<editJewelary> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -225,8 +200,44 @@ class _editJewelaryState extends State<editJewelary> {
                     ),
                   ),
                   Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                            value: ddMetalType,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Brand",
+                            ),
+                            validator: validateEmpty,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                ddBrandName = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'Mestige',
+                              'Aga',
+                              'Pandora',
+                              'Other',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          )),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: (widget.prd.price).toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -246,6 +257,7 @@ class _editJewelaryState extends State<editJewelary> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -297,7 +309,7 @@ class _editJewelaryState extends State<editJewelary> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {

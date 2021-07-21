@@ -1,20 +1,19 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../productClass.dart';
 
 class editHomeAppliances extends StatefulWidget {
+  ProductClass prd;
+  editHomeAppliances({this.prd});
+
   @override
   _editHomeAppliancesState createState() => _editHomeAppliancesState();
 }
 
 class _editHomeAppliancesState extends State<editHomeAppliances> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -26,51 +25,25 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('OtherHome')
         .collection('Products')
-        .add({
+        .doc(widget.prd.id)
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Width': width,
       'Depth': depth,
       'Weight': weight,
       'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'OtherHome',
       'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/OtherHome/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('OtherHome')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
     });
   }
 
@@ -114,6 +87,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -128,6 +102,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.width,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -146,6 +121,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.depth,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -164,6 +140,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.weight,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -182,6 +159,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -198,6 +176,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: (widget.prd.price).toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -217,6 +196,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -309,7 +289,7 @@ class _editHomeAppliancesState extends State<editHomeAppliances> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {

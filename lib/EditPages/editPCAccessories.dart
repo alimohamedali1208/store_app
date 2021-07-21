@@ -1,20 +1,18 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+import '../productClass.dart';
 
 class editPCAccessories extends StatefulWidget {
+  ProductClass prd;
+  editPCAccessories({this.prd});
+
   @override
   _editPCAccessoriesState createState() => _editPCAccessoriesState();
 }
 
 class _editPCAccessoriesState extends State<editPCAccessories> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addPcAccessoriesFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -24,49 +22,23 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('OtherPC')
         .collection('Products')
-        .add({
+        .doc(widget.prd.id)
+        .update({
       'Brand Name': brand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Accessory Type': accessoryType,
       'Price': price,
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'OtherPC',
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'searchIndex': indexList,
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/OtherPC/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('OtherPC')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
     });
   }
 
@@ -110,6 +82,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -124,6 +97,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.brand,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -138,6 +112,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.accessoryType,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -152,6 +127,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -168,6 +144,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: (widget.prd.price).toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -187,6 +164,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -239,7 +217,7 @@ class _editPCAccessoriesState extends State<editPCAccessories> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {

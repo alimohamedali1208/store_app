@@ -137,32 +137,35 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                        flex: 1,
-                        child: Text(
-                          "Notify customers via email",
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        )),
-                    Flexible(
-                      flex: 1,
-                      child: Checkbox(
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.resolveWith(getColor),
-                        value: isChecked,
-                        onChanged: (bool value) {
-                          setState(() {
-                            isChecked = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                TextButton(onPressed: ()async{
+                  await removeOfferFromProducts();
+                }, child: Text("Remove offer from products"))
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Flexible(
+                //         flex: 1,
+                //         child: Text(
+                //           "Notify customers via email",
+                //           style: TextStyle(
+                //             fontSize: 16,
+                //           ),
+                //         )),
+                //     Flexible(
+                //       flex: 1,
+                //       child: Checkbox(
+                //         checkColor: Colors.white,
+                //         fillColor: MaterialStateProperty.resolveWith(getColor),
+                //         value: isChecked,
+                //         onChanged: (bool value) {
+                //           setState(() {
+                //             isChecked = value;
+                //           });
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -231,6 +234,41 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
                 },
               ),
             ))));
+  }
+
+  Future<void> removeOfferFromProducts() async {
+    print("$ddCategory");
+    Fluttertoast.showToast(msg: "Updating your $ddCategory Offer");
+    setState(() {
+      showSpinner = true;
+    });
+    FirebaseFirestore.instance
+        .collection('ProductsCollection')
+        .doc(ddCategory)
+        .collection('Products')
+        .where('Seller Email', isEqualTo: _auth.currentUser.email)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) async {
+        String pid = element.id;
+        await FirebaseFirestore.instance
+            .collection('ProductsCollection')
+            .doc(ddCategory)
+            .collection('Products')
+            .doc(pid)
+            .update({
+          'Discount': 'false',
+          'Discount percent': '0',
+          'New price': '0'
+        });
+        //remove product from any customer cart
+        await removeProductFromCart(pid);
+        setState(() {
+          showSpinner = false;
+        });
+        Fluttertoast.showToast(msg: "$ddCategory products have been updated!");
+      });
+    });
   }
 
   Future removeProductFromCart(String pid) async {

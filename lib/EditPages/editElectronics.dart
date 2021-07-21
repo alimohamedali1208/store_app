@@ -1,20 +1,19 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../productClass.dart';
 
 class editElectronics extends StatefulWidget {
+  ProductClass prd;
+  editElectronics({this.prd});
+
   @override
   _editElectronicsState createState() => _editElectronicsState();
 }
 
 class _editElectronicsState extends State<editElectronics> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addElectronicsFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -25,48 +24,25 @@ class _editElectronicsState extends State<editElectronics> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
 
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('OtherElectronics')
         .collection('Products')
-        .add({
+        .doc('${widget.prd.id}')
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'OtherElectronics',
-      'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/OtherElectronics/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('OtherElectronics')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
+      'searchIndex': indexList,
+    }).then((_) {
+      print('Update Success');
     });
   }
 
@@ -110,6 +86,7 @@ class _editElectronicsState extends State<editElectronics> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -124,6 +101,7 @@ class _editElectronicsState extends State<editElectronics> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -140,6 +118,7 @@ class _editElectronicsState extends State<editElectronics> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.price.toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -159,6 +138,7 @@ class _editElectronicsState extends State<editElectronics> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -250,7 +230,7 @@ class _editElectronicsState extends State<editElectronics> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {

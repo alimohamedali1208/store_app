@@ -1,26 +1,24 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../productClass.dart';
 
 class editAirConditioner extends StatefulWidget {
+  ProductClass prd;
+  editAirConditioner({this.prd});
+
   @override
   _editAirConditionerState createState() => _editAirConditionerState();
 }
 
 class _editAirConditionerState extends State<editAirConditioner> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
   String description, name, width, weight, depth, quantity;
   String ddBrand = 'Samsung';
-  String picURL;
   double price;
   String ddColor = 'Black';
   String ddType = 'Split System';
@@ -28,11 +26,27 @@ class _editAirConditionerState extends State<editAirConditioner> {
   String productID;
   List<String> indexList = [];
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
+  Future updateProduct(BuildContext context) async {
+    _firestore
+        .collection('ProductsCollection')
+        .doc('AirConditioner')
+        .collection('Products')
+        .doc('${widget.prd.id}')
+        .update({
+      'Brand Name': ddBrand,
+      'Product Name': name,
+      'Description': description,
+      'Color':ddColor,
+      'Conditioner Type':ddType,
+      'Horse Power':ddHPower,
+      'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
+      'Quantity': quantity,
+      'searchIndex': indexList,
+    }).then((_) {
+      print('Update Success');
     });
   }
 
@@ -76,6 +90,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -90,6 +105,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.width,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -108,6 +124,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.depth,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -126,6 +143,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.weight,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -144,6 +162,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -160,6 +179,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: (widget.prd.price).toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -179,6 +199,7 @@ class _editAirConditionerState extends State<editAirConditioner> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,

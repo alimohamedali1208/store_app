@@ -530,33 +530,22 @@ class _SingleProductState extends State<SingleProduct> {
                                               style: TextStyle(
                                                   color: Colors.black),
                                             ),
-                                            onPressed: (widget.prd.discount ==
-                                                    'false')
-                                                ? null
-                                                : () async {
+                                            onPressed: (widget.prd.discount == 'false') ? null : () async {
                                                     Fluttertoast.showToast(
-                                                      msg:
-                                                          "Discount has been removed",
+                                                      msg: "Discount has been removed",
                                                       toastLength:
-                                                          Toast.LENGTH_SHORT,
-                                                      backgroundColor:
-                                                          Colors.black54,
-                                                      gravity:
-                                                          ToastGravity.BOTTOM,
+                                                      Toast.LENGTH_SHORT,
+                                                      backgroundColor: Colors.black54,
+                                                      gravity: ToastGravity.BOTTOM,
                                                       textColor: Colors.white,
                                                       fontSize: 16.0,
                                                     );
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection(
-                                                            'ProductsCollection')
+                                                    await FirebaseFirestore.instance
+                                                        .collection('ProductsCollection')
                                                         .doc(widget.prd.type)
                                                         .collection('Products')
                                                         .doc(widget.prd.id)
-                                                        .update({
-                                                      'Discount': 'false',
-                                                      'Discount percent': '0',
-                                                      'New price': '0'
+                                                        .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'
                                                     });
                                                     //Remove edited product from any customer cart
                                                     await removeEditedProductFromCart();
@@ -585,31 +574,21 @@ class _SingleProductState extends State<SingleProduct> {
                                               } else {
                                                 // Inserting new discount
                                                 Fluttertoast.showToast(
-                                                  msg:
-                                                      "$offer% Discount has been added",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  backgroundColor:
-                                                      Colors.black54,
+                                                  msg: "$offer% Discount has been added",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor: Colors.black54,
                                                   gravity: ToastGravity.BOTTOM,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0,
                                                 );
-                                                String newPrice = (widget
-                                                            .prd.price -
-                                                        ((offer / 100) *
-                                                            widget.prd.price))
+                                                String newPrice = (widget.prd.price - ((offer / 100) * widget.prd.price))
                                                     .toString();
                                                 await FirebaseFirestore.instance
-                                                    .collection(
-                                                        'ProductsCollection')
+                                                    .collection('ProductsCollection')
                                                     .doc(widget.prd.type)
                                                     .collection('Products')
                                                     .doc(widget.prd.id)
-                                                    .update({
-                                                  'Discount': 'true',
-                                                  'Discount percent': '$offer',
-                                                  'New price': newPrice
+                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice
                                                 });
                                                 Navigator.of(context).pop();
                                                 //Remove edited product from any customer cart

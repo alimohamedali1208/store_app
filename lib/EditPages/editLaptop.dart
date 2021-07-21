@@ -1,17 +1,12 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../productClass.dart';
 
 class editLaptops extends StatefulWidget {
   ProductClass prd;
-
   editLaptops({this.prd});
 
   @override
@@ -19,10 +14,8 @@ class editLaptops extends StatefulWidget {
 }
 
 class _editLaptopsState extends State<editLaptops> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   bool showSpinner = false;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addLaptopFormKey = GlobalKey<FormState>();
   bool validate = false;
@@ -44,23 +37,15 @@ class _editLaptopsState extends State<editLaptops> {
   List<String> indexList = [];
   double price;
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('Laptops')
         .collection('Products')
-        .add({
+    .doc(widget.prd.id)
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'CPU': CPU,
       'GPU': GPU,
@@ -71,29 +56,11 @@ class _editLaptopsState extends State<editLaptops> {
       'Storage Unit':ddStorageCapacity,
       'OS': ddOS,
       'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'Laptops',
       'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Laptops/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('Laptops')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
     });
   }
 
@@ -474,7 +441,7 @@ class _editLaptopsState extends State<editLaptops> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
                   Fluttertoast.showToast(
                       msg: 'Product has been updated',
                       backgroundColor: Colors.black54);

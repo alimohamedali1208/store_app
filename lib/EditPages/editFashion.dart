@@ -1,20 +1,19 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../productClass.dart';
 
 class editFashion extends StatefulWidget {
+  ProductClass prd;
+  editFashion({this.prd});
+
   @override
   _editFashionState createState() => _editFashionState();
 }
 
 class _editFashionState extends State<editFashion> {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  File _image;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addFashionFormKey = GlobalKey<FormState>();
 
@@ -24,7 +23,6 @@ class _editFashionState extends State<editFashion> {
   String ddBrand = 'Adidas';
   String ddColor = 'red';
   String ddtype = 'Shirt';
-  String picURL;
   String ddSize = 'S';
   String productID;
   List<String> indexList = [];
@@ -40,51 +38,27 @@ class _editFashionState extends State<editFashion> {
     setState(() => pickerColor = color);
   }*/
 
-  //Getting the image
-  Future getImage() async {
-    var pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future updateProduct(BuildContext context) async {
     _firestore
         .collection('ProductsCollection')
         .doc('Fashion')
         .collection('Products')
-        .add({
+        .doc('${widget.prd.id}')
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
-      'Clothing type': ddtype,
-      'Size': ddSize,
-      'Color': ddColor,
+      'Clothing Type':ddtype,
+      'Color':ddColor,
+      'Size':ddSize,
       'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
-      'Rating': 0,
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'Fashion',
-      'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Fashion/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('Fashion')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
+      'searchIndex': indexList,
+    }).then((_) {
+      print('Update Success');
     });
   }
 
@@ -128,6 +102,7 @@ class _editFashionState extends State<editFashion> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -142,6 +117,7 @@ class _editFashionState extends State<editFashion> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -158,6 +134,7 @@ class _editFashionState extends State<editFashion> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.price.toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -177,6 +154,7 @@ class _editFashionState extends State<editFashion> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -383,7 +361,7 @@ class _editFashionState extends State<editFashion> {
                   }
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
-                  uploadImageToFirebase(context);
+                  updateProduct(context);
 
                   Navigator.pop(context);
                 } else {
