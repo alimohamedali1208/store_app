@@ -22,7 +22,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
   bool validate = false;
   String description, name, width, weight, depth, quantity;
 
-  String ddBrand = 'Samsung';
+  String ddBrand = 'Samsung', ddColor = 'red';
   String picURL;
   String productID;
   List<String> indexList = [];
@@ -49,6 +49,7 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
       'Width': width,
       'Depth': depth,
       'Weight': weight,
+      'Color':ddColor,
       'Price': price,
       'New price': '0',
       'Quantity': quantity,
@@ -262,6 +263,45 @@ class _addHomeAppliancesState extends State<addHomeAppliances> {
                       onSaved: (value) {
                         quantity = value.trim();
                       },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                            value: ddColor,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Color",
+                            ),
+                            validator: validateEmpty,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                ddColor = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'red',
+                              'black',
+                              'green',
+                              'blue',
+                              'yellow',
+                              'black',
+                              'purple',
+                              'Other'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          )),
                     ),
                   ),
                   Padding(

@@ -33,8 +33,8 @@ class _addLaptopState extends State<addLaptop> {
   int storage;
   String ddBrand = 'HP';
   String ddOS = 'Windows';
-  String ddRamCapacity = 'GB';
   String ddStorageCapacity = 'GB';
+  String ddColor = 'red';
   String picURL;
   String productID;
   List<String> indexList = [];
@@ -64,7 +64,9 @@ class _addLaptopState extends State<addLaptop> {
       'Memory': memory,
       'Screen Size': screenSize,
       'Storage': storage,
+      'Storage Unit':ddStorageCapacity,
       'OS': ddOS,
+      'Color':ddColor,
       'Price': price,
       'New price': '0',
       'Discount': 'false',
@@ -410,6 +412,45 @@ class _addLaptopState extends State<addLaptop> {
                           );
                         }).toList(),
                       )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                            value: ddColor,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Color",
+                            ),
+                            validator: validateEmpty,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                ddColor = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'red',
+                              'white',
+                              'green',
+                              'blue',
+                              'yellow',
+                              'black',
+                              'purple',
+                              'Other'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          )),
                     ),
                   ),
                   Padding(

@@ -90,6 +90,8 @@ class _laptopCategorypageState extends State<laptopCategorypage> {
                           productInfo.rate5star = product.data()['5 star rate'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.storage = product.data()['Storage'];
+                          productInfo.storageUnit = product.data()['Storage Unit'];
+                          productInfo.screenSize = product.data()['ScreenSize'];
                           productInfo.battery = product.data()['Battery'];
                           productInfo.memory = product.data()['Memory'];
                           productInfo.cpu = product.data()['CPU'];

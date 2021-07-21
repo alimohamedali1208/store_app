@@ -38,7 +38,6 @@ class _editLaptopsState extends State<editLaptops> {
       storage;
   String ddBrand = 'HP';
   String ddOS = 'Windows';
-  String ddRamCapacity = 'GB';
   String ddStorageCapacity = 'GB';
   String picURL;
   String productID;
@@ -69,6 +68,7 @@ class _editLaptopsState extends State<editLaptops> {
       'Memory': memory,
       'ScreenSize': screenSize,
       'Storage': storage,
+      'Storage Unit':ddStorageCapacity,
       'OS': ddOS,
       'Price': price,
       'Quantity': quantity,
@@ -215,30 +215,30 @@ class _editLaptopsState extends State<editLaptops> {
                                 memory = value.trim();
                               },
                             )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: InputDecorator(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                  value: ddRamCapacity,
-                                  items: ['GB', 'MB', 'TB']
-                                      .map((String unit) =>
-                                          DropdownMenuItem<String>(
-                                              value: unit, child: Text(unit)))
-                                      .toList(),
-                                  onChanged: (value) => setState(() {
-                                        ddRamCapacity = value;
-                                      })),
-                            ),
-                          ),
-                        )
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
+                        // Flexible(
+                        //   flex: 1,
+                        //   child: InputDecorator(
+                        //     decoration: const InputDecoration(
+                        //       border: OutlineInputBorder(),
+                        //       contentPadding: EdgeInsets.all(5),
+                        //     ),
+                        //     child: DropdownButtonHideUnderline(
+                        //       child: DropdownButton(
+                        //           value: ddRamCapacity,
+                        //           items: ['GB', 'MB', 'TB']
+                        //               .map((String unit) =>
+                        //                   DropdownMenuItem<String>(
+                        //                       value: unit, child: Text(unit)))
+                        //               .toList(),
+                        //           onChanged: (value) => setState(() {
+                        //                 ddRamCapacity = value;
+                        //               })),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -346,7 +346,7 @@ class _editLaptopsState extends State<editLaptops> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddStorageCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB' , 'TB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))

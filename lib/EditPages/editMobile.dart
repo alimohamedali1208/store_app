@@ -46,6 +46,7 @@ class _editMobileState extends State<editMobile> {
       'Storage Unit': ddStorageCapacity,
       'Screen Size': screenSize,
       'Memory': memory,
+      'Memory Unit':ddRamCapacity,
       'OS': ddOS,
       'Price': price,
       'New price': '0',
@@ -194,7 +195,7 @@ class _editMobileState extends State<editMobile> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ddRamCapacity,
-                                  items: ['GB', 'MB', 'TB']
+                                  items: ['GB', 'MB']
                                       .map((String unit) =>
                                           DropdownMenuItem<String>(
                                               value: unit, child: Text(unit)))
@@ -374,6 +375,7 @@ class _editMobileState extends State<editMobile> {
                           'Huawei',
                           'Nokia',
                           'Sony',
+                          'Oppo',
                           'HTC',
                           'Lenovo',
                           'SICO Technology',

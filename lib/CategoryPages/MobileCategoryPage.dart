@@ -73,15 +73,12 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description =
-                              product.data()['Description'];
+                          productInfo.description = product.data()['Description'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail =
-                              product.data()['Seller Email'];
+                          productInfo.sellerEmail = product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage =
-                              product.data()['Discount percent'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -90,8 +87,11 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                           productInfo.rate5star = product.data()['5 star rate'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.storage = product.data()['Storage'];
+                          productInfo.storageUnit = product.data()['Storage Unit'];
+                          productInfo.screenSize = product.data()['Screen Size'];
                           productInfo.battery = product.data()['Battery'];
                           productInfo.memory = product.data()['Memory'];
+                          productInfo.memoryUnit = product.data()['Memory Unit'];
                           productInfo.camera = product.data()['Camera'];
                           productInfo.os = product.data()['OS'];
                           productInfo.id = product.id;

@@ -21,9 +21,11 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
   int ddRatings;
   String ddSearchBrand,
       ddSearchType = 'TV',
-      ddWidth,
-      ddHeight,
-      ddWeight,
+      ddTvType,
+      ddHorsePower,
+      ddMaterial,
+      ddColor,
+      ddScreenRes,
       ddScreenSize;
 
   @override
@@ -104,6 +106,12 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                           onChanged: (String value) {
                             setState(() {
                               ddSearchBrand = null;
+                              ddColor = null;
+                              ddMaterial =null;
+                              ddHorsePower = null;
+                              ddTvType = null;
+                              ddScreenRes = null;
+                              ddScreenSize = null;
                               ddSearchType = value;
                             });
                           },
@@ -169,15 +177,15 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                                   fontWeight: FontWeight.w600),
                                               items: [
                                                 DropdownMenuItem<String>(
-                                                  child: Text('30'),
+                                                  child: Text('30 inches'),
                                                   value: '30',
                                                 ),
                                                 DropdownMenuItem<String>(
-                                                  child: Text('40'),
+                                                  child: Text('40 inches'),
                                                   value: '40',
                                                 ),
                                                 DropdownMenuItem<String>(
-                                                  child: Text('50'),
+                                                  child: Text('50 inches'),
                                                   value: '50',
                                                 ),
                                                 DropdownMenuItem<String>(
@@ -194,6 +202,98 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                               },
                                               hint: Text('Choose Screen Size'),
                                               value: ddScreenSize,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            padding: EdgeInsets.only(left: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white70,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: DropdownButton<String>(
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w600),
+                                              items: [
+                                                DropdownMenuItem<String>(
+                                                  child: Text('HD'),
+                                                  value: 'HD',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Full HD'),
+                                                  value: 'Full HD',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('2K'),
+                                                  value: '2K',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('4K'),
+                                                  value: '4K',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Other'),
+                                                  value: 'Other',
+                                                ),
+                                              ],
+                                              onChanged: (String value) {
+                                                setState(() {
+                                                  if (value == 'Other')
+                                                    value = null;
+                                                  ddScreenRes = value;
+                                                });
+                                              },
+                                              hint: Text(
+                                                  'Choose Screen resolution'),
+                                              value: ddScreenRes,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            padding: EdgeInsets.only(left: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white70,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: DropdownButton<String>(
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w600),
+                                              items: [
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Smart TV'),
+                                                  value: 'Smart TV',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Standard TV'),
+                                                  value: 'Standard TV',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Android TV'),
+                                                  value: 'Android TV',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('3D TV'),
+                                                  value: '3D TV',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Other'),
+                                                  value: 'Other',
+                                                ),
+                                              ],
+                                              onChanged: (String value) {
+                                                setState(() {
+                                                  if (value == 'Other')
+                                                    value = null;
+                                                  ddTvType = value;
+                                                });
+                                              },
+                                              hint: Text(
+                                                  'Choose TV type'),
+                                              value: ddTvType,
                                             ),
                                           ),
                                         ]
@@ -248,54 +348,82 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                                   value: ddSearchBrand,
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 5, right: 5),
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white70,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: DropdownButton<String>(
-                                                  style: TextStyle(
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                  items: [
-                                                    DropdownMenuItem<String>(
-                                                      child: Text('10'),
-                                                      value: '10',
-                                                    ),
-                                                    DropdownMenuItem<String>(
-                                                      child: Text('20'),
-                                                      value: '20',
-                                                    ),
-                                                    DropdownMenuItem<String>(
-                                                      child: Text('30'),
-                                                      value: '30',
-                                                    ),
-                                                    DropdownMenuItem<String>(
-                                                      child: Text('Other'),
-                                                      value: 'Other',
-                                                    ),
-                                                  ],
-                                                  onChanged: (String value) {
-                                                    setState(() {
-                                                      if (value == 'Other')
-                                                        value = null;
-                                                      ddWeight = value;
-                                                    });
-                                                  },
-                                                  hint: Text('Choose Weight'),
-                                                  value: ddWeight,
-                                                ),
-                                              ),
                                               Row(
                                                 children: (ddSearchType ==
                                                         'Fridges')
-                                                    ? []
+                                                    ? [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  left: 5,
+                                                                  right: 5),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 10),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors
+                                                                  .white70,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          child: DropdownButton<
+                                                              String>(
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                            items: [
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    'Metal'),
+                                                                value: 'Metal',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    'Glass'),
+                                                                value: 'Glass',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    'Stainless steel'),
+                                                                value:
+                                                                    'Stainless steel',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    'Glass'),
+                                                                value: 'Glass',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    'Other'),
+                                                                value: 'Other',
+                                                              ),
+                                                            ],
+                                                            onChanged:
+                                                                (String value) {
+                                                              setState(() {
+                                                                if (value ==
+                                                                    'Other')
+                                                                  value = null;
+                                                                ddMaterial =
+                                                                    value;
+                                                              });
+                                                            },
+                                                            hint: Text(
+                                                                'Choose Material'),
+                                                            value: ddMaterial,
+                                                          ),
+                                                        ),
+                                                      ]
                                                     : [
                                                         Container(
                                                           margin:
@@ -323,21 +451,39 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                                             items: [
                                                               DropdownMenuItem<
                                                                   String>(
-                                                                child:
-                                                                    Text('10'),
-                                                                value: '10',
+                                                                child: Text(
+                                                                    '1.50'),
+                                                                value: '1.50',
                                                               ),
                                                               DropdownMenuItem<
                                                                   String>(
-                                                                child:
-                                                                    Text('20'),
-                                                                value: '20',
+                                                                child: Text(
+                                                                    '2.00'),
+                                                                value: '2.00',
                                                               ),
                                                               DropdownMenuItem<
                                                                   String>(
-                                                                child:
-                                                                    Text('30'),
-                                                                value: '30',
+                                                                child: Text(
+                                                                    '2.50'),
+                                                                value: '2.50',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    '3.00'),
+                                                                value: '3.00',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    '3.50'),
+                                                                value: '3.50',
+                                                              ),
+                                                              DropdownMenuItem<
+                                                                  String>(
+                                                                child: Text(
+                                                                    '4.00'),
+                                                                value: '4.00',
                                                               ),
                                                               DropdownMenuItem<
                                                                   String>(
@@ -352,13 +498,13 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                                                 if (value ==
                                                                     'Other')
                                                                   value = null;
-                                                                ddScreenSize =
+                                                                ddHorsePower =
                                                                     value;
                                                               });
                                                             },
                                                             hint: Text(
                                                                 'Choose Horse Power'),
-                                                            value: ddScreenSize,
+                                                            value: ddHorsePower,
                                                           ),
                                                         ),
                                                       ],
@@ -368,6 +514,48 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                         ],
                                 ),
                               ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Black'),
+                              value: 'black',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('White'),
+                              value: 'white',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Red'),
+                              value: 'red',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Silver'),
+                              value: 'silver',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              if (value == 'Other') value = null;
+                              ddColor = value;
+                            });
+                          },
+                          hint: Text('Choose Color'),
+                          value: ddColor,
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5, right: 5),
@@ -450,40 +638,52 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                           ProductClass productInfo = ProductClass();
                           productInfo.rate = product.data()['Rating'];
                           productInfo.brand = product.data()['Brand Name'];
-                          if (ddSearchBrand == null ||
-                              productInfo.brand == ddSearchBrand) {
-                            if (ddRatings == null ||
-                                double.parse(productInfo.rate) >= ddRatings) {
-                              productInfo.name = product.data()['Product Name'];
-                              productInfo.quantity = product.data()['Quantity'];
-
-                              productInfo.description =
-                                  product.data()['Description'];
-                              productInfo.price = product.data()['Price'];
-                              productInfo.newPrice =
-                                  product.data()['New price'];
-                              productInfo.discount = product.data()['Discount'];
-                              productInfo.discountPercentage =
-                                  product.data()['Discount percent'];
-                              productInfo.rate1star =
-                                  product.data()['1 star rate'];
-                              productInfo.rate2star =
-                                  product.data()['2 star rate'];
-                              productInfo.rate3star =
-                                  product.data()['3 star rate'];
-                              productInfo.rate4star =
-                                  product.data()['4 star rate'];
-                              productInfo.rate5star =
-                                  product.data()['5 star rate'];
-                              productInfo.img = product.data()['imgURL'];
-                              productInfo.type = product.data()['type'];
-                              productInfo.sellerEmail =
-                                  product.data()['Seller Email'];
-                              productInfo.id = product.id;
-                              final productview = SingleProduct(
-                                prd: productInfo,
-                              );
-                              productsview.add(productview);
+                          productInfo.tvType = product.data()['Category Type'];
+                          productInfo.screenSize = product.data()['Screen Size'];
+                          productInfo.screenRes = product.data()['Screen Resolution'];
+                          productInfo.material = product.data()['Material'];
+                          productInfo.horsePower = product.data()['Horse Power'];
+                          productInfo.color = product.data()['Color'];
+                          if (ddColor == null || productInfo.color == ddColor) {
+                            if (ddHorsePower == null || productInfo.horsePower == ddHorsePower) {
+                              if (ddMaterial == null || productInfo.material == ddMaterial) {
+                                if (ddScreenRes == null || productInfo.screenRes == ddScreenRes) {
+                                  if (ddScreenSize == null || productInfo.screenSize == ddScreenSize) {
+                                    if (ddTvType == null || productInfo.tvType == ddTvType) {
+                                      if (ddSearchBrand == null ||productInfo.brand == ddSearchBrand) {
+                                        if (ddRatings == null ||double.parse(productInfo.rate) >= ddRatings) {
+                                          productInfo.name = product.data()['Product Name'];
+                                          productInfo.quantity = product.data()['Quantity'];
+                                          productInfo.description =product.data()['Description'];
+                                          productInfo.weight = product.data()['Weight'];
+                                          productInfo.width = product.data()['Width'];
+                                          productInfo.depth = product.data()['Depth'];
+                                          productInfo.height = product.data()['Height'];
+                                          productInfo.screenType = product.data()['Screen Type'];
+                                          productInfo.conditionerType = product.data()['Conditioner Type'];
+                                          productInfo.price = product.data()['Price'];
+                                          productInfo.newPrice = product.data()['New price'];
+                                          productInfo.discount = product.data()['Discount'];
+                                          productInfo.discountPercentage =product.data()['Discount percent'];
+                                          productInfo.rate1star = product.data()['1 star rate'];
+                                          productInfo.rate2star = product.data()['2 star rate'];
+                                          productInfo.rate3star = product.data()['3 star rate'];
+                                          productInfo.rate4star = product.data()['4 star rate'];
+                                          productInfo.rate5star = product.data()['5 star rate'];
+                                          productInfo.img = product.data()['imgURL'];
+                                          productInfo.type = product.data()['type'];
+                                          productInfo.sellerEmail = product.data()['Seller Email'];
+                                          productInfo.id = product.id;
+                                          final productview = SingleProduct(
+                                            prd: productInfo,
+                                          );
+                                          productsview.add(productview);
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -517,10 +717,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -576,10 +773,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -624,7 +818,6 @@ class _SingleProductState extends State<SingleProduct> {
       });
     }
   }
-
 
   Future removeFromFav() async {
     if (customer.firstName == "temp") {

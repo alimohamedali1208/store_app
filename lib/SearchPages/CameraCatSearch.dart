@@ -17,8 +17,8 @@ class cameraCatSearch extends StatefulWidget {
 class _cameraCatSearchState extends State<cameraCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  int ddStorage, ddRatings;
-  String ddSearchBrand, ddSearchType = "Cameras", ddLens;
+  int  ddRatings;
+  String ddSearchBrand, ddSearchType = "Cameras", ddOpticalZoom, ddMegapixel, ddCameraType, ddAccessoryType;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +90,9 @@ class _cameraCatSearchState extends State<cameraCatSearch> {
                           onChanged: (String value) {
                             setState(() {
                               ddSearchBrand = null;
+                              ddCameraType = null;
+                              ddMegapixel = null;
+                              ddOpticalZoom = null;
                               ddSearchType = value;
                             });
                           },
@@ -157,6 +160,10 @@ class _cameraCatSearchState extends State<cameraCatSearch> {
                                 value: '8x',
                               ),
                               DropdownMenuItem<String>(
+                                child: Text('16x'),
+                                value: '16x',
+                              ),
+                              DropdownMenuItem<String>(
                                 child: Text('Other'),
                                 value: 'Other',
                               ),
@@ -164,15 +171,138 @@ class _cameraCatSearchState extends State<cameraCatSearch> {
                             onChanged: (String value) {
                               setState(() {
                                 if (value == 'Other') value = null;
-                                ddLens = value;
+                                ddOpticalZoom = value;
                               });
                             },
-                            hint: Text('Choose lens'),
-                            value: ddLens,
+                            hint: Text('Choose Optical Zoom'),
+                            value: ddOpticalZoom,
                           ),
                         ),
+                        Container(
+                          margin: EdgeInsets.only(left: 5, right: 5),
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: DropdownButton<String>(
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600),
+                            items: [
+                              DropdownMenuItem<String>(
+                                child: Text('16 Megapixels'),
+                                value: '16 Megapixels',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('24 Megapixels'),
+                                value: '24 Megapixels',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('42 Megapixels'),
+                                value: '42 Megapixels',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('64 Megapixels'),
+                                value: '64 Megapixels',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Other'),
+                                value: 'Other',
+                              ),
+                            ],
+                            onChanged: (String value) {
+                              setState(() {
+                                if (value == 'Other') value = null;
+                                ddMegapixel = value;
+                              });
+                            },
+                            hint: Text('Choose resolution'),
+                            value: ddMegapixel,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 5, right: 5),
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: DropdownButton<String>(
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600),
+                            items: [
+                              DropdownMenuItem<String>(
+                                child: Text('Compact Camera'),
+                                value: 'Compact Camera',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Sir Camera'),
+                                value: 'Sir Camera',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Mirror Camera'),
+                                value: 'Mirror Camera',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Long Zoom Camera'),
+                                value: 'Long Zoom Camera',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Point And Shoot'),
+                                value: 'Point And Shoot',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text('Other'),
+                                value: 'Other',
+                              ),
+                            ],
+                            onChanged: (String value) {
+                              setState(() {
+                                if (value == 'Other') value = null;
+                                ddCameraType = value;
+                              });
+                            },
+                            hint: Text('Choose Camera type'),
+                            value: ddCameraType,
+                          ),
+                        )
                         ]
-                        : [],
+                        : [
+                          Container(
+                          margin: EdgeInsets.only(left: 5, right: 5),
+            padding: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.white70,
+                borderRadius: BorderRadius.circular(20)),
+            child: DropdownButton<String>(
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600),
+              items: [
+                DropdownMenuItem<String>(
+                  child: Text('Tripod'),
+                  value: 'Tripod',
+                ),
+                DropdownMenuItem<String>(
+                  child: Text('Ring light'),
+                  value: 'Ring light',
+                ),
+                DropdownMenuItem<String>(
+                  child: Text('Other'),
+                  value: 'Other',
+                ),
+              ],
+              onChanged: (String value) {
+                setState(() {
+                  if (value == 'Other') value = null;
+                  ddAccessoryType = value;
+                });
+              },
+              hint: Text('Choose accessory type'),
+              value: ddAccessoryType,
+            ),
+          )
+                        ],
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5, right: 5),
@@ -253,42 +383,44 @@ class _cameraCatSearchState extends State<cameraCatSearch> {
                             List<SingleProduct> productsview = [];
                             for (var product in products) {
                               ProductClass productInfo = ProductClass();
-                              productInfo.storage = product.data()['Storage'];
+                              productInfo.brand = product.data()['Brand Name'];
+                              productInfo.cameratype = product.data()['Camera Type'];
+                              productInfo.opticalzoom = product.data()['Optical Zoom'];
+                              productInfo.megapixel = product.data()['Mega Pixel'];
+                              productInfo.accessoryType = product.data()['AccessoryType'];
                               productInfo.rate = product.data()['Rating'];
-                              if (ddStorage == null ||
-                                  productInfo.storage >= ddStorage) {
-                                if (ddRatings == null ||
-                                    double.parse(productInfo.rate) >= ddRatings) {
-                                  productInfo.name = product.data()['Product Name'];
-                                  productInfo.brand = product.data()['Brand Name'];
-                                  productInfo.quantity = product.data()['Quantity'];
-                                  productInfo.description =
-                                  product.data()['Description'];
-                                  productInfo.price = product.data()['Price'];
-                                  productInfo.newPrice =
-                                  product.data()['New price'];
-                                  productInfo.discount = product.data()['Discount'];
-                                  productInfo.discountPercentage =
-                                  product.data()['Discount percent'];
-                                  productInfo.rate1star =
-                                  product.data()['1 star rate'];
-                                  productInfo.rate2star =
-                                  product.data()['2 star rate'];
-                                  productInfo.rate3star =
-                                  product.data()['3 star rate'];
-                                  productInfo.rate4star =
-                                  product.data()['4 star rate'];
-                                  productInfo.rate5star =
-                                  product.data()['5 star rate'];
-                                  productInfo.img = product.data()['imgURL'];
-                                  productInfo.type = product.data()['type'];
-                                  productInfo.sellerEmail =
-                                  product.data()['Seller Email'];
-                                  productInfo.id = product.id;
-                                  final productview = SingleProduct(
-                                    prd: productInfo,
-                                  );
-                                  productsview.add(productview);
+                              if (ddAccessoryType == null || productInfo.accessoryType == ddAccessoryType) {
+                                if (ddSearchBrand == null || productInfo.brand == ddSearchBrand) {
+                                  if (ddOpticalZoom == null || productInfo.opticalzoom == ddOpticalZoom) {
+                                    if (ddMegapixel == null || productInfo.megapixel == ddMegapixel) {
+                                      if (ddCameraType == null || productInfo.cameratype == ddCameraType) {
+                                        if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
+                                          productInfo.name = product.data()['Product Name'];
+                                          productInfo.quantity = product.data()['Quantity'];
+                                          productInfo.screenType = product.data()['Screen Type'];
+                                          productInfo.screenSize = product.data()['Screen Size'];
+                                          productInfo.description = product.data()['Description'];
+                                          productInfo.price = product.data()['Price'];
+                                          productInfo.newPrice = product.data()['New price'];
+                                          productInfo.discount = product.data()['Discount'];
+                                          productInfo.discountPercentage = product.data()['Discount percent'];
+                                          productInfo.rate1star = product.data()['1 star rate'];
+                                          productInfo.rate2star = product.data()['2 star rate'];
+                                          productInfo.rate3star = product.data()['3 star rate'];
+                                          productInfo.rate4star = product.data()['4 star rate'];
+                                          productInfo.rate5star = product.data()['5 star rate'];
+                                          productInfo.img = product.data()['imgURL'];
+                                          productInfo.type = product.data()['type'];
+                                          productInfo.sellerEmail = product.data()['Seller Email'];
+                                          productInfo.id = product.id;
+                                          final productview = SingleProduct(
+                                            prd: productInfo,
+                                          );
+                                          productsview.add(productview);
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }

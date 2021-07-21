@@ -80,15 +80,12 @@ class _homeAppliancesCategoryPageState
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description =
-                              product.data()['Description'];
+                          productInfo.description = product.data()['Description'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail =
-                              product.data()['Seller Email'];
+                          productInfo.sellerEmail = product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage =
-                              product.data()['Discount percent'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -98,12 +95,18 @@ class _homeAppliancesCategoryPageState
                           productInfo.color = product.data()['Color'];
                           productInfo.width = product.data()['Width'];
                           productInfo.weight = product.data()['Weight'];
-                          productInfo.horesPower =
-                              product.data()['Horse Power'];
-                          productInfo.height = product.data()['Height'];
                           productInfo.depth = product.data()['Depth'];
-                          productInfo.screenSize =
-                              product.data()['Screen Size'];
+                          //airConditioner
+                          productInfo.horsePower = product.data()['Horse Power'];
+                          productInfo.conditionerType = product.data()['Conditioner Type'];
+                          //fridge
+                          productInfo.height = product.data()['Height'];
+                          productInfo.material = product.data()['Material'];
+                          //TV
+                          productInfo.screenRes = product.data()['Screen Resolution'];
+                          productInfo.screenType = product.data()['Screen Type'];
+                          productInfo.screenSize = product.data()['Screen Size'];
+                          productInfo.tvType= product.data()['Category Type'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.id = product.id;
                           productview = SingleProduct(

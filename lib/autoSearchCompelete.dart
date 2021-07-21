@@ -139,6 +139,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
                           productInfo.description = product.data()['Description'];
+                          productInfo.color = product.data()['Color'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
                           productInfo.sellerEmail = product.data()['Seller Email'];
@@ -155,17 +156,69 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           //now stuff that's specific for every product type
                           if (productInfo.type == 'Mobiles') {
                             productInfo.storage = product.data()['Storage'];
+                            productInfo.storageUnit = product.data()['Storage Unit'];
+                            productInfo.screenSize = product.data()['Screen Size'];
                             productInfo.battery = product.data()['Battery'];
                             productInfo.memory = product.data()['Memory'];
+                            productInfo.memoryUnit = product.data()['Memory Unit'];
                             productInfo.camera = product.data()['Camera'];
                             productInfo.os = product.data()['OS'];
                           } else if (productInfo.type == 'Laptops') {
                             productInfo.storage = product.data()['Storage'];
+                            productInfo.storageUnit = product.data()['Storage Unit'];
+                            productInfo.screenSize = product.data()['Screen Size'];
                             productInfo.battery = product.data()['Battery'];
                             productInfo.memory = product.data()['Memory'];
                             productInfo.cpu = product.data()['CPU'];
                             productInfo.gpu = product.data()['GPU'];
                             productInfo.os = product.data()['OS'];
+                          } else if (productInfo.type == 'Cameras') {
+                            productInfo.megapixel = product.data()['Mega Pixel'];
+                            productInfo.screenType = product.data()['Screen Type'];
+                            productInfo.opticalzoom = product.data()['Optical Zoom'];
+                            productInfo.cameratype = product.data()['Camera Type'];
+                            productInfo.screenSize = product.data()['Screen Size'];
+                          }else if (productInfo.type == 'CameraAccessories' || productInfo.type == 'OtherPC') {
+                            productInfo.accessoryType = product.data()['AccessoryType'];
+                          } else if (productInfo.type == 'Fridges') {
+                            productInfo.weight = product.data()['Weight'];
+                            productInfo.width = product.data()['Width'];
+                            productInfo.depth = product.data()['Depth'];
+                            productInfo.height = product.data()['Height'];
+                            productInfo.material = product.data()['Material'];
+                          } else if (productInfo.type == 'AirConditioner') {
+                            productInfo.weight = product.data()['Weight'];
+                            productInfo.width = product.data()['Width'];
+                            productInfo.depth = product.data()['Depth'];
+                            productInfo.conditionerType = product.data()['Conditioner Type'];
+                            productInfo.horsePower = product.data()['Horse Power'];
+                          } else if (productInfo.type == 'TV') {
+                            productInfo.weight = product.data()['Weight'];
+                            productInfo.width = product.data()['Width'];
+                            productInfo.depth = product.data()['Depth'];
+                            productInfo.screenSize = product.data()['Screen Size'];
+                            productInfo.screenType = product.data()['Screen Type'];
+                            productInfo.screenRes = product.data()['Screen Resolution'];
+                            productInfo.tvType = product.data()['Category Type'];
+                          } else if (productInfo.type == 'OtherHome') {
+                            productInfo.weight = product.data()['Weight'];
+                            productInfo.width = product.data()['Width'];
+                            productInfo.depth = product.data()['Depth'];
+                            productInfo.height = product.data()['Height'];
+                          } else if (productInfo.type == 'Jewelry') {
+                            productInfo.metalType = product.data()['Metal Type'];
+                            productInfo.targetGroup = product.data()['Target Group'];
+                          }else if (productInfo.type == 'Projectors') {
+                            productInfo.projectorType = product.data()['Projector Type'];
+                          }else if (productInfo.type == 'Printers') {
+                            productInfo.printerType = product.data()['Printer Type'];
+                            productInfo.paperSize = product.data()['Paper Type'];
+                          }else if (productInfo.type == 'StorageDevices') {
+                            productInfo.storageType = product.data()['Storage Type'];
+                            productInfo.storageUnit = product.data()['Capacity'];
+                          }else if (productInfo.type == 'Fashion') {
+                            productInfo.clothType = product.data()['Clothing Type'];
+                            productInfo.ClothSize = product.data()['Size'];
                           }
                             productview = SingleProduct(
                               prd: productInfo,

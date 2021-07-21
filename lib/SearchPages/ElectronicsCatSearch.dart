@@ -17,8 +17,8 @@ class electronicsCatSearch extends StatefulWidget {
 class _electronicsCatSearchState extends State<electronicsCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  int ddStorage, ddRatings;
-  String ddSearchBrand, ddSearchType = "Projectors", ddLens;
+  int ddRatings;
+  String ddSearchBrand, ddSearchType = "Projectors", ddProjectorType;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +90,7 @@ class _electronicsCatSearchState extends State<electronicsCatSearch> {
                           onChanged: (String value) {
                             setState(() {
                               ddSearchBrand = null;
+                              ddProjectorType = null;
                               ddSearchType = value;
                             });
                           },
@@ -145,12 +146,24 @@ class _electronicsCatSearchState extends State<electronicsCatSearch> {
                                         fontWeight: FontWeight.w600),
                                     items: [
                                       DropdownMenuItem<String>(
-                                        child: Text('2x'),
-                                        value: '2x',
+                                        child: Text('LED'),
+                                        value: 'LED',
                                       ),
                                       DropdownMenuItem<String>(
-                                        child: Text('4x'),
-                                        value: '4x',
+                                        child: Text('DIP'),
+                                        value: 'DIP',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('LCD'),
+                                        value: 'LCD',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('CRT'),
+                                        value: 'CRT',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('SXRD'),
+                                        value: 'SXRD',
                                       ),
                                       DropdownMenuItem<String>(
                                         child: Text('Other'),
@@ -160,11 +173,11 @@ class _electronicsCatSearchState extends State<electronicsCatSearch> {
                                     onChanged: (String value) {
                                       setState(() {
                                         if (value == 'Other') value = null;
-                                        ddLens = value;
+                                        ddProjectorType = value;
                                       });
                                     },
-                                    hint: Text('Choose lens'),
-                                    value: ddLens,
+                                    hint: Text('Choose projector type'),
+                                    value: ddProjectorType,
                                   ),
                                 ),
                               ]
@@ -249,42 +262,33 @@ class _electronicsCatSearchState extends State<electronicsCatSearch> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
-                          productInfo.storage = product.data()['Storage'];
+                          productInfo.projectorType = product.data()['Projector Type'];
                           productInfo.rate = product.data()['Rating'];
-                          if (ddStorage == null ||
-                              productInfo.storage >= ddStorage) {
-                            if (ddRatings == null ||
-                                double.parse(productInfo.rate) >= ddRatings) {
-                              productInfo.name = product.data()['Product Name'];
-                              productInfo.brand = product.data()['Brand Name'];
-                              productInfo.quantity = product.data()['Quantity'];
-                              productInfo.description =
-                                  product.data()['Description'];
-                              productInfo.price = product.data()['Price'];
-                              productInfo.newPrice =
-                                  product.data()['New price'];
-                              productInfo.discount = product.data()['Discount'];
-                              productInfo.discountPercentage =
-                                  product.data()['Discount percent'];
-                              productInfo.rate1star =
-                                  product.data()['1 star rate'];
-                              productInfo.rate2star =
-                                  product.data()['2 star rate'];
-                              productInfo.rate3star =
-                                  product.data()['3 star rate'];
-                              productInfo.rate4star =
-                                  product.data()['4 star rate'];
-                              productInfo.rate5star =
-                                  product.data()['5 star rate'];
-                              productInfo.img = product.data()['imgURL'];
-                              productInfo.type = product.data()['type'];
-                              productInfo.sellerEmail =
-                                  product.data()['Seller Email'];
-                              productInfo.id = product.id;
-                              final productview = SingleProduct(
-                                prd: productInfo,
-                              );
-                              productsview.add(productview);
+                          productInfo.brand = product.data()['Brand Name'];
+                          if (ddSearchBrand == null || productInfo.brand == ddSearchBrand) {
+                            if (ddProjectorType == null || productInfo.projectorType == ddProjectorType) {
+                              if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
+                                productInfo.name = product.data()['Product Name'];
+                                productInfo.quantity = product.data()['Quantity'];
+                                productInfo.description = product.data()['Description'];
+                                productInfo.price = product.data()['Price'];
+                                productInfo.newPrice = product.data()['New price'];
+                                productInfo.discount = product.data()['Discount'];
+                                productInfo.discountPercentage = product.data()['Discount percent'];
+                                productInfo.rate1star = product.data()['1 star rate'];
+                                productInfo.rate2star = product.data()['2 star rate'];
+                                productInfo.rate3star = product.data()['3 star rate'];
+                                productInfo.rate4star = product.data()['4 star rate'];
+                                productInfo.rate5star = product.data()['5 star rate'];
+                                productInfo.img = product.data()['imgURL'];
+                                productInfo.type = product.data()['type'];
+                                productInfo.sellerEmail = product.data()['Seller Email'];
+                                productInfo.id = product.id;
+                                final productview = SingleProduct(
+                                  prd: productInfo,
+                                );
+                                productsview.add(productview);
+                              }
                             }
                           }
                         }

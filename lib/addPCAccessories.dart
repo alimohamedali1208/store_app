@@ -44,7 +44,7 @@ class _addPCAccessoriesState extends State<addPCAccessories> {
       'Product Name': name,
       'CreatedAt': Timestamp.now(),
       'Description': description,
-      'Accessory Type': accessoryType,
+      'AccessoryType': accessoryType,
       'Price': price,
       'New price': '0',
       'Quantity': quantity,

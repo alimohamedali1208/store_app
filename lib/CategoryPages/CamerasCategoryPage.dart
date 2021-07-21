@@ -76,15 +76,18 @@ class _camerasCategoryPageState extends State<camerasCategoryPage> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description =
-                              product.data()['Description'];
+                          productInfo.description = product.data()['Description'];
                           productInfo.brand = product.data()['Brand Name'];
+                          productInfo.megapixel = product.data()['Mega Pixel'];
+                          productInfo.screenType = product.data()['Screen Type'];
+                          productInfo.opticalzoom = product.data()['Optical Zoom'];
+                          productInfo.cameratype = product.data()['Camera Type'];
+                          productInfo.screenSize = product.data()['Screen Size'];
+                          productInfo.accessoryType = product.data()['AccessoryType'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail =
-                              product.data()['Seller Email'];
+                          productInfo.sellerEmail = product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage =
-                              product.data()['Discount percent'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];

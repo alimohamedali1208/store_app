@@ -77,16 +77,28 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('Sony'),
-                              value: 'Sony',
-                            ),
-                            DropdownMenuItem<String>(
                               child: Text('Apple'),
                               value: 'Apple',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Samsung'),
                               value: 'Samsung',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Sony'),
+                              value: 'Sony',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Oppo'),
+                              value: 'Oppo',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('HTC'),
+                              value: 'HTC',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Lenovo'),
+                              value: 'Lenovo',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -128,9 +140,19 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               child: Text('>64 GB'),
                               value: 64,
                             ),
+                            DropdownMenuItem<int>(
+                              child: Text('>128 GB'),
+                              value: 128,
+                            ),
+                            DropdownMenuItem<int>(
+                              child: Text('>Other'),
+                              value: 0,
+                            ),
                           ],
                           onChanged: (int value) {
                             setState(() {
+                              if(value==0)
+                                value = null;
                               ddStorage = value;
                             });
                           },
@@ -373,6 +395,7 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
                           productInfo.storage = product.data()['Storage'];
+                          productInfo.storageUnit = product.data()['Storage Unit'];
                           productInfo.rate = product.data()['Rating'];
                           if (ddStorage == null || productInfo.storage >= ddStorage) {
                             if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
@@ -388,7 +411,9 @@ class _mobileCatSearchState extends State<mobileCatSearch> {
                               productInfo.quantity = product.data()['Quantity'];
                               productInfo.sellerEmail = product.data()['Seller Email'];
                               productInfo.battery = product.data()['Battery'];
+                              productInfo.screenSize = product.data()['Screen Size'];
                               productInfo.memory = product.data()['Memory'];
+                              productInfo.memoryUnit = product.data()['Memory Unit'];
                               productInfo.camera = product.data()['Camera'];
                               productInfo.os = product.data()['OS'];
                               productInfo.rate1star = product.data()['1 star rate'];

@@ -18,7 +18,7 @@ class _jewelryCatSearchState extends State<jewelryCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   int ddRatings;
-  String  ddSearchBrand, ddSearchType;
+  String  ddSearchBrand, ddMetalType, ddTargetGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -118,16 +118,16 @@ class _jewelryCatSearchState extends State<jewelryCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('Necklace'),
-                              value: 'Necklace',
+                              child: Text('Gold'),
+                              value: 'Gold',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('Rings'),
-                              value: 'Ring',
+                              child: Text('Silver'),
+                              value: 'Silver',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('Ear rings'),
-                              value: 'EarRings',
+                              child: Text('Plastic'),
+                              value: 'Plastic',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -138,11 +138,58 @@ class _jewelryCatSearchState extends State<jewelryCatSearch> {
                             setState(() {
                               if(value=='Other')
                                 value = null;
-                              ddSearchType = value;
+                              ddMetalType = value;
                             });
                           },
-                          hint: Text('Choose type'),
-                          value: ddSearchType,
+                          hint: Text('Choose metal type'),
+                          value: ddMetalType,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Male'),
+                              value: 'Male',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Female'),
+                              value: 'Female',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Unisex'),
+                              value: 'Unisex',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Adults'),
+                              value: 'Adults',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Children'),
+                              value: 'Children',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              if(value=='Other')
+                                value = null;
+                              ddTargetGroup = value;
+                            });
+                          },
+                          hint: Text('Choose target group'),
+                          value: ddTargetGroup,
                         ),
                       ),
                       Container(
@@ -211,11 +258,12 @@ class _jewelryCatSearchState extends State<jewelryCatSearch> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('ProductsCollection')
-                          .doc('Laptops')
+                          .doc('Jewelry')
                           .collection('Products')
                           .where('searchIndex', arrayContains: searchString)
                           .where('Brand Name', isEqualTo: ddSearchBrand)
-                          .where('JewelryType', isEqualTo: ddSearchType)
+                          .where('Metal Type', isEqualTo: ddMetalType)
+                          .where('Target Group', isEqualTo: ddTargetGroup)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasError)
@@ -234,6 +282,8 @@ class _jewelryCatSearchState extends State<jewelryCatSearch> {
                                 productInfo.brand = product.data()['Brand Name'];
                                 productInfo.quantity = product.data()['Quantity'];
                                 productInfo.description = product.data()['Description'];
+                                productInfo.metalType = product.data()['Metal Type'];
+                                productInfo.targetGroup = product.data()['Target Group'];
                                 productInfo.price = product.data()['Price'];
                                 productInfo.newPrice = product.data()['New price'];
                                 productInfo.discount = product.data()['Discount'];

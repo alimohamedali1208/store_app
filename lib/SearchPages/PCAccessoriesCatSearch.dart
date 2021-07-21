@@ -17,8 +17,14 @@ class pcAccessoriesCatSearch extends StatefulWidget {
 class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
-  int ddStorage, ddRatings;
-  String ddSearchBrand, ddSearchType = "StorageDevices";
+  int ddRatings;
+  String ddSearchBrand,
+      ddSearchType = "StorageDevices",
+      ddStorage,
+      ddStorageType,
+      ddPrinterType,
+      ddPaperSize,
+      ddAccessoryType;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +100,11 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                           onChanged: (String value) {
                             setState(() {
                               ddSearchBrand = null;
+                              ddAccessoryType = null;
+                              ddPrinterType = null;
+                              ddStorageType = null;
+                              ddStorage = null;
+                              ddPaperSize = null;
                               ddSearchType = value;
                             });
                           },
@@ -147,27 +158,74 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                                   decoration: BoxDecoration(
                                       color: Colors.white70,
                                       borderRadius: BorderRadius.circular(20)),
-                                  child: DropdownButton<int>(
+                                  child: DropdownButton<String>(
                                     style: TextStyle(
                                         color: Colors.black87,
                                         fontWeight: FontWeight.w600),
                                     items: [
-                                      DropdownMenuItem<int>(
-                                        child: Text('>1 TB'),
-                                        value: 1,
+                                      DropdownMenuItem<String>(
+                                        child: Text('16 GB'),
+                                        value: '16 GB',
                                       ),
-                                      DropdownMenuItem<int>(
-                                        child: Text('>2 TB'),
-                                        value: 2,
+                                      DropdownMenuItem<String>(
+                                        child: Text('32 GB'),
+                                        value: '32 GB',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('64 GB'),
+                                        value: '64 GB',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('1 TB'),
+                                        value: '1 TB',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('Other'),
+                                        value: 'Other',
                                       ),
                                     ],
-                                    onChanged: (int value) {
+                                    onChanged: (String value) {
                                       setState(() {
+                                        if (ddStorage == 'Other') value = null;
                                         ddStorage = value;
                                       });
                                     },
                                     hint: Text('Choose Storage'),
                                     value: ddStorage,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5, right: 5),
+                                  padding: EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white70,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: DropdownButton<String>(
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600),
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        child: Text('Flash Drive'),
+                                        value: 'Flash drive',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('Mass Storage'),
+                                        value: 'Mass storage',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('Other'),
+                                        value: 'Other',
+                                      ),
+                                    ],
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        if (ddStorage == 'Other') value = null;
+                                        ddStorageType = value;
+                                      });
+                                    },
+                                    hint: Text('Choose Storage Type'),
+                                    value: ddStorageType,
                                   ),
                                 ),
                               ]
@@ -194,6 +252,10 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                                       DropdownMenuItem<String>(
                                         child: Text('HP'),
                                         value: 'HP',
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        child: Text('Canon'),
+                                        value: 'Canon',
                                       ),
                                       DropdownMenuItem<String>(
                                         child: Text('Other'),
@@ -227,16 +289,17 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                                                   fontWeight: FontWeight.w600),
                                               items: [
                                                 DropdownMenuItem<String>(
-                                                  child: Text('Samsung'),
-                                                  value: 'Samsung',
+                                                  child: Text('Inkjet printer'),
+                                                  value: 'Inkjet printer',
                                                 ),
                                                 DropdownMenuItem<String>(
-                                                  child: Text('Sony'),
-                                                  value: 'Sony',
+                                                  child: Text('Laser printer'),
+                                                  value: 'Laser printer',
                                                 ),
                                                 DropdownMenuItem<String>(
-                                                  child: Text('HP'),
-                                                  value: 'HP',
+                                                  child:
+                                                      Text('Receipt printer'),
+                                                  value: 'Receipt printer',
                                                 ),
                                                 DropdownMenuItem<String>(
                                                   child: Text('Other'),
@@ -247,15 +310,98 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                                                 setState(() {
                                                   if (value == 'Other')
                                                     value = null;
-                                                  ddSearchBrand = value;
+                                                  ddPrinterType = value;
                                                 });
                                               },
                                               hint: Text('Choose Paper Size'),
-                                              value: ddSearchBrand,
+                                              value: ddPrinterType,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            padding: EdgeInsets.only(left: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white70,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: DropdownButton<String>(
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w600),
+                                              items: [
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Up to A3'),
+                                                  value: 'Up to A3',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Up to A4'),
+                                                  value: 'Up to A4',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Up to A5'),
+                                                  value: 'Up to A5',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Other'),
+                                                  value: 'Other',
+                                                ),
+                                              ],
+                                              onChanged: (String value) {
+                                                setState(() {
+                                                  if (value == 'Other')
+                                                    value = null;
+                                                  ddPaperSize = value;
+                                                });
+                                              },
+                                              hint: Text('Choose Paper Size'),
+                                              value: ddPaperSize,
                                             ),
                                           ),
                                         ]
-                                      : [],
+                                      : [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            padding: EdgeInsets.only(left: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white70,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: DropdownButton<String>(
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w600),
+                                              items: [
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Keyboard'),
+                                                  value: 'Keyboard',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Mouse'),
+                                                  value: 'Mouse',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Speaker'),
+                                                  value: 'Speaker',
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  child: Text('Other'),
+                                                  value: 'Other',
+                                                ),
+                                              ],
+                                              onChanged: (String value) {
+                                                setState(() {
+                                                  if (value == 'Other')
+                                                    value = null;
+                                                  ddAccessoryType = value;
+                                                });
+                                              },
+                                              hint: Text('Choose Brand'),
+                                              value: ddAccessoryType,
+                                            ),
+                                          ),
+                                        ],
                                 ),
                               ],
                       ),
@@ -338,42 +484,54 @@ class _pcAccessoriesCatSearchState extends State<pcAccessoriesCatSearch> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
-                          productInfo.storage = product.data()['Storage'];
+                          productInfo.storageUnit = product.data()['Capacity'];
+                          productInfo.brand = product.data()['Brand Name'];
+                          productInfo.storageType = product.data()['Storage Type'];
                           productInfo.rate = product.data()['Rating'];
-                          if (ddStorage == null ||
-                              productInfo.storage >= ddStorage) {
-                            if (ddRatings == null ||
-                                double.parse(productInfo.rate) >= ddRatings) {
-                              productInfo.name = product.data()['Product Name'];
-                              productInfo.brand = product.data()['Brand Name'];
-                              productInfo.quantity = product.data()['Quantity'];
-                              productInfo.description =
-                                  product.data()['Description'];
-                              productInfo.price = product.data()['Price'];
-                              productInfo.newPrice =
-                                  product.data()['New price'];
-                              productInfo.discount = product.data()['Discount'];
-                              productInfo.discountPercentage =
-                                  product.data()['Discount percent'];
-                              productInfo.rate1star =
-                                  product.data()['1 star rate'];
-                              productInfo.rate2star =
-                                  product.data()['2 star rate'];
-                              productInfo.rate3star =
-                                  product.data()['3 star rate'];
-                              productInfo.rate4star =
-                                  product.data()['4 star rate'];
-                              productInfo.rate5star =
-                                  product.data()['5 star rate'];
-                              productInfo.img = product.data()['imgURL'];
-                              productInfo.type = product.data()['type'];
-                              productInfo.sellerEmail =
-                                  product.data()['Seller Email'];
-                              productInfo.id = product.id;
-                              final productview = SingleProduct(
-                                prd: productInfo,
-                              );
-                              productsview.add(productview);
+                          productInfo.accessoryType = product.data()['AccessoryType'];
+                          productInfo.printerType = product.data()['Printer Type'];
+                          productInfo.paperSize = product.data()['Paper Type'];
+                          if (ddSearchBrand == null || productInfo.brand == ddSearchBrand) {
+                            if (ddStorageType == null || productInfo.storageType == ddStorageType) {
+                              if (ddAccessoryType == null || productInfo.accessoryType == ddAccessoryType) {
+                                if (ddPrinterType == null || productInfo.printerType == ddPrinterType) {
+                                  if (ddPaperSize == null || productInfo.paperSize == ddPaperSize) {
+                                    if (ddStorage == null ||productInfo.storageUnit == ddStorage) {
+                                      if (ddRatings == null ||double.parse(productInfo.rate) >= ddRatings) {
+                                        productInfo.name = product.data()['Product Name'];
+                                        productInfo.quantity = product.data()['Quantity'];
+                                        productInfo.description =
+                                            product.data()['Description'];
+                                        productInfo.price = product.data()['Price'];
+                                        productInfo.newPrice =
+                                            product.data()['New price'];
+                                        productInfo.discount = product.data()['Discount'];
+                                        productInfo.discountPercentage =
+                                            product.data()['Discount percent'];
+                                        productInfo.rate1star =
+                                            product.data()['1 star rate'];
+                                        productInfo.rate2star =
+                                            product.data()['2 star rate'];
+                                        productInfo.rate3star =
+                                            product.data()['3 star rate'];
+                                        productInfo.rate4star =
+                                            product.data()['4 star rate'];
+                                        productInfo.rate5star =
+                                            product.data()['5 star rate'];
+                                        productInfo.img = product.data()['imgURL'];
+                                        productInfo.type = product.data()['type'];
+                                        productInfo.sellerEmail =
+                                            product.data()['Seller Email'];
+                                        productInfo.id = product.id;
+                                        final productview = SingleProduct(
+                                          prd: productInfo,
+                                        );
+                                        productsview.add(productview);
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -407,10 +565,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -466,10 +621,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -514,7 +666,6 @@ class _SingleProductState extends State<SingleProduct> {
       });
     }
   }
-
 
   Future removeFromFav() async {
     if (customer.firstName == "temp") {

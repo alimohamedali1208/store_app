@@ -6,7 +6,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/ElectronicsCatSearch.dart';
-import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
@@ -79,6 +78,7 @@ class _electronicsCategoryPageState extends State<electronicsCategoryPage> {
                           productInfo.type = product.data()['type'];
                           productInfo.description =
                               product.data()['Description'];
+                    productInfo.projectorType = product.data()['Projector Type'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
                           productInfo.sellerEmail =

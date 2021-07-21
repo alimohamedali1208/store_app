@@ -329,6 +329,7 @@ class _addFashionState extends State<addFashion> {
                           'blue',
                           'yellow',
                           'black',
+                          'white',
                           'purple',
                           'Other'
                         ].map<DropdownMenuItem<String>>((String value) {

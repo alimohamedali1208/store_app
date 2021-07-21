@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/ProductDetails.dart';
-import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 import 'package:store_app/SearchPages/PCAccessoriesCatSearch.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
@@ -94,7 +93,11 @@ class _pcAccessoriesCategoryPageState extends State<pcAccessoriesCategoryPage> {
                           productInfo.rate4star = product.data()['4 star rate'];
                           productInfo.rate5star = product.data()['5 star rate'];
                           productInfo.rate = product.data()['Rating'];
-                          productInfo.storage = product.data()['Storage'];
+                    productInfo.printerType = product.data()['Printer Type'];
+                    productInfo.paperSize = product.data()['Paper Type'];
+                    productInfo.storageType = product.data()['Storage Type'];
+                    productInfo.accessoryType = product.data()['AccessoryType'];
+                    productInfo.storageUnit = product.data()['Capacity'];
                           productInfo.id = product.id;
                           productview = SingleProduct(
                             prd: productInfo,

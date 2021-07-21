@@ -155,8 +155,24 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                               value: 'Core i7',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('AMD Ryzen'),
-                              value: 'AMD Ryzen',
+                              child: Text('Core i9'),
+                              value: 'Core i9',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Ryzen 3'),
+                              value: 'AMD Ryzen 3',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Ryzen 5'),
+                              value: 'AMD Ryzen 5',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Ryzen 7'),
+                              value: 'AMD Ryzen 7',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Ryzen 9'),
+                              value: 'AMD Ryzen 9',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -186,12 +202,28 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                               fontWeight: FontWeight.w600),
                           items: [
                             DropdownMenuItem<String>(
-                              child: Text('Nvidia'),
+                              child: Text('Nvidia 1050'),
                               value: 'Nvidia 1050',
                             ),
                             DropdownMenuItem<String>(
-                              child: Text('AMD'),
+                              child: Text('Nvidia 1080'),
+                              value: 'Nvidia 1080',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Nvidia 2060'),
+                              value: 'Nvidia 2060',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Nvidia 3070'),
+                              value: 'Nvidia 3070',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Radeon 570'),
                               value: 'AMD Radeon 570',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('AMD Radeon 900'),
+                              value: 'AMD Radeon 900',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -266,6 +298,10 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                             DropdownMenuItem<String>(
                               child: Text('4800 mAH'),
                               value: '4800',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('6800 mAH'),
+                              value: '6800',
                             ),
                             DropdownMenuItem<String>(
                               child: Text('Other'),
@@ -410,6 +446,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                             for (var product in products) {
                               ProductClass productInfo = ProductClass();
                               productInfo.storage = product.data()['Storage'];
+                              productInfo.storageUnit = product.data()['Storage Unit'];
                               productInfo.rate = product.data()['Rating'];
                               if (ddStorage == null || productInfo.storage >= ddStorage) {
                                 if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
@@ -427,6 +464,7 @@ class _laptopCatSearchState extends State<laptopCatSearch> {
                                   productInfo.os = product.data()['OS'];
                                   productInfo.cpu = product.data()['CPU'];
                                   productInfo.gpu = product.data()['GPU'];
+                                  productInfo.screenSize = product.data()['Screen Size'];
                                   productInfo.rate1star = product.data()['1 star rate'];
                                   productInfo.rate2star = product.data()['2 star rate'];
                                   productInfo.rate3star = product.data()['3 star rate'];

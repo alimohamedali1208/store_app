@@ -236,13 +236,16 @@ class _addCameraState extends State<addCamera> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Megapixel',
                         hintText: "Just provide the number, we'll add the 'Mp'",
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        megaPixel = value.trim() + "Mp";
+                        megaPixel = value.trim() + " Megapixels";
                       },
                     ),
                   ),
@@ -252,13 +255,16 @@ class _addCameraState extends State<addCamera> {
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Optical Zoom',
                         hintText: "Just provide the number, we'll add the 'x'",
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        megaPixel = value.trim() + "x";
+                        opticalZoom = value.trim() + "x";
                       },
                     ),
                   ),

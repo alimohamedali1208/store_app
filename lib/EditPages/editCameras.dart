@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../productClass.dart';
+
 class editCameras extends StatefulWidget {
+  ProductClass prd;
+  editCameras({this.prd});
+
   @override
   _editCamerasState createState() => _editCamerasState();
 }
@@ -41,10 +46,10 @@ class _editCamerasState extends State<editCameras> {
         .collection('ProductsCollection')
         .doc('Cameras')
         .collection('Products')
-        .add({
+        .doc(widget.prd.id)
+        .update({
       'Brand Name': ddBrand,
       'Product Name': name,
-      'CreatedAt': Timestamp.now(),
       'Description': description,
       'Mega Pixel': megaPixel,
       'Optical Zoom': opticalZoom,
@@ -52,29 +57,15 @@ class _editCamerasState extends State<editCameras> {
       'Screen Type': ddDisplayType,
       'Camera Type': ddDigitalCameraType,
       'Price': price,
+      'New price': '0',
+      'Discount': 'false',
+      'Discount percent': '0',
       'Quantity': quantity,
-      'Rating': 0,
       'Seller ID': _auth.currentUser.uid,
       'Seller Email': _auth.currentUser.email,
-      'type': 'Cameras',
       'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Cameras/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
-      _firestore
-          .collection('ProductsCollection')
-          .doc('Cameras')
-          .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
+    }).then((_) {
+      print('Update Success');
     });
   }
 
@@ -118,6 +109,7 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.name,
                       autovalidate: validate,
                       validator: validateEmpty,
                       decoration: InputDecoration(
@@ -132,6 +124,7 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.description,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       autovalidate: validate,
@@ -148,6 +141,7 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: (widget.prd.price).toString(),
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -167,6 +161,7 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.quantity,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
@@ -186,9 +181,13 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.screenSize,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Screen Size',
                         hintText: "Size in inches",
@@ -202,25 +201,33 @@ class _editCamerasState extends State<editCameras> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.megapixel,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Megapixel',
                         hintText: "Just provide the number, we'll add the 'Mp'",
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        megaPixel = value.trim() + "Mp";
+                        megaPixel = value.trim() + " Megapixels";
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      initialValue: widget.prd.opticalzoom,
                       keyboardType: TextInputType.number,
                       autovalidate: validate,
                       validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Optical Zoom',
                         hintText: "Just provide the number, we'll add the 'x'",

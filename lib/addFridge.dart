@@ -20,7 +20,7 @@ class _addFridgeState extends State<addFridge> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _addHomeAppliancesFormKey = GlobalKey<FormState>();
   bool validate = false;
-  String description, name, width, weight, depth, quantity;
+  String description, name, width, weight, height, depth, quantity;
 
   String ddBrand = 'Samsung';
   String picURL;
@@ -49,6 +49,7 @@ class _addFridgeState extends State<addFridge> {
       'Description': description,
       'Width': width,
       'Depth': depth,
+      'Height': height,
       'Weight': weight,
       'Material': ddMaterial,
       'Color': ddColor,
@@ -174,6 +175,24 @@ class _addFridgeState extends State<addFridge> {
                       ),
                       onSaved: (value) {
                         width = value.trim();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      autovalidate: validate,
+                      validator: validateEmpty,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(RegExp(r'(^\d+\.?\d*)'))
+                      ],
+                      decoration: InputDecoration(
+                        labelText: 'Height',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSaved: (value) {
+                        height = value.trim();
                       },
                     ),
                   ),
@@ -329,6 +348,7 @@ class _addFridgeState extends State<addFridge> {
                         },
                         items: <String>[
                           'red',
+                          'white',
                           'green',
                           'blue',
                           'yellow',
@@ -367,8 +387,8 @@ class _addFridgeState extends State<addFridge> {
                         },
                         items: <String>[
                           'Metal',
-                          'stainless steel',
-                          'plastic',
+                          'Stainless steel',
+                          'Plastic',
                           'Glass',
                           'Other'
                         ].map<DropdownMenuItem<String>>((String value) {

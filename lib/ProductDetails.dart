@@ -265,20 +265,97 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   String getMobileSpecs() {
-    return "\u2022 Storage: ${widget.prd.storage}\n"
+    return "\u2022 Storage: ${widget.prd.storage} ${widget.prd.storageUnit}\n"
         "\u2022 OS: ${widget.prd.os}\n"
-        "\u2022 Battery: ${widget.prd.battery}\n"
-        "\u2022 Camera: ${widget.prd.camera}\n"
-        "\u2022 Memory: ${widget.prd.memory}";
+        "\u2022 Battery: ${widget.prd.battery} mAh\n"
+        "\u2022 Camera: ${widget.prd.camera} megapixels\n"
+        "\u2022 Memory: ${widget.prd.memory} ${widget.prd.memoryUnit}\n"
+        "\u2022 Color: ${widget.prd.color}\n"
+        "\u2022 Screen size: ${widget.prd.screenSize} inches";
   }
 
   String getLaptopSpecs() {
-    return "\u2022 Storage: ${widget.prd.storage}\n"
+    return "\u2022 Storage: ${widget.prd.storage} ${widget.prd.storageUnit}\n"
         "\u2022 OS: ${widget.prd.os}\n"
-        "\u2022 Battery: ${widget.prd.battery}\n"
+        "\u2022 Battery: ${widget.prd.battery} mAh\n"
         "\u2022 CPU: ${widget.prd.cpu}\n"
         "\u2022 GPU: ${widget.prd.gpu}\n"
-        "\u2022 Memory: ${widget.prd.memory}";
+        "\u2022 Memory: ${widget.prd.memory} GB\n"
+        "\u2022 Color: ${widget.prd.color}\n"
+        "\u2022 Screen size: ${widget.prd.screenSize} inches";
+  }
+
+  String getCameraSpecs() {
+    return "\u2022 Photo resolution: ${widget.prd.megapixel}\n"
+        "\u2022 Optical zoom: ${widget.prd.opticalzoom}\n"
+        "\u2022 Camera type: ${widget.prd.cameratype}\n"
+        "\u2022 Screen type: ${widget.prd.screenType}\n"
+        "\u2022 Screen size: ${widget.prd.screenSize}";
+  }
+
+  String getCameraAccessorySpecs() {
+    return "\u2022 Accessory Type: ${widget.prd.accessoryType}";
+  }
+
+  String getProjectorSpecs() {
+    return "\u2022 Projector Type: ${widget.prd.projectorType}";
+  }
+
+  String getPrinterSpecs() {
+    return "\u2022 Paper Size: ${widget.prd.paperSize}\n"
+      "\u2022 Printer Type: ${widget.prd.printerType}";
+  }
+
+  String getStorageDeviceSpecs() {
+    return "\u2022 Storage Type: ${widget.prd.storageType}\n"
+        "\u2022 Capacity: ${widget.prd.storageUnit}";
+  }
+
+
+  String getFridgeSpecs() {
+    return "\u2022 Weight: ${widget.prd.weight} Kg\n"
+        "\u2022 Depth: ${widget.prd.depth}\n"
+        "\u2022 Width: ${widget.prd.width}\n"
+        "\u2022 Height: ${widget.prd.height}\n"
+        "\u2022 Color: ${widget.prd.color}\n"
+        "\u2022 Material: ${widget.prd.material}";
+  }
+
+  String getTVSpecs() {
+    return "\u2022 Weight: ${widget.prd.weight} Kg\n"
+        "\u2022 Depth: ${widget.prd.depth}\n"
+        "\u2022 Width: ${widget.prd.width}\n"
+        "\u2022 Color: ${widget.prd.color}\n"
+        "\u2022 TV type: ${widget.prd.tvType}\n"
+        "\u2022 Screen resolution: ${widget.prd.screenRes}\n"
+        "\u2022 Screen type: ${widget.prd.screenType}\n"
+        "\u2022 Screen size: ${widget.prd.screenSize} inches";
+  }
+
+  String getAirConditionerSpecs() {
+    return "\u2022 Weight: ${widget.prd.weight} Kg\n"
+        "\u2022 Depth: ${widget.prd.depth}\n"
+        "\u2022 Width: ${widget.prd.width}\n"
+        "\u2022 Horse Power: ${widget.prd.horsePower}\n"
+        "\u2022 Color: ${widget.prd.color}\n"
+        "\u2022 Conditioner type: ${widget.prd.conditionerType}";
+  }
+
+  String getOtherHomeSpecs() {
+    return "\u2022 Weight: ${widget.prd.weight} Kg\n"
+        "\u2022 Depth: ${widget.prd.depth}\n"
+        "\u2022 Width: ${widget.prd.width}\n"
+        "\u2022 Color: ${widget.prd.color}";
+  }
+
+  String getJewelrySpecs() {
+    return "\u2022 Metal type: ${widget.prd.metalType}\n"
+        "\u2022 Target group: ${widget.prd.targetGroup}";
+  }
+
+  String getFashionSpecs() {
+    return "\u2022 Clothing type: ${widget.prd.clothType}\n"
+        "\u2022 Size: ${widget.prd.ClothSize}";
   }
 
   @override
@@ -545,14 +622,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: Text("\u2022 Brand: ${widget.prd.brand}"),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                            left: 15.0,
-                            right: 60,
-                          ),
-                          child:
-                              Text("\u2022 Quantity: ${widget.prd.quantity}"),
-                        ),
-                        Padding(
                             padding: const EdgeInsets.only(
                               left: 15.0,
                               right: 60,
@@ -563,9 +632,32 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 return getMobileSpecs();
                               else if (widget.prd.type == 'Laptops')
                                 return getLaptopSpecs();
+                              else if (widget.prd.type == 'Cameras')
+                                return getCameraSpecs();
+                              else if (widget.prd.type == 'Fridges')
+                                return getFridgeSpecs();
+                              else if (widget.prd.type == 'TV')
+                                return getTVSpecs();
+                              else if (widget.prd.type == 'AirConditioner')
+                                return getAirConditionerSpecs();
+                              else if (widget.prd.type == 'OtherHome')
+                                return getOtherHomeSpecs();
+                              else if (widget.prd.type == 'OtherPC' || widget.prd.type == 'CameraAccessories')
+                                return getCameraAccessorySpecs();
+                              else if (widget.prd.type == 'Jewelery')
+                                return getJewelrySpecs();
+                              else if (widget.prd.type == 'Printers')
+                                return getPrinterSpecs();
+                              else if (widget.prd.type == 'StorageDevices')
+                                return getStorageDeviceSpecs();
+                              else if (widget.prd.type == 'Projectors')
+                                return getProjectorSpecs();
+                              else if (widget.prd.type == 'Fashion')
+                                return getFashionSpecs();
                               else
-                                return 'other';
-                            })())),
+                                return '';
+                            })()),
+                        ),
                         Divider(
                           thickness: 1,
                           color: Colors.grey,

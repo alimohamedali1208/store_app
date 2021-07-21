@@ -74,8 +74,9 @@ class _jewelryCategoryPageState extends State<jewelryCategoryPage> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description =
-                              product.data()['Description'];
+                          productInfo.description = product.data()['Description'];
+                          productInfo.metalType = product.data()['Metal Type'];
+                          productInfo.targetGroup = product.data()['Target Group'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
                           productInfo.sellerEmail =

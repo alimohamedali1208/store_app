@@ -18,7 +18,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   int ddRatings;
-  String  ddSearchBrand;
+  String  ddSearchBrand, ddClothType, ddSize, ddColor;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +112,151 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                         decoration: BoxDecoration(
                             color: Colors.white70,
                             borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Shirt'),
+                              value: 'Shirt',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Trousers'),
+                              value: 'Trousers',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Jeans'),
+                              value: 'Jeans',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Shorts'),
+                              value: 'Shorts',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Skirt'),
+                              value: 'Skirt',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Dress'),
+                              value: 'Dress',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              if(value=='Other')
+                                value = null;
+                              ddClothType = value;
+                            });
+                          },
+                          hint: Text('Choose Clothe type'),
+                          value: ddClothType,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('S'),
+                              value: 'S',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('M'),
+                              value: 'M',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('L'),
+                              value: 'L',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('XL'),
+                              value: 'XL',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('XLL'),
+                              value: 'XLL',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              if(value=='Other')
+                                value = null;
+                              ddSize = value;
+                            });
+                          },
+                          hint: Text('Choose Size'),
+                          value: ddSize,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: DropdownButton<String>(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600),
+                          items: [
+                            DropdownMenuItem<String>(
+                              child: Text('Black'),
+                              value: 'black',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('White'),
+                              value: 'white',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Red'),
+                              value: 'red',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Blue'),
+                              value: 'blue',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Grey'),
+                              value: 'grey',
+                            ),
+                            DropdownMenuItem<String>(
+                              child: Text('Other'),
+                              value: 'Other',
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            setState(() {
+                              if(value=='Other')
+                                value = null;
+                              ddColor = value;
+                            });
+                          },
+                          hint: Text('Choose Color'),
+                          value: ddColor,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5, right: 5),
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(20)),
                         child: DropdownButton<int>(
                           style: TextStyle(
                               color: Colors.black87,
@@ -172,10 +317,13 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('ProductsCollection')
-                          .doc('Laptops')
+                          .doc('Fashion')
                           .collection('Products')
                           .where('searchIndex', arrayContains: searchString)
                           .where('Brand Name', isEqualTo: ddSearchBrand)
+                          .where('Clothing type', isEqualTo: ddClothType)
+                          .where('Color', isEqualTo: ddColor)
+                          .where('Size', isEqualTo: ddSize)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasError)
@@ -194,6 +342,9 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                                   productInfo.brand = product.data()['Brand Name'];
                                   productInfo.quantity = product.data()['Quantity'];
                                   productInfo.description = product.data()['Description'];
+                                  productInfo.clothType = product.data()['Clothing Type'];
+                                  productInfo.color = product.data()['Color'];
+                                  productInfo.ClothSize = product.data()['Size'];
                                   productInfo.price = product.data()['Price'];
                                   productInfo.newPrice = product.data()['New price'];
                                   productInfo.discount = product.data()['Discount'];

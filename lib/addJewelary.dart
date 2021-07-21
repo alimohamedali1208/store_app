@@ -23,6 +23,7 @@ class _addJewelaryState extends State<addJewelary> {
   String description, name, quantity;
   String ddTargetedGroup = 'Adults';
   String ddMetalType = 'Gold';
+  String ddBrandName = 'Mestige';
   String picURL;
   double size;
   String productID;
@@ -45,6 +46,7 @@ class _addJewelaryState extends State<addJewelary> {
         .add({
       //'Brand Name': ddBrand,
       'Product Name': name,
+      'Brand Name': ddBrandName,
       'CreatedAt': Timestamp.now(),
       'Description': description,
       'Target Group': ddTargetedGroup,
@@ -178,6 +180,9 @@ class _addJewelaryState extends State<addJewelary> {
                           });
                         },
                         items: <String>[
+                          'Male',
+                          'Female',
+                          'Unisex',
                           'Adults',
                           'Children',
                         ].map<DropdownMenuItem<String>>((String value) {
@@ -222,6 +227,41 @@ class _addJewelaryState extends State<addJewelary> {
                           );
                         }).toList(),
                       )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
+                            value: ddMetalType,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Brand",
+                            ),
+                            validator: validateEmpty,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                ddBrandName = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'Mestige',
+                              'Aga',
+                              'Pandora',
+                              'Other',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          )),
                     ),
                   ),
                   Padding(

@@ -33,6 +33,7 @@ class _addMobileState extends State<addMobile> {
   String ddOS = 'IOS';
   String ddRamCapacity = 'GB';
   String ddStorageCapacity = 'GB';
+  String ddColor = 'red';
   String picURL;
   String productID;
   List<String> indexList = [];
@@ -59,9 +60,12 @@ class _addMobileState extends State<addMobile> {
       'Battery': battery,
       'Camera': camera,
       'Storage': storage,
+      'Storage Unit':ddStorageCapacity,
       'Screen Size': screenSize,
       'Memory': memory,
+      'Memory Unit':ddRamCapacity,
       'OS': ddOS,
+      'Color':ddColor,
       'Price': price,
       'New price': '0',
       'Quantity': quantity,
@@ -407,6 +411,43 @@ class _addMobileState extends State<addMobile> {
                       ),
                       child: DropdownButtonHideUnderline(
                           child: DropdownButtonFormField(
+                            value: ddColor,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Color",
+                            ),
+                            validator: validateEmpty,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                ddColor = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'red',
+                              'white',
+                              'blue',
+                              'yellow',
+                              'black',
+                              'Other'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField(
                         value: ddBrand,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
@@ -427,6 +468,7 @@ class _addMobileState extends State<addMobile> {
                           'Sony',
                           'HTC',
                           'Lenovo',
+                          'Oppo',
                           'SICO Technology',
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
