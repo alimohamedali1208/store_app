@@ -30,7 +30,8 @@ class _ResetPasswordState extends State<ResetPassword> {
         _auth.sendPasswordResetEmail(email: email);
         Navigator.pop(context);
       } on Exception catch (e) {
-        Fluttertoast.showToast(msg: 'An error has Ocured while sending your email');
+        Fluttertoast.showToast(
+            msg: 'An error has Occurred while sending your email');
       }
     } else {
       _toggleValidate();
