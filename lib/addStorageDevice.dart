@@ -38,6 +38,7 @@ class _addStorageDeviceState extends State<addStorageDevice> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('StorageDevices')
@@ -88,6 +89,18 @@ class _addStorageDeviceState extends State<addStorageDevice> {
         .update({'TypeStorageDevices': FieldValue.increment(1)});
     if(!UserSeller.typeList.contains("StorageDevices"))
       UserSeller.typeList.add("StorageDevices");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -370,15 +383,7 @@ class _addStorageDeviceState extends State<addStorageDevice> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
 
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

@@ -51,6 +51,7 @@ class _addFashionState extends State<addFashion> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('Fashion')
@@ -102,6 +103,18 @@ class _addFashionState extends State<addFashion> {
         .update({'TypeFashion': FieldValue.increment(1)});
     if(!UserSeller.typeList.contains("Fashion"))
       UserSeller.typeList.add("Fashion");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -423,15 +436,6 @@ class _addFashionState extends State<addFashion> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

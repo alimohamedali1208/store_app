@@ -266,6 +266,7 @@ class _SingleProductState extends State<SingleProduct> {
         //    ======= the leading image section =======
         leading: FadeInImage.assetNetwork(
           placeholder: 'images/PlaceHolder.gif',
+          imageErrorBuilder: (context, url, error) => Image.asset('images/NoImg.png'),
           image: (widget.prd.img == null)
               ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
               : widget.prd.img,

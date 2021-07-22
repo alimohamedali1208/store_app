@@ -36,6 +36,7 @@ class _addElectronicsState extends State<addElectronics> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('OtherElectronics')
@@ -85,6 +86,18 @@ class _addElectronicsState extends State<addElectronics> {
     if (!UserSeller.typeList.contains("OtherElectronics")) {
       UserSeller.typeList.add("OtherElectronics");
     }
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -290,15 +303,6 @@ class _addElectronicsState extends State<addElectronics> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

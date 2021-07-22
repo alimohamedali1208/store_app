@@ -36,55 +36,68 @@ class _addCameraAccessoryState extends State<addCameraAccessory> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore
-        .collection('ProductsCollection')
-        .doc('CameraAccessories')
-        .collection('Products')
-        .add({
-      'Brand Name': brand,
-      'Product Name': name,
-      'CreatedAt': Timestamp.now(),
-      'Description': description,
-      'AccessoryType': ddAccessoryType,
-      'Price': price,
-      'New price': '0',
-      'Quantity': quantity,
-      'Rating': '0',
-      '1 star rate': 0,
-      '2 star rate': 0,
-      '3 star rate': 0,
-      '4 star rate': 0,
-      '5 star rate': 0,
-      'Discount': 'false',
-      'Discount percent': '0',
-      'SellerID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'CameraAccessories',
-      'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/CameraAccessories/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+    if (_image!=null) {
       _firestore
           .collection('ProductsCollection')
           .doc('CameraAccessories')
           .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
-    });
-    _firestore
-        .collection('Sellers')
-        .doc(_auth.currentUser.uid)
-        .update({'TypeCameraAccessories': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("CameraAccessories"))
-      UserSeller.typeList.add("CameraAccessories");
+          .add({
+        'Brand Name': brand,
+        'Product Name': name,
+        'CreatedAt': Timestamp.now(),
+        'Description': description,
+        'AccessoryType': ddAccessoryType,
+        'Price': price,
+        'New price': '0',
+        'Quantity': quantity,
+        'Rating': '0',
+        '1 star rate': 0,
+        '2 star rate': 0,
+        '3 star rate': 0,
+        '4 star rate': 0,
+        '5 star rate': 0,
+        'Discount': 'false',
+        'Discount percent': '0',
+        'SellerID': _auth.currentUser.uid,
+        'Seller Email': _auth.currentUser.email,
+        'type': 'CameraAccessories',
+        'searchIndex': indexList
+      }).then((value) async {
+        productID = value.id;
+        Reference firebaseStorageRef = FirebaseStorage.instance
+            .ref()
+            .child('ProductImage/CameraAccessories/$productID/$name');
+        UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+        taskSnapshot.ref.getDownloadURL().then(
+              (value) => print('done $value'),
+            );
+        await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+        _firestore
+            .collection('ProductsCollection')
+            .doc('CameraAccessories')
+            .collection('Products')
+            .doc(productID)
+            .update({'imgURL': picURL});
+      });
+      _firestore
+          .collection('Sellers')
+          .doc(_auth.currentUser.uid)
+          .update({'TypeCameraAccessories': FieldValue.increment(1)});
+      if(!UserSeller.typeList.contains("CameraAccessories"))
+        UserSeller.typeList.add("CameraAccessories");
+      Fluttertoast.showToast(
+          msg: "Product has been added",
+          toastLength: Toast.LENGTH_SHORT,
+          backgroundColor: Colors.black54,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -299,16 +312,6 @@ class _addCameraAccessoryState extends State<addCameraAccessory> {
                   for (j; j < name.length + 1; j++)
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
-
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

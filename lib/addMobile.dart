@@ -48,6 +48,7 @@ class _addMobileState extends State<addMobile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('Mobiles')
@@ -105,6 +106,18 @@ class _addMobileState extends State<addMobile> {
         .update({'TypeMobiles': FieldValue.increment(1)});
     if (!UserSeller.typeList.contains("Mobiles"))
       UserSeller.typeList.add("Mobiles");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -527,15 +540,6 @@ class _addMobileState extends State<addMobile> {
 
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

@@ -39,59 +39,72 @@ class _addCameraState extends State<addCamera> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    _firestore
-        .collection('ProductsCollection')
-        .doc('Cameras')
-        .collection('Products')
-        .add({
-      'Brand Name': ddBrand,
-      'Product Name': name,
-      'CreatedAt': Timestamp.now(),
-      'Description': description,
-      'Mega Pixel': megaPixel,
-      'Optical Zoom': opticalZoom,
-      'Screen Size': screenSize,
-      'Screen Type': ddDisplayType,
-      'Camera Type': ddDigitalCameraType,
-      'Price': price,
-      'New price': '0',
-      'Quantity': quantity,
-      'Rating': '0',
-      '1 star rate': 0,
-      '2 star rate': 0,
-      '3 star rate': 0,
-      '4 star rate': 0,
-      '5 star rate': 0,
-      'Discount': 'false',
-      'Discount percent': '0',
-      'Seller ID': _auth.currentUser.uid,
-      'Seller Email': _auth.currentUser.email,
-      'type': 'Cameras',
-      'searchIndex': indexList
-    }).then((value) async {
-      productID = value.id;
-      Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('ProductImage/Cameras/$productID/$name');
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print('done $value'),
-          );
-      await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+    if (_image!=null) {
       _firestore
           .collection('ProductsCollection')
           .doc('Cameras')
           .collection('Products')
-          .doc(productID)
-          .update({'imgURL': picURL});
-    });
-    _firestore
-        .collection('Sellers')
-        .doc(_auth.currentUser.uid)
-        .update({'TypeCameras': FieldValue.increment(1)});
-    if(!UserSeller.typeList.contains("Cameras"))
-      UserSeller.typeList.add("Cameras");
+          .add({
+        'Brand Name': ddBrand,
+        'Product Name': name,
+        'CreatedAt': Timestamp.now(),
+        'Description': description,
+        'Mega Pixel': megaPixel,
+        'Optical Zoom': opticalZoom,
+        'Screen Size': screenSize,
+        'Screen Type': ddDisplayType,
+        'Camera Type': ddDigitalCameraType,
+        'Price': price,
+        'New price': '0',
+        'Quantity': quantity,
+        'Rating': '0',
+        '1 star rate': 0,
+        '2 star rate': 0,
+        '3 star rate': 0,
+        '4 star rate': 0,
+        '5 star rate': 0,
+        'Discount': 'false',
+        'Discount percent': '0',
+        'Seller ID': _auth.currentUser.uid,
+        'Seller Email': _auth.currentUser.email,
+        'type': 'Cameras',
+        'searchIndex': indexList
+      }).then((value) async {
+        productID = value.id;
+        Reference firebaseStorageRef = FirebaseStorage.instance
+            .ref()
+            .child('ProductImage/Cameras/$productID/$name');
+        UploadTask uploadTask = firebaseStorageRef.putFile(_image);
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+        taskSnapshot.ref.getDownloadURL().then(
+              (value) => print('done $value'),
+            );
+        await taskSnapshot.ref.getDownloadURL().then((value) => picURL = value);
+        _firestore
+            .collection('ProductsCollection')
+            .doc('Cameras')
+            .collection('Products')
+            .doc(productID)
+            .update({'imgURL': picURL});
+      });
+      _firestore
+          .collection('Sellers')
+          .doc(_auth.currentUser.uid)
+          .update({'TypeCameras': FieldValue.increment(1)});
+      if(!UserSeller.typeList.contains("Cameras"))
+        UserSeller.typeList.add("Cameras");
+      Fluttertoast.showToast(
+          msg: "Product has been added",
+          toastLength: Toast.LENGTH_SHORT,
+          backgroundColor: Colors.black54,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -423,15 +436,6 @@ class _addCameraState extends State<addCamera> {
 
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

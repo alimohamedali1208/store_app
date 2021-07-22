@@ -38,6 +38,7 @@ class _addFridgeState extends State<addFridge> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('Fridges')
@@ -92,6 +93,18 @@ class _addFridgeState extends State<addFridge> {
         .update({'TypeFridges': FieldValue.increment(1)});
     if (!UserSeller.typeList.contains("Fridges"))
       UserSeller.typeList.add("Fridges");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -446,15 +459,6 @@ class _addFridgeState extends State<addFridge> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }

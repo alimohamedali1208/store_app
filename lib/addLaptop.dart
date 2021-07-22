@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'UserSeller.dart';
@@ -49,6 +50,7 @@ class _addLaptopState extends State<addLaptop> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('Laptops')
@@ -107,6 +109,18 @@ class _addLaptopState extends State<addLaptop> {
     if (!UserSeller.typeList.contains("Laptops")) {
       UserSeller.typeList.add("Laptops");
     }
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -540,23 +554,7 @@ class _addLaptopState extends State<addLaptop> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   print(indexList);
                   uploadImageToFirebase(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return new AlertDialog(
-                          title: new Text("Upload"),
-                          content: new Text(
-                              "Your product is being uploaded right now"),
-                          actions: <Widget>[
-                            new MaterialButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(context);
-                              },
-                              child: new Text("Close"),
-                            )
-                          ],
-                        );
-                      });
+
                 } else {
                   _toggleValidate();
                 }

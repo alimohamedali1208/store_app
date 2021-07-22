@@ -41,6 +41,7 @@ class _addTVState extends State<addTV> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('TV')
@@ -95,7 +96,20 @@ class _addTVState extends State<addTV> {
         .collection('Sellers')
         .doc(_auth.currentUser.uid)
         .update({'TypeTV': FieldValue.increment(1)});
-    if (!UserSeller.typeList.contains("TV")) UserSeller.typeList.add("TV");
+    if (!UserSeller.typeList.contains("TV"))
+      UserSeller.typeList.add("TV");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate

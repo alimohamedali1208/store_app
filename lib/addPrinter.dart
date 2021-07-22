@@ -39,6 +39,7 @@ class _addPrinterState extends State<addPrinter> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    if(_image!=null){
     _firestore
         .collection('ProductsCollection')
         .doc('Printers')
@@ -90,6 +91,18 @@ class _addPrinterState extends State<addPrinter> {
         .update({'TypePrinters': FieldValue.increment(1)});
     if(!UserSeller.typeList.contains("Printers"))
       UserSeller.typeList.add("Printers");
+    Fluttertoast.showToast(
+        msg: "Product has been added",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black54,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    Navigator.pop(context);
+    }
+    else
+      Fluttertoast.showToast(msg: "Please add an image to continue");
   }
 
   //toggling auto validate
@@ -399,15 +412,6 @@ class _addPrinterState extends State<addPrinter> {
                     indexList.add(name.substring(0, j).toLowerCase());
                   uploadImageToFirebase(context);
 
-                  Fluttertoast.showToast(
-                      msg: "Product has been added",
-                      toastLength: Toast.LENGTH_SHORT,
-                      backgroundColor: Colors.black54,
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-
-                  Navigator.pop(context);
                 } else {
                   _toggleValidate();
                 }
