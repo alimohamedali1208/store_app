@@ -138,13 +138,16 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description = product.data()['Description'];
+                          productInfo.description =
+                              product.data()['Description'];
                           productInfo.color = product.data()['Color'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail = product.data()['Seller Email'];
+                          productInfo.sellerEmail =
+                              product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.discountPercentage =
+                              product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -156,30 +159,42 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                           //now stuff that's specific for every product type
                           if (productInfo.type == 'Mobiles') {
                             productInfo.storage = product.data()['Storage'];
-                            productInfo.storageUnit = product.data()['Storage Unit'];
-                            productInfo.screenSize = product.data()['Screen Size'];
+                            productInfo.storageUnit =
+                                product.data()['Storage Unit'];
+                            productInfo.screenSize =
+                                product.data()['Screen Size'];
                             productInfo.battery = product.data()['Battery'];
                             productInfo.memory = product.data()['Memory'];
-                            productInfo.memoryUnit = product.data()['Memory Unit'];
+                            productInfo.memoryUnit =
+                                product.data()['Memory Unit'];
                             productInfo.camera = product.data()['Camera'];
                             productInfo.os = product.data()['OS'];
                           } else if (productInfo.type == 'Laptops') {
                             productInfo.storage = product.data()['Storage'];
-                            productInfo.storageUnit = product.data()['Storage Unit'];
-                            productInfo.screenSize = product.data()['Screen Size'];
+                            productInfo.storageUnit =
+                                product.data()['Storage Unit'];
+                            productInfo.screenSize =
+                                product.data()['Screen Size'];
                             productInfo.battery = product.data()['Battery'];
                             productInfo.memory = product.data()['Memory'];
                             productInfo.cpu = product.data()['CPU'];
                             productInfo.gpu = product.data()['GPU'];
                             productInfo.os = product.data()['OS'];
                           } else if (productInfo.type == 'Cameras') {
-                            productInfo.megapixel = product.data()['Mega Pixel'];
-                            productInfo.screenType = product.data()['Screen Type'];
-                            productInfo.opticalzoom = product.data()['Optical Zoom'];
-                            productInfo.cameratype = product.data()['Camera Type'];
-                            productInfo.screenSize = product.data()['Screen Size'];
-                          }else if (productInfo.type == 'CameraAccessories' || productInfo.type == 'OtherPC') {
-                            productInfo.accessoryType = product.data()['AccessoryType'];
+                            productInfo.megapixel =
+                                product.data()['Mega Pixel'];
+                            productInfo.screenType =
+                                product.data()['Screen Type'];
+                            productInfo.opticalzoom =
+                                product.data()['Optical Zoom'];
+                            productInfo.cameratype =
+                                product.data()['Camera Type'];
+                            productInfo.screenSize =
+                                product.data()['Screen Size'];
+                          } else if (productInfo.type == 'CameraAccessories' ||
+                              productInfo.type == 'OtherPC') {
+                            productInfo.accessoryType =
+                                product.data()['AccessoryType'];
                           } else if (productInfo.type == 'Fridges') {
                             productInfo.weight = product.data()['Weight'];
                             productInfo.width = product.data()['Width'];
@@ -190,39 +205,53 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                             productInfo.weight = product.data()['Weight'];
                             productInfo.width = product.data()['Width'];
                             productInfo.depth = product.data()['Depth'];
-                            productInfo.conditionerType = product.data()['Conditioner Type'];
-                            productInfo.horsePower = product.data()['Horse Power'];
+                            productInfo.conditionerType =
+                                product.data()['Conditioner Type'];
+                            productInfo.horsePower =
+                                product.data()['Horse Power'];
                           } else if (productInfo.type == 'TV') {
                             productInfo.weight = product.data()['Weight'];
                             productInfo.width = product.data()['Width'];
                             productInfo.depth = product.data()['Depth'];
-                            productInfo.screenSize = product.data()['Screen Size'];
-                            productInfo.screenType = product.data()['Screen Type'];
-                            productInfo.screenRes = product.data()['Screen Resolution'];
-                            productInfo.tvType = product.data()['Category Type'];
+                            productInfo.screenSize =
+                                product.data()['Screen Size'];
+                            productInfo.screenType =
+                                product.data()['Screen Type'];
+                            productInfo.screenRes =
+                                product.data()['Screen Resolution'];
+                            productInfo.tvType =
+                                product.data()['Category Type'];
                           } else if (productInfo.type == 'OtherHome') {
                             productInfo.weight = product.data()['Weight'];
                             productInfo.width = product.data()['Width'];
                             productInfo.depth = product.data()['Depth'];
                             productInfo.height = product.data()['Height'];
                           } else if (productInfo.type == 'Jewelry') {
-                            productInfo.metalType = product.data()['Metal Type'];
-                            productInfo.targetGroup = product.data()['Target Group'];
-                          }else if (productInfo.type == 'Projectors') {
-                            productInfo.projectorType = product.data()['Projector Type'];
-                          }else if (productInfo.type == 'Printers') {
-                            productInfo.printerType = product.data()['Printer Type'];
-                            productInfo.paperSize = product.data()['Paper Type'];
-                          }else if (productInfo.type == 'StorageDevices') {
-                            productInfo.storageType = product.data()['Storage Type'];
-                            productInfo.storageUnit = product.data()['Capacity'];
-                          }else if (productInfo.type == 'Fashion') {
-                            productInfo.clothType = product.data()['Clothing Type'];
+                            productInfo.metalType =
+                                product.data()['Metal Type'];
+                            productInfo.targetGroup =
+                                product.data()['Target Group'];
+                          } else if (productInfo.type == 'Projectors') {
+                            productInfo.projectorType =
+                                product.data()['Projector Type'];
+                          } else if (productInfo.type == 'Printers') {
+                            productInfo.printerType =
+                                product.data()['Printer Type'];
+                            productInfo.paperSize =
+                                product.data()['Paper Type'];
+                          } else if (productInfo.type == 'StorageDevices') {
+                            productInfo.storageType =
+                                product.data()['Storage Type'];
+                            productInfo.storageUnit =
+                                product.data()['Capacity'];
+                          } else if (productInfo.type == 'Fashion') {
+                            productInfo.clothType =
+                                product.data()['Clothing Type'];
                             productInfo.ClothSize = product.data()['Size'];
                           }
-                            productview = SingleProduct(
-                              prd: productInfo,
-                            );
+                          productview = SingleProduct(
+                            prd: productInfo,
+                          );
                           productsview.add(productview);
                         }
                         return ListView(
@@ -243,8 +272,7 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
 class SingleProduct extends StatefulWidget {
   ProductClass prd;
 
-  SingleProduct(
-      {this.prd});
+  SingleProduct({this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -258,10 +286,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -285,7 +310,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -316,10 +342,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -347,7 +370,8 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -391,20 +415,19 @@ class _SingleProductState extends State<SingleProduct> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
         onTap: () {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => ProductDetails(
-                  // passing the values via constructor
-                  prd: widget.prd,
-                ),
+          Navigator.of(context).push(
+            new MaterialPageRoute(
+              builder: (context) => ProductDetails(
+                // passing the values via constructor
+                prd: widget.prd,
               ),
-            );
+            ),
+          );
         },
         child: ListTile(
           //    ======= the leading image section =======
@@ -464,27 +487,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          addToFav();
-                        });
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

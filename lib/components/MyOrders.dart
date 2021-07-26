@@ -10,7 +10,6 @@ class myOrders extends StatefulWidget {
 
 class _myOrdersState extends State<myOrders> {
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +41,7 @@ class _myOrdersState extends State<myOrders> {
                       .doc(_auth.currentUser.uid)
                       .collection('orders')
                       .orderBy('CreatedAt', descending: true)
+                      .limit(20)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {

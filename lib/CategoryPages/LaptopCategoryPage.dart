@@ -90,7 +90,8 @@ class _laptopCategorypageState extends State<laptopCategorypage> {
                           productInfo.rate5star = product.data()['5 star rate'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.storage = product.data()['Storage'];
-                          productInfo.storageUnit = product.data()['Storage Unit'];
+                          productInfo.storageUnit =
+                              product.data()['Storage Unit'];
                           productInfo.screenSize = product.data()['ScreenSize'];
                           productInfo.battery = product.data()['Battery'];
                           productInfo.memory = product.data()['Memory'];
@@ -160,7 +161,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -336,25 +338,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        addToFav();
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

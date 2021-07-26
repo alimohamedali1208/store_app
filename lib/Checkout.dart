@@ -218,6 +218,16 @@ class _CheckoutState extends State<Checkout> {
     print('inside function');
     await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').get().then((value) {
       value.docs.forEach((element) async{
+        String productQuantity, orderedQuantity;
+        int newQuantity;
+        await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('cart').doc(element.id).get().then((value) {
+          productQuantity = value.data()['Product Quantity'];
+          orderedQuantity = value.data()['Ordered Quantity'];
+          newQuantity = int.parse(productQuantity) - int.parse(orderedQuantity);
+          print(newQuantity);
+        });
+        await _firestore.collection('ProductsCollection').doc(element.data()['type']).collection('Products').doc(element.id).update(
+            {'Quantity': newQuantity.toString()});
         await _firestore.collection('Customers').doc(_auth.currentUser.uid).collection('orders').add({'ProductID': element.id,
           'CustomerID': _auth.currentUser.uid,
           'CreatedAt': Timestamp.now(),

@@ -73,12 +73,15 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description = product.data()['Description'];
+                          productInfo.description =
+                              product.data()['Description'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail = product.data()['Seller Email'];
+                          productInfo.sellerEmail =
+                              product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.discountPercentage =
+                              product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -87,11 +90,14 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                           productInfo.rate5star = product.data()['5 star rate'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.storage = product.data()['Storage'];
-                          productInfo.storageUnit = product.data()['Storage Unit'];
-                          productInfo.screenSize = product.data()['Screen Size'];
+                          productInfo.storageUnit =
+                              product.data()['Storage Unit'];
+                          productInfo.screenSize =
+                              product.data()['Screen Size'];
                           productInfo.battery = product.data()['Battery'];
                           productInfo.memory = product.data()['Memory'];
-                          productInfo.memoryUnit = product.data()['Memory Unit'];
+                          productInfo.memoryUnit =
+                              product.data()['Memory Unit'];
                           productInfo.camera = product.data()['Camera'];
                           productInfo.os = product.data()['OS'];
                           productInfo.id = product.id;
@@ -157,7 +163,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -333,25 +340,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        addToFav();
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:readmore/readmore.dart';
 import 'package:store_app/UserCustomer.dart';
+import 'package:store_app/components/quantitySlider.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
@@ -28,7 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   //int rate;
 
-  Future addToCart() async {
+  Future addToCart(double quantity) async {
     setState(() {
       showSpinner = true;
     });
@@ -57,7 +58,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '${quantity.toInt()}',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -75,7 +77,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           await _firestore
               .collection('Customers')
               .doc(_auth.currentUser.uid)
-              .update({'Total': FieldValue.increment(price)});
+              .update({'Total': FieldValue.increment(price * quantity)});
           print('Product added to cart');
           //remove product from favorites
           removeFromFav();
@@ -118,7 +120,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -303,14 +306,13 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   String getPrinterSpecs() {
     return "\u2022 Paper Size: ${widget.prd.paperSize}\n"
-      "\u2022 Printer Type: ${widget.prd.printerType}";
+        "\u2022 Printer Type: ${widget.prd.printerType}";
   }
 
   String getStorageDeviceSpecs() {
     return "\u2022 Storage Type: ${widget.prd.storageType}\n"
         "\u2022 Capacity: ${widget.prd.storageUnit}";
   }
-
 
   String getFridgeSpecs() {
     return "\u2022 Weight: ${widget.prd.weight} Kg\n"
@@ -363,7 +365,27 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          addToCart();
+          if (customer.firstName == "temp") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => login()));
+            Fluttertoast.showToast(msg: "You need to sign in first");
+          } else {
+            if (widget.prd.quantity == '0') {
+              Fluttertoast.showToast(msg: "Out of stock");
+            } else {
+              final orderedQuantity = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return sliderBoy(prd: widget.prd);
+                  });
+              print(orderedQuantity);
+              if (orderedQuantity == null) {
+              } else if (orderedQuantity == 0) {
+                Fluttertoast.showToast(msg: "Choose more than 0 quantity");
+              } else
+                addToCart(orderedQuantity);
+            }
+          }
         },
         isExtended: true,
         backgroundColor: Color(0xFF731800),
@@ -447,7 +469,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                             tooltip: 'Add to favorites',
                             color: Colors.red,
                             onPressed: () {
-                              addToFav();
+                              if (widget.prd.quantity == '0') {
+                                Fluttertoast.showToast(msg: "Out of stock");
+                              } else {
+                                addToFav();
+                              }
                             }),
                       ),
                     ),
@@ -566,11 +592,36 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0, top: 10),
-                          child: Text(
-                            "Description",
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
+                          padding: const EdgeInsets.only(left: 2.0, top: 2),
+                          child: (widget.prd.quantity == '0')
+                              ? Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          color: Colors.red[600],
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Text(
+                                        "Out of stock",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 7),
+                                      child: Text(
+                                        "Description",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  "Description",
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -622,41 +673,51 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: Text("\u2022 Brand: ${widget.prd.brand}"),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(
-                              left: 15.0,
-                              right: 60,
-                              bottom: 10,
-                            ),
-                            child: Text((() {
-                              if (widget.prd.type == 'Mobiles')
-                                return getMobileSpecs();
-                              else if (widget.prd.type == 'Laptops')
-                                return getLaptopSpecs();
-                              else if (widget.prd.type == 'Cameras')
-                                return getCameraSpecs();
-                              else if (widget.prd.type == 'Fridges')
-                                return getFridgeSpecs();
-                              else if (widget.prd.type == 'TV')
-                                return getTVSpecs();
-                              else if (widget.prd.type == 'AirConditioner')
-                                return getAirConditionerSpecs();
-                              else if (widget.prd.type == 'OtherHome')
-                                return getOtherHomeSpecs();
-                              else if (widget.prd.type == 'OtherPC' || widget.prd.type == 'CameraAccessories')
-                                return getCameraAccessorySpecs();
-                              else if (widget.prd.type == 'Jewelery')
-                                return getJewelrySpecs();
-                              else if (widget.prd.type == 'Printers')
-                                return getPrinterSpecs();
-                              else if (widget.prd.type == 'StorageDevices')
-                                return getStorageDeviceSpecs();
-                              else if (widget.prd.type == 'Projectors')
-                                return getProjectorSpecs();
-                              else if (widget.prd.type == 'Fashion')
-                                return getFashionSpecs();
-                              else
-                                return '';
-                            })()),
+                          padding: const EdgeInsets.only(
+                            left: 15.0,
+                            right: 60,
+                            top: 10,
+                          ),
+                          child:
+                              Text("\u2022 Quantity: ${widget.prd.quantity}"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15.0,
+                            right: 60,
+                            bottom: 10,
+                          ),
+                          child: Text((() {
+                            if (widget.prd.type == 'Mobiles')
+                              return getMobileSpecs();
+                            else if (widget.prd.type == 'Laptops')
+                              return getLaptopSpecs();
+                            else if (widget.prd.type == 'Cameras')
+                              return getCameraSpecs();
+                            else if (widget.prd.type == 'Fridges')
+                              return getFridgeSpecs();
+                            else if (widget.prd.type == 'TV')
+                              return getTVSpecs();
+                            else if (widget.prd.type == 'AirConditioner')
+                              return getAirConditionerSpecs();
+                            else if (widget.prd.type == 'OtherHome')
+                              return getOtherHomeSpecs();
+                            else if (widget.prd.type == 'OtherPC' ||
+                                widget.prd.type == 'CameraAccessories')
+                              return getCameraAccessorySpecs();
+                            else if (widget.prd.type == 'Jewelery')
+                              return getJewelrySpecs();
+                            else if (widget.prd.type == 'Printers')
+                              return getPrinterSpecs();
+                            else if (widget.prd.type == 'StorageDevices')
+                              return getStorageDeviceSpecs();
+                            else if (widget.prd.type == 'Projectors')
+                              return getProjectorSpecs();
+                            else if (widget.prd.type == 'Fashion')
+                              return getFashionSpecs();
+                            else
+                              return '';
+                          })()),
                         ),
                         Divider(
                           thickness: 1,
@@ -696,8 +757,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 widget.prd.rate5star++;
                               }
                             }
-                              updateProductRating(rating.toInt());
-
+                            updateProductRating(rating.toInt());
                           },
                         ),
                         SizedBox(

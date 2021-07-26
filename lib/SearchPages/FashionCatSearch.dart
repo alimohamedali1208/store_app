@@ -18,7 +18,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
   final database = FirebaseFirestore.instance;
   String searchString = '';
   int ddRatings;
-  String  ddSearchBrand, ddClothType, ddSize, ddColor;
+  String ddSearchBrand, ddClothType, ddSize, ddColor;
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +97,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              if(value=='Other')
-                                value = null;
+                              if (value == 'Other') value = null;
                               ddSearchBrand = value;
                             });
                           },
@@ -148,8 +147,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              if(value=='Other')
-                                value = null;
+                              if (value == 'Other') value = null;
                               ddClothType = value;
                             });
                           },
@@ -195,8 +193,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              if(value=='Other')
-                                value = null;
+                              if (value == 'Other') value = null;
                               ddSize = value;
                             });
                           },
@@ -242,8 +239,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                           ],
                           onChanged: (String value) {
                             setState(() {
-                              if(value=='Other')
-                                value = null;
+                              if (value == 'Other') value = null;
                               ddColor = value;
                             });
                           },
@@ -289,8 +285,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
                           ],
                           onChanged: (int value) {
                             setState(() {
-                              if(value==0)
-                                value = null;
+                              if (value == 0) value = null;
                               ddRatings = value;
                             });
                           },
@@ -315,57 +310,69 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
               children: [
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('ProductsCollection')
-                          .doc('Fashion')
-                          .collection('Products')
-                          .where('searchIndex', arrayContains: searchString)
-                          .where('Brand Name', isEqualTo: ddSearchBrand)
-                          .where('Clothing type', isEqualTo: ddClothType)
-                          .where('Color', isEqualTo: ddColor)
-                          .where('Size', isEqualTo: ddSize)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError)
-                          return Text('Error: ${snapshot.error}');
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                          default:
-                            final products = snapshot.data.docs;
-                            List<SingleProduct> productsview = [];
-                            for (var product in products) {
-                              ProductClass productInfo = ProductClass();
-                              productInfo.rate = product.data()['Rating'];
-                                if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
-                                  productInfo.name = product.data()['Product Name'];
-                                  productInfo.brand = product.data()['Brand Name'];
-                                  productInfo.quantity = product.data()['Quantity'];
-                                  productInfo.description = product.data()['Description'];
-                                  productInfo.clothType = product.data()['Clothing Type'];
-                                  productInfo.color = product.data()['Color'];
-                                  productInfo.ClothSize = product.data()['Size'];
-                                  productInfo.price = product.data()['Price'];
-                                  productInfo.newPrice = product.data()['New price'];
-                                  productInfo.discount = product.data()['Discount'];
-                                  productInfo.discountPercentage = product.data()['Discount percent'];
-                                  productInfo.rate1star = product.data()['1 star rate'];
-                                  productInfo.rate2star = product.data()['2 star rate'];
-                                  productInfo.rate3star = product.data()['3 star rate'];
-                                  productInfo.rate4star = product.data()['4 star rate'];
-                                  productInfo.rate5star = product.data()['5 star rate'];
-                                  productInfo.img = product.data()['imgURL'];
-                                  productInfo.type = product.data()['type'];
-                                  productInfo.sellerEmail = product.data()['Seller Email'];
-                                  productInfo.id = product.id;
-                                  final productview = SingleProduct(prd: productInfo,);
-                                  productsview.add(productview);
-                                }
-                            }
-                            return ListView(children: productsview);
+                  stream: FirebaseFirestore.instance
+                      .collection('ProductsCollection')
+                      .doc('Fashion')
+                      .collection('Products')
+                      .where('searchIndex', arrayContains: searchString)
+                      .where('Brand Name', isEqualTo: ddSearchBrand)
+                      .where('Clothing type', isEqualTo: ddClothType)
+                      .where('Color', isEqualTo: ddColor)
+                      .where('Size', isEqualTo: ddSize)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError)
+                      return Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        final products = snapshot.data.docs;
+                        List<SingleProduct> productsview = [];
+                        for (var product in products) {
+                          ProductClass productInfo = ProductClass();
+                          productInfo.rate = product.data()['Rating'];
+                          if (ddRatings == null ||
+                              double.parse(productInfo.rate) >= ddRatings) {
+                            productInfo.name = product.data()['Product Name'];
+                            productInfo.brand = product.data()['Brand Name'];
+                            productInfo.quantity = product.data()['Quantity'];
+                            productInfo.description =
+                                product.data()['Description'];
+                            productInfo.clothType =
+                                product.data()['Clothing Type'];
+                            productInfo.color = product.data()['Color'];
+                            productInfo.ClothSize = product.data()['Size'];
+                            productInfo.price = product.data()['Price'];
+                            productInfo.newPrice = product.data()['New price'];
+                            productInfo.discount = product.data()['Discount'];
+                            productInfo.discountPercentage =
+                                product.data()['Discount percent'];
+                            productInfo.rate1star =
+                                product.data()['1 star rate'];
+                            productInfo.rate2star =
+                                product.data()['2 star rate'];
+                            productInfo.rate3star =
+                                product.data()['3 star rate'];
+                            productInfo.rate4star =
+                                product.data()['4 star rate'];
+                            productInfo.rate5star =
+                                product.data()['5 star rate'];
+                            productInfo.img = product.data()['imgURL'];
+                            productInfo.type = product.data()['type'];
+                            productInfo.sellerEmail =
+                                product.data()['Seller Email'];
+                            productInfo.id = product.id;
+                            final productview = SingleProduct(
+                              prd: productInfo,
+                            );
+                            productsview.add(productview);
+                          }
                         }
-                      },
-                    )),
+                        return ListView(children: productsview);
+                    }
+                  },
+                )),
               ],
             ),
           ),
@@ -378,8 +385,7 @@ class _fashionCatSearchState extends State<fashionCatSearch> {
 class SingleProduct extends StatefulWidget {
   final ProductClass prd;
 
-  SingleProduct(
-      {this.prd});
+  SingleProduct({this.prd});
 
   @override
   _SingleProductState createState() => _SingleProductState();
@@ -393,10 +399,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -421,7 +424,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -452,10 +456,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -484,7 +485,8 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -500,7 +502,6 @@ class _SingleProductState extends State<SingleProduct> {
       });
     }
   }
-
 
   Future removeFromFav() async {
     if (customer.firstName == "temp") {
@@ -536,7 +537,9 @@ class _SingleProductState extends State<SingleProduct> {
         onTap: () {
           Navigator.of(context).push(
             new MaterialPageRoute(
-              builder: (context) => ProductDetails(prd: widget.prd,),
+              builder: (context) => ProductDetails(
+                prd: widget.prd,
+              ),
             ),
           );
         },
@@ -558,26 +561,26 @@ class _SingleProductState extends State<SingleProduct> {
                 alignment: Alignment.topLeft,
                 child: (widget.prd.discount == 'false')
                     ? Text(
-                  "${widget.prd.price} EGP",
-                  style: TextStyle(color: Colors.red),
-                )
+                        "${widget.prd.price} EGP",
+                        style: TextStyle(color: Colors.red),
+                      )
                     : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "${widget.prd.price}",
-                      style: TextStyle(
-                          decoration: TextDecoration.lineThrough),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "${widget.prd.newPrice} EGP",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${widget.prd.price}",
+                            style: TextStyle(
+                                decoration: TextDecoration.lineThrough),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${widget.prd.newPrice} EGP",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -598,30 +601,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          if (isPressed)
-                            isPressed = false;
-                          else
-                            isPressed = true;
-                        });
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

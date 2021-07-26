@@ -107,7 +107,7 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                             setState(() {
                               ddSearchBrand = null;
                               ddColor = null;
-                              ddMaterial =null;
+                              ddMaterial = null;
                               ddHorsePower = null;
                               ddTvType = null;
                               ddScreenRes = null;
@@ -291,8 +291,7 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                                                   ddTvType = value;
                                                 });
                                               },
-                                              hint: Text(
-                                                  'Choose TV type'),
+                                              hint: Text('Choose TV type'),
                                               value: ddTvType,
                                             ),
                                           ),
@@ -639,40 +638,73 @@ class _homeAppliancesCatSearchState extends State<homeAppliancesCatSearch> {
                           productInfo.rate = product.data()['Rating'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.tvType = product.data()['Category Type'];
-                          productInfo.screenSize = product.data()['Screen Size'];
-                          productInfo.screenRes = product.data()['Screen Resolution'];
+                          productInfo.screenSize =
+                              product.data()['Screen Size'];
+                          productInfo.screenRes =
+                              product.data()['Screen Resolution'];
                           productInfo.material = product.data()['Material'];
-                          productInfo.horsePower = product.data()['Horse Power'];
+                          productInfo.horsePower =
+                              product.data()['Horse Power'];
                           productInfo.color = product.data()['Color'];
                           if (ddColor == null || productInfo.color == ddColor) {
-                            if (ddHorsePower == null || productInfo.horsePower == ddHorsePower) {
-                              if (ddMaterial == null || productInfo.material == ddMaterial) {
-                                if (ddScreenRes == null || productInfo.screenRes == ddScreenRes) {
-                                  if (ddScreenSize == null || productInfo.screenSize == ddScreenSize) {
-                                    if (ddTvType == null || productInfo.tvType == ddTvType) {
-                                      if (ddSearchBrand == null ||productInfo.brand == ddSearchBrand) {
-                                        if (ddRatings == null ||double.parse(productInfo.rate) >= ddRatings) {
-                                          productInfo.name = product.data()['Product Name'];
-                                          productInfo.quantity = product.data()['Quantity'];
-                                          productInfo.description =product.data()['Description'];
-                                          productInfo.weight = product.data()['Weight'];
-                                          productInfo.width = product.data()['Width'];
-                                          productInfo.depth = product.data()['Depth'];
-                                          productInfo.height = product.data()['Height'];
-                                          productInfo.screenType = product.data()['Screen Type'];
-                                          productInfo.conditionerType = product.data()['Conditioner Type'];
-                                          productInfo.price = product.data()['Price'];
-                                          productInfo.newPrice = product.data()['New price'];
-                                          productInfo.discount = product.data()['Discount'];
-                                          productInfo.discountPercentage =product.data()['Discount percent'];
-                                          productInfo.rate1star = product.data()['1 star rate'];
-                                          productInfo.rate2star = product.data()['2 star rate'];
-                                          productInfo.rate3star = product.data()['3 star rate'];
-                                          productInfo.rate4star = product.data()['4 star rate'];
-                                          productInfo.rate5star = product.data()['5 star rate'];
-                                          productInfo.img = product.data()['imgURL'];
-                                          productInfo.type = product.data()['type'];
-                                          productInfo.sellerEmail = product.data()['Seller Email'];
+                            if (ddHorsePower == null ||
+                                productInfo.horsePower == ddHorsePower) {
+                              if (ddMaterial == null ||
+                                  productInfo.material == ddMaterial) {
+                                if (ddScreenRes == null ||
+                                    productInfo.screenRes == ddScreenRes) {
+                                  if (ddScreenSize == null ||
+                                      productInfo.screenSize == ddScreenSize) {
+                                    if (ddTvType == null ||
+                                        productInfo.tvType == ddTvType) {
+                                      if (ddSearchBrand == null ||
+                                          productInfo.brand == ddSearchBrand) {
+                                        if (ddRatings == null ||
+                                            double.parse(productInfo.rate) >=
+                                                ddRatings) {
+                                          productInfo.name =
+                                              product.data()['Product Name'];
+                                          productInfo.quantity =
+                                              product.data()['Quantity'];
+                                          productInfo.description =
+                                              product.data()['Description'];
+                                          productInfo.weight =
+                                              product.data()['Weight'];
+                                          productInfo.width =
+                                              product.data()['Width'];
+                                          productInfo.depth =
+                                              product.data()['Depth'];
+                                          productInfo.height =
+                                              product.data()['Height'];
+                                          productInfo.screenType =
+                                              product.data()['Screen Type'];
+                                          productInfo.conditionerType = product
+                                              .data()['Conditioner Type'];
+                                          productInfo.price =
+                                              product.data()['Price'];
+                                          productInfo.newPrice =
+                                              product.data()['New price'];
+                                          productInfo.discount =
+                                              product.data()['Discount'];
+                                          productInfo.discountPercentage =
+                                              product
+                                                  .data()['Discount percent'];
+                                          productInfo.rate1star =
+                                              product.data()['1 star rate'];
+                                          productInfo.rate2star =
+                                              product.data()['2 star rate'];
+                                          productInfo.rate3star =
+                                              product.data()['3 star rate'];
+                                          productInfo.rate4star =
+                                              product.data()['4 star rate'];
+                                          productInfo.rate5star =
+                                              product.data()['5 star rate'];
+                                          productInfo.img =
+                                              product.data()['imgURL'];
+                                          productInfo.type =
+                                              product.data()['type'];
+                                          productInfo.sellerEmail =
+                                              product.data()['Seller Email'];
                                           productInfo.id = product.id;
                                           final productview = SingleProduct(
                                             prd: productInfo,
@@ -742,7 +774,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -802,7 +835,8 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -917,30 +951,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          if (isPressed)
-                            isPressed = false;
-                          else
-                            isPressed = true;
-                        });
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

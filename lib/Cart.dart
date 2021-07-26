@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/AddressCheckout.dart';
-import 'package:store_app/Checkout.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -13,7 +12,6 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
   bool hasProducts = false;
 
   void navigateToCheckout() {
@@ -60,6 +58,7 @@ class _CartState extends State<Cart> {
                       List<SingleCartProduct> productsview = [];
                       for (var product in products) {
                         final productname = product.data()['Product Name'];
+                        final orderedquantity = product.data()['Ordered Quantity'];
                         final productprice = product.data()['Price'] as num;
                         final productdiscount = product.data()['Discount'];
                         final productdiscountpercent =
@@ -72,6 +71,7 @@ class _CartState extends State<Cart> {
                         print("$productname $productprice");
                         final productview = SingleCartProduct(
                           cart_prod_name: productname,
+                          cart_prod_quantity: orderedquantity,
                           cart_prod_price: productprice,
                           cart_prod_newPrice: productnewprice,
                           cart_prod_discount: productdiscount,
@@ -155,6 +155,7 @@ class SingleCartProduct extends StatelessWidget {
   final cart_prod_type;
   final cart_prod_id;
   final cart_prod_changeFlag;
+  final cart_prod_quantity;
 
   const SingleCartProduct(
       {this.cart_prod_name,
@@ -165,7 +166,7 @@ class SingleCartProduct extends StatelessWidget {
       this.cart_prod_discountPercent,
       this.cart_prod_type,
       this.cart_prod_changeFlag,
-      this.cart_prod_id});
+      this.cart_prod_id,this.cart_prod_quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +206,7 @@ class SingleCartProduct extends StatelessWidget {
                         await FirebaseFirestore.instance
                             .collection('Customers')
                             .doc(FirebaseAuth.instance.currentUser.uid)
-                            .update({'Total': FieldValue.increment(-oldPrice)});
+                            .update({'Total': FieldValue.increment(-(oldPrice*double.parse(cart_prod_quantity)))});
                       },
                     ),
                   ),
@@ -220,7 +221,7 @@ class SingleCartProduct extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Type: ${cart_prod_type}"),
+                        child: Text("Quantity: ${cart_prod_quantity}"),
                       ),
                     ],
                   ),
@@ -261,7 +262,7 @@ class SingleCartProduct extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                            "The Product named: '$cart_prod_name' has been removed or edited, try adding it again")),
+                            "The Product named: '$cart_prod_name' has been removed or edited, try adding it again",style: TextStyle(color: Colors.white),)),
                     IconButton(
                         icon: Icon(Icons.close),
                         onPressed: () {

@@ -347,17 +347,17 @@ class _loginState extends State<login> {
                         });
                         final newuser = await _auth.signInWithEmailAndPassword(
                             email: Email, password: pass);
-                        customer.userID = _auth.currentUser.uid;
-                        final user = _auth.currentUser;
-                        if (user.emailVerified) {
+                        // customer.userID = _auth.currentUser.uid;
+                        // final user = _auth.currentUser;
+                        // if (user.emailVerified) {
                           Navigator.pushNamed(context, loggedinhome.id);
-                        } else {
-                          user.sendEmailVerification();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => verifyScreen()));
-                        }
+                        // } else {
+                        //   user.sendEmailVerification();
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => verifyScreen()));
+                        // }
                       }
                     }
                   } catch (e) {

@@ -279,8 +279,7 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
         .then((value) {
       value.docs.forEach((element) async {
         final cid = element.data()['CustomerID'].toString().trim();
-        print(
-            'This is the element data for customer ${element.data()['CustomerID']}');
+        String quantity = element.data()['Ordered Quantity'];
         String changeFlag = element.data()['ChangeFlag'];
         //Check if cart was modified before
         if (changeFlag == 'false') {
@@ -301,7 +300,7 @@ class _AddOfferOnCategoryState extends State<AddOfferOnCategory> {
           await FirebaseFirestore.instance
               .collection('Customers')
               .doc(cid)
-              .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
+              .update({'Total': FieldValue.increment(-(double.parse(oldPrice)*double.parse(quantity)))});
         }
       });
     });

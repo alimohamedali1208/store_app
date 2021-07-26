@@ -6,7 +6,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/ProductDetails.dart';
 import 'package:store_app/SearchPages/CameraCatSearch.dart';
-import 'package:store_app/SearchPages/LaptopCatSearch.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
@@ -76,18 +75,26 @@ class _camerasCategoryPageState extends State<camerasCategoryPage> {
                           productInfo.price = product.data()['Price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description = product.data()['Description'];
+                          productInfo.description =
+                              product.data()['Description'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.megapixel = product.data()['Mega Pixel'];
-                          productInfo.screenType = product.data()['Screen Type'];
-                          productInfo.opticalzoom = product.data()['Optical Zoom'];
-                          productInfo.cameratype = product.data()['Camera Type'];
-                          productInfo.screenSize = product.data()['Screen Size'];
-                          productInfo.accessoryType = product.data()['AccessoryType'];
+                          productInfo.screenType =
+                              product.data()['Screen Type'];
+                          productInfo.opticalzoom =
+                              product.data()['Optical Zoom'];
+                          productInfo.cameratype =
+                              product.data()['Camera Type'];
+                          productInfo.screenSize =
+                              product.data()['Screen Size'];
+                          productInfo.accessoryType =
+                              product.data()['AccessoryType'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail = product.data()['Seller Email'];
+                          productInfo.sellerEmail =
+                              product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.discountPercentage =
+                              product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -158,7 +165,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -218,7 +226,8 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -334,25 +343,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        addToFav();
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

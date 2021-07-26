@@ -110,7 +110,7 @@ class DiscountProductsView extends StatelessWidget {
                 productInfo.storageType = product.data()['Storage Type'];
                 productInfo.storageUnit = product.data()['Capacity'];
               }else if (productInfo.type == 'Fashion') {
-                productInfo.clothType = product.data()['Clothing Type'];
+                productInfo.clothType = product.data()['Clothing type'];
                 productInfo.ClothSize = product.data()['Size'];
               }
               productview = SingleProduct(

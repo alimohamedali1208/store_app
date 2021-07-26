@@ -262,27 +262,43 @@ class _electronicsCatSearchState extends State<electronicsCatSearch> {
                         List<SingleProduct> productsview = [];
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
-                          productInfo.projectorType = product.data()['Projector Type'];
+                          productInfo.projectorType =
+                              product.data()['Projector Type'];
                           productInfo.rate = product.data()['Rating'];
                           productInfo.brand = product.data()['Brand Name'];
-                          if (ddSearchBrand == null || productInfo.brand == ddSearchBrand) {
-                            if (ddProjectorType == null || productInfo.projectorType == ddProjectorType) {
-                              if (ddRatings == null || double.parse(productInfo.rate) >= ddRatings) {
-                                productInfo.name = product.data()['Product Name'];
-                                productInfo.quantity = product.data()['Quantity'];
-                                productInfo.description = product.data()['Description'];
+                          if (ddSearchBrand == null ||
+                              productInfo.brand == ddSearchBrand) {
+                            if (ddProjectorType == null ||
+                                productInfo.projectorType == ddProjectorType) {
+                              if (ddRatings == null ||
+                                  double.parse(productInfo.rate) >= ddRatings) {
+                                productInfo.name =
+                                    product.data()['Product Name'];
+                                productInfo.quantity =
+                                    product.data()['Quantity'];
+                                productInfo.description =
+                                    product.data()['Description'];
                                 productInfo.price = product.data()['Price'];
-                                productInfo.newPrice = product.data()['New price'];
-                                productInfo.discount = product.data()['Discount'];
-                                productInfo.discountPercentage = product.data()['Discount percent'];
-                                productInfo.rate1star = product.data()['1 star rate'];
-                                productInfo.rate2star = product.data()['2 star rate'];
-                                productInfo.rate3star = product.data()['3 star rate'];
-                                productInfo.rate4star = product.data()['4 star rate'];
-                                productInfo.rate5star = product.data()['5 star rate'];
+                                productInfo.newPrice =
+                                    product.data()['New price'];
+                                productInfo.discount =
+                                    product.data()['Discount'];
+                                productInfo.discountPercentage =
+                                    product.data()['Discount percent'];
+                                productInfo.rate1star =
+                                    product.data()['1 star rate'];
+                                productInfo.rate2star =
+                                    product.data()['2 star rate'];
+                                productInfo.rate3star =
+                                    product.data()['3 star rate'];
+                                productInfo.rate4star =
+                                    product.data()['4 star rate'];
+                                productInfo.rate5star =
+                                    product.data()['5 star rate'];
                                 productInfo.img = product.data()['imgURL'];
                                 productInfo.type = product.data()['type'];
-                                productInfo.sellerEmail = product.data()['Seller Email'];
+                                productInfo.sellerEmail =
+                                    product.data()['Seller Email'];
                                 productInfo.id = product.id;
                                 final productview = SingleProduct(
                                   prd: productInfo,
@@ -322,10 +338,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToCart() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in cart');
@@ -350,7 +363,8 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -381,10 +395,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   Future addToFav() async {
     if (customer.firstName == "temp") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
       print('first check if product already in fav');
@@ -413,7 +424,8 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Name': widget.prd.name,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
@@ -429,7 +441,6 @@ class _SingleProductState extends State<SingleProduct> {
       });
     }
   }
-
 
   Future removeFromFav() async {
     if (customer.firstName == "temp") {
@@ -529,30 +540,43 @@ class _SingleProductState extends State<SingleProduct> {
                     style: TextStyle(height: 1.5),
                   ),
                   Spacer(),
-                  IconButton(
-                      icon: (isPressed)
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_outline),
-                      tooltip: 'Add to favorites',
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          if (isPressed)
-                            isPressed = false;
-                          else
-                            isPressed = true;
-                        });
-                      }),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    icon: (cartIsPressed)
-                        ? Icon(Icons.download_done_rounded)
-                        : Icon(Icons.add_shopping_cart_outlined),
-                    tooltip: 'Add to cart',
-                    color: Colors.black,
-                    onPressed: cartIsPressed ? null : () => addToCart(),
+                  Row(
+                    children: (widget.prd.quantity == '0')
+                        ? [
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text(
+                                "Out of stock",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]
+                        : [
+                            IconButton(
+                                icon: (isPressed)
+                                    ? Icon(Icons.favorite)
+                                    : Icon(Icons.favorite_outline),
+                                tooltip: 'Add to favorites',
+                                color: Colors.red,
+                                onPressed: () {
+                                  addToFav();
+                                }),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                              icon: (cartIsPressed)
+                                  ? Icon(Icons.download_done_rounded)
+                                  : Icon(Icons.add_shopping_cart_outlined),
+                              tooltip: 'Add to cart',
+                              color: Colors.black,
+                              onPressed:
+                                  cartIsPressed ? null : () => addToCart(),
+                            ),
+                          ],
                   )
                 ],
               )

@@ -18,6 +18,7 @@ FirebaseAuth _auth = FirebaseAuth.instance;
 UserCustomer customer = UserCustomer();
 
 class _FavoritesState extends State<Favorites> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +61,7 @@ class _FavoritesState extends State<Favorites> {
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
                           productInfo.name = product.data()['Product Name'];
-                          productInfo.quantity = product.data()['Quantity'];
+                          productInfo.quantity = product.data()['Product Quantity'];
                           productInfo.price = product.data()['Price'] as num;
                           productInfo.discount = product.data()['Discount'];
                           productInfo.discountPercentage = product.data()['Discount percent'];
@@ -104,6 +105,9 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
   final _firestore = FirebaseFirestore.instance;
 
   Future addToCart() async {
+    setState(() {
+      showSpinner = true;
+    });
     if (customer.firstName == "temp") {
       Fluttertoast.showToast(msg: "You need to sign in first");
     } else {
@@ -128,7 +132,8 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
-            'Product Quantity': 1,
+            'Product Quantity': widget.prd.quantity,
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -152,6 +157,9 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
         }
       });
     }
+    setState(() {
+      showSpinner = false;
+    });
   }
 
   Future removeFromFav() async {
