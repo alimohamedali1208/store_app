@@ -9,6 +9,7 @@ import 'package:store_app/productClass.dart';
 import '../UserCustomer.dart';
 
 bool showSpinner = false;
+
 class Favorites extends StatefulWidget {
   @override
   _FavoritesState createState() => _FavoritesState();
@@ -18,7 +19,6 @@ FirebaseAuth _auth = FirebaseAuth.instance;
 UserCustomer customer = UserCustomer();
 
 class _FavoritesState extends State<Favorites> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +61,12 @@ class _FavoritesState extends State<Favorites> {
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
                           productInfo.name = product.data()['Product Name'];
-                          productInfo.quantity = product.data()['Product Quantity'];
+                          productInfo.quantity =
+                              product.data()['Product Quantity'];
                           productInfo.price = product.data()['Price'] as num;
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage = product.data()['Discount percent'];
+                          productInfo.discountPercentage =
+                              product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
@@ -101,7 +103,6 @@ class SingleFavoritesProduct extends StatefulWidget {
 }
 
 class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
-
   final _firestore = FirebaseFirestore.instance;
 
   Future addToCart() async {
@@ -139,7 +140,7 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
             'New price': widget.prd.newPrice,
             'Discount': widget.prd.discount,
             'Discount percent': widget.prd.discountPercentage,
-            'ChangeFlag':'false',
+            'ChangeFlag': 'false',
             'type': widget.prd.type,
             'imgURL': widget.prd.img,
           });
@@ -192,107 +193,124 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: (widget.prd.changeFlag == 'false')? [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'images/PlaceHolder.gif',
-                image: (widget.prd.img == null)
-                    ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                    : widget.prd.img,
-                height: 80,
-                width: 120,
-              ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.prd.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+      children: (widget.prd.changeFlag == 'false')
+          ? [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'images/PlaceHolder.gif',
+                        image: (widget.prd.img == null)
+                            ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                            : widget.prd.img,
+                        height: 80,
+                        width: 120,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 8.0, left: 8, right: 8),
-                  child: (widget.prd.discount == 'false')
-                      ? Text(
-                          "${widget.prd.price} EGP",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      : Row(
-                          children: [
-                            Text(
-                              "${widget.prd.price} EGP",
-                              style: TextStyle(
-                                  decoration: TextDecoration.lineThrough),
+                  Flexible(
+                    flex: 11,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            widget.prd.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "${widget.prd.newPrice} EGP",
-                              style: TextStyle(
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                ),
-                Container(
-                  child: OutlineButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 8.0, left: 8, right: 8),
+                          child: (widget.prd.discount == 'false')
+                              ? Text(
+                                  "${widget.prd.price} EGP",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              : Row(
+                                  children: [
+                                    Text(
+                                      "${widget.prd.price} EGP",
+                                      style: TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "${widget.prd.newPrice} EGP",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                        ),
+                        Container(
+                          child: OutlineButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            onPressed: () {
+                              addToCart();
+                            },
+                            borderSide: BorderSide(color: Colors.black),
+                            highlightedBorderColor: Colors.grey,
+                            child: Text("Move To Cart"),
+                          ),
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      addToCart();
-                    },
-                    borderSide: BorderSide(color: Colors.black),
-                    highlightedBorderColor: Colors.grey,
-                    child: Text("Move To Cart"),
                   ),
-                )
-              ],
-            ),
-            Spacer(),
-            IconButton(
-                onPressed: () {
-                  removeFromFav();
-                },
-                icon: Icon(Icons.delete)),
-          ],
-        )
-      ]:
-      [
-      Container(
-      color: Colors.red[400],
-      child: ListTile(
-        title: Row(
-          children: [
-            Expanded(
-                child: Text(
-                    "The Product named: ${widget.prd.name} has been removed or edited, try adding it again")),
-            IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('Customers')
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .collection('favorite')
-                      .doc(widget.prd.id)
-                      .delete();
-                })
-          ],
-        ),
-      ),
-    ),
-      ],
+                  Spacer(
+                    flex: 1,
+                  ),
+                  Flexible(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                          onPressed: () {
+                            removeFromFav();
+                          },
+                          icon: Icon(Icons.delete)),
+                    ),
+                  ),
+                ],
+              )
+            ]
+          : [
+              Container(
+                color: Colors.red[400],
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                              "The Product named: ${widget.prd.name} has been removed or edited, try adding it again")),
+                      IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('Customers')
+                                .doc(FirebaseAuth.instance.currentUser.uid)
+                                .collection('favorite')
+                                .doc(widget.prd.id)
+                                .delete();
+                          })
+                    ],
+                  ),
+                ),
+              ),
+            ],
     );
   }
 }
