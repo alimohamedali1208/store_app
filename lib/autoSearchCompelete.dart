@@ -6,7 +6,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store_app/MobileCatSearch.dart';
 import 'package:store_app/ProductDetails.dart';
+import 'package:store_app/SearchPages/CameraCatSearch.dart';
+import 'package:store_app/SearchPages/ElectronicsCatSearch.dart';
+import 'package:store_app/SearchPages/FashionCatSearch.dart';
+import 'package:store_app/SearchPages/HomeAppliancesCatSearch.dart';
+import 'package:store_app/SearchPages/JewelryCatSearch.dart';
 import 'package:store_app/SearchPages/LaptopCatSearch.dart';
+import 'package:store_app/SearchPages/PCAccessoriesCatSearch.dart';
 import 'package:store_app/login.dart';
 import 'package:store_app/productClass.dart';
 
@@ -83,6 +89,26 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         child: Text('Home Appliances'),
                         value: 'home',
                       ),
+                      DropdownMenuItem<String>(
+                        child: Text('Electronics'),
+                        value: 'elec',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('PC Accessories'),
+                        value: 'pc',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('Fashion'),
+                        value: 'fashion',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('Jewelry'),
+                        value: 'jewelry',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('Cameras'),
+                        value: 'cam',
+                      ),
                     ],
                     onChanged: (String value) {
                       setState(() {
@@ -96,7 +122,37 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => mobileCatSearch()));
-                        } else {}
+                        } else if (value == 'home') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => homeAppliancesCatSearch()));
+                        }else if (value == 'elec') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => electronicsCatSearch()));
+                        }else if (value == 'pc') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => pcAccessoriesCatSearch()));
+                        }else if (value == 'fashion') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => fashionCatSearch()));
+                        }else if (value == 'jewelry') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => jewelryCatSearch()));
+                        }else if (value == 'cam') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => cameraCatSearch()));
+                        }
                       });
                     },
                     hint: Text('Choose Category'),

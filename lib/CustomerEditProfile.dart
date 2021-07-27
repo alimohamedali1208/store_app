@@ -8,6 +8,8 @@ import 'package:store_app/UserCustomer.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:email_validator/email_validator.dart';
 
+import 'Home.dart';
+
 //  ABSOLUTELY DISGUSTING
 //           ||
 //           ||
@@ -288,9 +290,25 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                   setState(() {
                     showSpinner = false;
                   });
-                  Fluttertoast.showToast(
-                      msg: 'Profile updated', backgroundColor: Colors.black54);
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Profile updated"),
+                          content: Text(
+                              "Changes will take effect after next sign in."),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  _auth.signOut();
+                                  customer.firstName = 'temp';
+                                  customer.lastName = 'temp';
+                                  Navigator.pushNamed(context, Home.id);
+                                },
+                                child: Text("Logout"))
+                          ],
+                        );
+                      });
                 } else {
                   _toggleValidate();
                   _showSnackbar(
