@@ -194,7 +194,7 @@ class SingleCartProduct extends StatelessWidget {
                       onPressed: () async {
                         double oldPrice;
                         if (cart_prod_discount == 'false')
-                          oldPrice = cart_prod_price;
+                          oldPrice = cart_prod_price.toDouble();
                         else
                           oldPrice = double.parse(cart_prod_newPrice);
                         await FirebaseFirestore.instance
@@ -206,7 +206,7 @@ class SingleCartProduct extends StatelessWidget {
                         await FirebaseFirestore.instance
                             .collection('Customers')
                             .doc(FirebaseAuth.instance.currentUser.uid)
-                            .update({'Total': FieldValue.increment(-(oldPrice*double.parse(cart_prod_quantity)))});
+                            .update({'Total': FieldValue.increment(-oldPrice)});
                       },
                     ),
                   ),

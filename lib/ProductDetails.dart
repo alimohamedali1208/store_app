@@ -29,7 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   //int rate;
 
-  Future addToCart(double quantity) async {
+  Future addToCart() async {
     setState(() {
       showSpinner = true;
     });
@@ -59,7 +59,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Quantity': widget.prd.quantity,
-            'Ordered Quantity': '${quantity.toInt()}',
+            'Ordered Quantity': '1',
             'Product Name': widget.prd.name,
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,
@@ -77,7 +77,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           await _firestore
               .collection('Customers')
               .doc(_auth.currentUser.uid)
-              .update({'Total': FieldValue.increment(price * quantity)});
+              .update({'Total': FieldValue.increment(price)});
           print('Product added to cart');
           //remove product from favorites
           removeFromFav();
@@ -373,17 +373,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             if (widget.prd.quantity == '0') {
               Fluttertoast.showToast(msg: "Out of stock");
             } else {
-              final orderedQuantity = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return sliderBoy(prd: widget.prd);
-                  });
-              print(orderedQuantity);
-              if (orderedQuantity == null) {
-              } else if (orderedQuantity == 0) {
-                Fluttertoast.showToast(msg: "Choose more than 0 quantity");
-              } else
-                addToCart(orderedQuantity);
+                addToCart();
             }
           }
         },

@@ -174,11 +174,12 @@ class _sellerhomeState extends State<sellerhome> {
                 ProductClass productInfo = ProductClass();
                 if (_auth.currentUser.uid == product.data()['SellerID']) {
                   productInfo.name = product.data()['Product Name'];
+                  productInfo.brand = product.data()['Brand Name'];
+                  productInfo.color = product.data()['Color'];
                   productInfo.description = product.data()['Description'];
                   productInfo.price = (product.data()['Price']).toDouble();
                   productInfo.discount = product.data()['Discount'];
-                  productInfo.discountPercentage =
-                      product.data()['Discount percent'];
+                  productInfo.discountPercentage = product.data()['Discount percent'];
                   productInfo.newPrice = product.data()['New price'];
                   productInfo.img = product.data()['imgURL'];
                   productInfo.type = product.data()['type'];
@@ -187,22 +188,92 @@ class _sellerhomeState extends State<sellerhome> {
                   productInfo.id = product.id;
                   if (productInfo.type == 'Mobiles') {
                     productInfo.storage = product.data()['Storage'];
+                    productInfo.storageUnit = product.data()['Storage Unit'];
+                    productInfo.screenSize = product.data()['Screen Size'];
                     productInfo.battery = product.data()['Battery'];
                     productInfo.memory = product.data()['Memory'];
+                    productInfo.memoryUnit = product.data()['Memory Unit'];
                     productInfo.camera = product.data()['Camera'];
                     productInfo.os = product.data()['OS'];
-                    productInfo.brand = product.data()['Brand Name'];
-                    productInfo.screenSize = product.data()['Screen Size'];
-                    productInfo.storageUnit = product.data()['Storage Unit'];
                   } else if (productInfo.type == 'Laptops') {
                     productInfo.storage = product.data()['Storage'];
+                    productInfo.storageUnit =
+                    product.data()['Storage Unit'];
+                    productInfo.screenSize =
+                    product.data()['Screen Size'];
                     productInfo.battery = product.data()['Battery'];
                     productInfo.memory = product.data()['Memory'];
-                    productInfo.os = product.data()['OS'];
-                    productInfo.brand = product.data()['Brand Name'];
-                    productInfo.screenSize = product.data()['ScreenSize'];
                     productInfo.cpu = product.data()['CPU'];
                     productInfo.gpu = product.data()['GPU'];
+                    productInfo.os = product.data()['OS'];
+                  } else if (productInfo.type == 'Cameras') {
+                    productInfo.megapixel =
+                    product.data()['Mega Pixel'];
+                    productInfo.screenType =
+                    product.data()['Screen Type'];
+                    productInfo.opticalzoom =
+                    product.data()['Optical Zoom'];
+                    productInfo.cameratype =
+                    product.data()['Camera Type'];
+                    productInfo.screenSize =
+                    product.data()['Screen Size'];
+                  } else if (productInfo.type == 'CameraAccessories' ||
+                      productInfo.type == 'OtherPC') {
+                    productInfo.accessoryType =
+                    product.data()['AccessoryType'];
+                  } else if (productInfo.type == 'Fridges') {
+                    productInfo.weight = product.data()['Weight'];
+                    productInfo.width = product.data()['Width'];
+                    productInfo.depth = product.data()['Depth'];
+                    productInfo.height = product.data()['Height'];
+                    productInfo.material = product.data()['Material'];
+                  } else if (productInfo.type == 'AirConditioner') {
+                    productInfo.weight = product.data()['Weight'];
+                    productInfo.width = product.data()['Width'];
+                    productInfo.depth = product.data()['Depth'];
+                    productInfo.conditionerType =
+                    product.data()['Conditioner Type'];
+                    productInfo.horsePower =
+                    product.data()['Horse Power'];
+                  } else if (productInfo.type == 'TV') {
+                    productInfo.weight = product.data()['Weight'];
+                    productInfo.width = product.data()['Width'];
+                    productInfo.depth = product.data()['Depth'];
+                    productInfo.screenSize =
+                    product.data()['Screen Size'];
+                    productInfo.screenType =
+                    product.data()['Screen Type'];
+                    productInfo.screenRes =
+                    product.data()['Screen Resolution'];
+                    productInfo.tvType =
+                    product.data()['Category Type'];
+                  } else if (productInfo.type == 'OtherHome') {
+                    productInfo.weight = product.data()['Weight'];
+                    productInfo.width = product.data()['Width'];
+                    productInfo.depth = product.data()['Depth'];
+                    productInfo.height = product.data()['Height'];
+                  } else if (productInfo.type == 'Jewelry') {
+                    productInfo.metalType =
+                    product.data()['Metal Type'];
+                    productInfo.targetGroup =
+                    product.data()['Target Group'];
+                  } else if (productInfo.type == 'Projectors') {
+                    productInfo.projectorType =
+                    product.data()['Projector Type'];
+                  } else if (productInfo.type == 'Printers') {
+                    productInfo.printerType =
+                    product.data()['Printer Type'];
+                    productInfo.paperSize =
+                    product.data()['Paper Type'];
+                  } else if (productInfo.type == 'StorageDevices') {
+                    productInfo.storageType =
+                    product.data()['Storage Type'];
+                    productInfo.storageUnit =
+                    product.data()['Capacity'];
+                  } else if (productInfo.type == 'Fashion') {
+                    productInfo.clothType =
+                    product.data()['Clothing Type'];
+                    productInfo.ClothSize = product.data()['Size'];
                   }
                   productview = SingleProduct(
                     prd: productInfo,
@@ -266,7 +337,8 @@ class _SingleProductState extends State<SingleProduct> {
         //    ======= the leading image section =======
         leading: FadeInImage.assetNetwork(
           placeholder: 'images/PlaceHolder.gif',
-          imageErrorBuilder: (context, url, error) => Image.asset('images/NoImg.png'),
+          imageErrorBuilder: (context, url, error) =>
+              Image.asset('images/NoImg.png'),
           image: (widget.prd.img == null)
               ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
               : widget.prd.img,
@@ -278,27 +350,41 @@ class _SingleProductState extends State<SingleProduct> {
           children: <Widget>[
             //  ======= this for price section ======
             Container(
-              alignment: Alignment.topLeft,
-              child: (widget.prd.discount == 'false')
-                  ? Text(
-                      "${widget.prd.price} EGP",
-                      style: TextStyle(color: Colors.red),
+              child: (widget.prd.quantity == '0')
+                  ? Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.red[600],
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "Out of stock",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     )
-                  : Row(
-                      children: [
-                        Text(
-                          "${widget.prd.price} EGP",
-                          style:
-                              TextStyle(decoration: TextDecoration.lineThrough),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "${widget.prd.newPrice} EGP",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      ],
+                  : Container(
+                      alignment: Alignment.topLeft,
+                      child: (widget.prd.discount == 'false')
+                          ? Text(
+                              "${widget.prd.price} EGP",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          : Row(
+                              children: [
+                                Text(
+                                  "${widget.prd.price} EGP",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.lineThrough),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "${widget.prd.newPrice} EGP",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              ],
+                            ),
                     ),
             ),
             Row(
@@ -329,52 +415,45 @@ class _SingleProductState extends State<SingleProduct> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editAirConditioner()));
+                                                  editAirConditioner(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Cameras') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editCameras()));
+                                                  editCameras(prd: widget.prd,)));
                                     } else if (widget.prd.type ==
                                         'CameraAccessories') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editCameraAccessory()));
-                                    } else if (widget.prd.type ==
-                                        'CameraAccessories') {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  editCameraAccessory()));
+                                                  editCameraAccessory(prd: widget.prd,)));
                                     } else if (widget.prd.type ==
                                         'OtherElectronics') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editElectronics()));
+                                                  editElectronics(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Fashion') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editFashion()));
+                                                  editFashion(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Fridges') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editFridge()));
+                                                  editFridge(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Jewelry') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editJewelary()));
+                                                  editJewelary(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Mobiles') {
                                       Navigator.push(
                                           context,
@@ -387,38 +466,44 @@ class _SingleProductState extends State<SingleProduct> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editHomeAppliances()));
+                                                  editHomeAppliances(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'OtherPC') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editPCAccessories()));
+                                                  editPCAccessories(prd: widget.prd,)));
+                                    }else if (widget.prd.type == 'StorageDevices') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  editStorageDevice(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'Printers') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editPrinter()));
+                                                  editPrinter(prd: widget.prd,)));
                                     } else if (widget.prd.type ==
                                         'Projectors') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editProjector()));
+                                                  editProjector(prd: widget.prd,)));
                                     } else if (widget.prd.type ==
                                         'StorageDevice') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  editStorageDevice()));
+                                                  editStorageDevice(prd: widget.prd,)));
                                     } else if (widget.prd.type == 'TV') {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => editTV()));
+                                              builder: (context) => editTV(prd: widget.prd,)));
                                     }
                                   },
                                   child: Row(
@@ -531,22 +616,33 @@ class _SingleProductState extends State<SingleProduct> {
                                               style: TextStyle(
                                                   color: Colors.black),
                                             ),
-                                            onPressed: (widget.prd.discount == 'false') ? null : () async {
+                                            onPressed: (widget.prd.discount ==
+                                                    'false')
+                                                ? null
+                                                : () async {
                                                     Fluttertoast.showToast(
-                                                      msg: "Discount has been removed",
+                                                      msg:
+                                                          "Discount has been removed",
                                                       toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                      backgroundColor: Colors.black54,
-                                                      gravity: ToastGravity.BOTTOM,
+                                                          Toast.LENGTH_SHORT,
+                                                      backgroundColor:
+                                                          Colors.black54,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
                                                       textColor: Colors.white,
                                                       fontSize: 16.0,
                                                     );
-                                                    await FirebaseFirestore.instance
-                                                        .collection('ProductsCollection')
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'ProductsCollection')
                                                         .doc(widget.prd.type)
                                                         .collection('Products')
                                                         .doc(widget.prd.id)
-                                                        .update({'Discount': 'false', 'Discount percent': '0', 'New price': '0'
+                                                        .update({
+                                                      'Discount': 'false',
+                                                      'Discount percent': '0',
+                                                      'New price': '0'
                                                     });
                                                     //Remove edited product from any customer cart
                                                     await removeEditedProductFromCart();
@@ -575,21 +671,31 @@ class _SingleProductState extends State<SingleProduct> {
                                               } else {
                                                 // Inserting new discount
                                                 Fluttertoast.showToast(
-                                                  msg: "$offer% Discount has been added",
-                                                  toastLength: Toast.LENGTH_SHORT,
-                                                  backgroundColor: Colors.black54,
+                                                  msg:
+                                                      "$offer% Discount has been added",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      Colors.black54,
                                                   gravity: ToastGravity.BOTTOM,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0,
                                                 );
-                                                String newPrice = (widget.prd.price - ((offer / 100) * widget.prd.price))
+                                                String newPrice = (widget
+                                                            .prd.price -
+                                                        ((offer / 100) *
+                                                            widget.prd.price))
                                                     .toString();
                                                 await FirebaseFirestore.instance
-                                                    .collection('ProductsCollection')
+                                                    .collection(
+                                                        'ProductsCollection')
                                                     .doc(widget.prd.type)
                                                     .collection('Products')
                                                     .doc(widget.prd.id)
-                                                    .update({'Discount': 'true', 'Discount percent': '$offer', 'New price': newPrice
+                                                    .update({
+                                                  'Discount': 'true',
+                                                  'Discount percent': '$offer',
+                                                  'New price': newPrice
                                                 });
                                                 Navigator.of(context).pop();
                                                 //Remove edited product from any customer cart
@@ -770,7 +876,7 @@ class _SingleProductState extends State<SingleProduct> {
         final cid = element.data()['CustomerID'].toString().trim();
         print(
             'This is the element data for customer ${element.data()['CustomerID']}');
-        String quantity = element.data()['Ordered Quantity'];
+        //String quantity = element.data()['Ordered Quantity'];
         String changeFlag = element.data()['ChangeFlag'];
         //Check if cart was modified before
         if (changeFlag == 'false') {
@@ -791,7 +897,7 @@ class _SingleProductState extends State<SingleProduct> {
           await FirebaseFirestore.instance
               .collection('Customers')
               .doc(cid)
-              .update({'Total': FieldValue.increment(-(double.parse(oldPrice)*double.parse(quantity)))});
+              .update({'Total': FieldValue.increment(-double.parse(oldPrice))});
         }
       });
     });

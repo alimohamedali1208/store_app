@@ -70,7 +70,7 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
                           productInfo.name = product.data()['Product Name'];
-                          productInfo.price = product.data()['Price'];
+                          productInfo.price = product.data()['Price'] as num;
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
                           productInfo.description =
@@ -100,6 +100,7 @@ class _mobileCategoryPageState extends State<mobileCategoryPage> {
                               product.data()['Memory Unit'];
                           productInfo.camera = product.data()['Camera'];
                           productInfo.os = product.data()['OS'];
+                          productInfo.color = product.data()['Color'];
                           productInfo.id = product.id;
                           productview = SingleProduct(
                             prd: productInfo,
@@ -176,7 +177,7 @@ class _SingleProductState extends State<SingleProduct> {
           });
           double price;
           if (widget.prd.discount == 'false')
-            price = widget.prd.price;
+            price = widget.prd.price.toDouble();
           else
             price = double.parse(widget.prd.newPrice);
           await _firestore

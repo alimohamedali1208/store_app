@@ -65,15 +65,16 @@ class RecenProductsView extends StatelessWidget {
                 productInfo.screenSize = product.data()['ScreenSize'];
                 productInfo.cpu = product.data()['CPU'];
                 productInfo.gpu = product.data()['GPU'];
-              }else if (productInfo.type == 'Cameras') {
+              } else if (productInfo.type == 'Cameras') {
                 productInfo.megapixel = product.data()['Mega Pixel'];
                 productInfo.screenType = product.data()['Screen Type'];
                 productInfo.opticalzoom = product.data()['Optical Zoom'];
                 productInfo.cameratype = product.data()['Camera Type'];
                 productInfo.screenSize = product.data()['Screen Size'];
-              }else if (productInfo.type == 'CameraAccessories' || productInfo.type == 'OtherPC') {
+              } else if (productInfo.type == 'CameraAccessories' ||
+                  productInfo.type == 'OtherPC') {
                 productInfo.accessoryType = product.data()['AccessoryType'];
-              }else if (productInfo.type == 'Fridges') {
+              } else if (productInfo.type == 'Fridges') {
                 productInfo.weight = product.data()['Weight'];
                 productInfo.width = product.data()['Width'];
                 productInfo.depth = product.data()['Depth'];
@@ -83,7 +84,8 @@ class RecenProductsView extends StatelessWidget {
                 productInfo.weight = product.data()['Weight'];
                 productInfo.width = product.data()['Width'];
                 productInfo.depth = product.data()['Depth'];
-                productInfo.conditionerType = product.data()['Conditioner Type'];
+                productInfo.conditionerType =
+                    product.data()['Conditioner Type'];
                 productInfo.horsePower = product.data()['Horse Power'];
               } else if (productInfo.type == 'TV') {
                 productInfo.weight = product.data()['Weight'];
@@ -101,15 +103,15 @@ class RecenProductsView extends StatelessWidget {
               } else if (productInfo.type == 'Jewelry') {
                 productInfo.metalType = product.data()['Metal Type'];
                 productInfo.targetGroup = product.data()['Target Group'];
-              }else if (productInfo.type == 'Projectors') {
+              } else if (productInfo.type == 'Projectors') {
                 productInfo.projectorType = product.data()['Projector Type'];
-              }else if (productInfo.type == 'Printers') {
+              } else if (productInfo.type == 'Printers') {
                 productInfo.printerType = product.data()['Printer Type'];
                 productInfo.paperSize = product.data()['Paper Type'];
-              }else if (productInfo.type == 'StorageDevices') {
+              } else if (productInfo.type == 'StorageDevices') {
                 productInfo.storageType = product.data()['Storage Type'];
                 productInfo.storageUnit = product.data()['Capacity'];
-              }else if (productInfo.type == 'Fashion') {
+              } else if (productInfo.type == 'Fashion') {
                 productInfo.clothType = product.data()['Clothing type'];
                 productInfo.ClothSize = product.data()['Size'];
               }
@@ -139,8 +141,6 @@ class SingleProduct extends StatefulWidget {
 }
 
 class _SingleProductState extends State<SingleProduct> {
-  //final _auth = FirebaseAuth.instance;
-  //final _firestore = FirebaseFirestore.instance;
   bool isPressed = false;
   bool cartIsPressed = false;
 
@@ -174,27 +174,41 @@ class _SingleProductState extends State<SingleProduct> {
                 child: Text(widget.prd.name),
               ),
               Container(
-                alignment: Alignment.topLeft,
-                child: (widget.prd.discount == 'false')
-                    ? Text(
-                        "${widget.prd.price} EGP",
+                child: (widget.prd.quantity == '0')
+                    ? Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Colors.red[600],
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Text(
+                          "Out of stock",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       )
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "${widget.prd.price}",
-                            style: TextStyle(
-                                decoration: TextDecoration.lineThrough),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "${widget.prd.newPrice} EGP",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                    : Container(
+                        alignment: Alignment.topLeft,
+                        child: (widget.prd.discount == 'false')
+                            ? Text(
+                                "${widget.prd.price} EGP",
+                              )
+                            : Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "${widget.prd.price}",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.lineThrough),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "${widget.prd.newPrice} EGP",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                       ),
               ),
             ],

@@ -135,19 +135,16 @@ class _autoSearchCompeleteState extends State<autoSearchCompelete> {
                         for (var product in products) {
                           ProductClass productInfo = ProductClass();
                           productInfo.name = product.data()['Product Name'];
-                          productInfo.price = product.data()['Price'];
+                          productInfo.price = product.data()['Price'] as num;
                           productInfo.img = product.data()['imgURL'];
                           productInfo.type = product.data()['type'];
-                          productInfo.description =
-                              product.data()['Description'];
+                          productInfo.description = product.data()['Description'];
                           productInfo.color = product.data()['Color'];
                           productInfo.brand = product.data()['Brand Name'];
                           productInfo.quantity = product.data()['Quantity'];
-                          productInfo.sellerEmail =
-                              product.data()['Seller Email'];
+                          productInfo.sellerEmail = product.data()['Seller Email'];
                           productInfo.discount = product.data()['Discount'];
-                          productInfo.discountPercentage =
-                              product.data()['Discount percent'];
+                          productInfo.discountPercentage = product.data()['Discount percent'];
                           productInfo.newPrice = product.data()['New price'];
                           productInfo.rate1star = product.data()['1 star rate'];
                           productInfo.rate2star = product.data()['2 star rate'];
@@ -323,7 +320,7 @@ class _SingleProductState extends State<SingleProduct> {
           });
           double price;
           if (widget.prd.discount == 'false')
-            price = widget.prd.price;
+            price = widget.prd.price.toDouble();
           else
             price = double.parse(widget.prd.newPrice);
           await _firestore

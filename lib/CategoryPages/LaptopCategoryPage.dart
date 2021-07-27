@@ -174,7 +174,7 @@ class _SingleProductState extends State<SingleProduct> {
           });
           double price;
           if (widget.prd.discount == 'false')
-            price = widget.prd.price;
+            price = widget.prd.price.toDouble();
           else
             price = double.parse(widget.prd.newPrice);
           await _firestore
@@ -221,6 +221,7 @@ class _SingleProductState extends State<SingleProduct> {
               .set({
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
+            'Product Name': widget.prd.name,
             'Product Quantity': widget.prd.quantity,
             'Ordered Quantity': '1',
             'Price': widget.prd.price,
