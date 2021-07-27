@@ -196,25 +196,26 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
       children: (widget.prd.changeFlag == 'false')
           ? [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    flex: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'images/PlaceHolder.gif',
-                        image: (widget.prd.img == null)
-                            ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
-                            : widget.prd.img,
-                        height: 80,
-                        width: 120,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'images/PlaceHolder.gif',
+                      image: (widget.prd.img == null)
+                          ? "https://firebasestorage.googleapis.com/v0/b/store-cc25c.appspot.com/o/uploads%2FPlaceHolder.gif?alt=media&token=89558fba-e8b6-4b99-bcb7-67bf1412a83a"
+                          : widget.prd.img,
+                      height: 80,
+                      width: 120,
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  Flexible(
-                    flex: 11,
+                  Expanded(
+                    flex: 30,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -273,16 +274,13 @@ class _SingleFavoritesProductState extends State<SingleFavoritesProduct> {
                   Spacer(
                     flex: 1,
                   ),
-                  Flexible(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: IconButton(
-                          onPressed: () {
-                            removeFromFav();
-                          },
-                          icon: Icon(Icons.delete)),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                        onPressed: () {
+                          removeFromFav();
+                        },
+                        icon: Icon(Icons.delete)),
                   ),
                 ],
               )

@@ -218,6 +218,7 @@ class _SingleProductState extends State<SingleProduct> {
             'ProductID': widget.prd.id,
             'CustomerID': _auth.currentUser.uid,
             'Product Quantity': widget.prd.quantity,
+            'Product Name': widget.prd.name,
             'Ordered Quantity': '1',
             'Price': widget.prd.price,
             'New price': widget.prd.newPrice,

@@ -373,7 +373,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             if (widget.prd.quantity == '0') {
               Fluttertoast.showToast(msg: "Out of stock");
             } else {
-                addToCart();
+              addToCart();
             }
           }
         },
@@ -586,15 +586,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: (widget.prd.quantity == '0')
                               ? Column(
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          color: Colors.red[600],
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Text(
-                                        "Out of stock",
-                                        style: TextStyle(color: Colors.white),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.red[600],
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Text(
+                                          "Out of stock",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                     Padding(
@@ -666,7 +670,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                           padding: const EdgeInsets.only(
                             left: 15.0,
                             right: 60,
-                            top: 10,
                           ),
                           child:
                               Text("\u2022 Quantity: ${widget.prd.quantity}"),

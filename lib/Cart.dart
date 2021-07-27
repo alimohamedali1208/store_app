@@ -58,7 +58,8 @@ class _CartState extends State<Cart> {
                       List<SingleCartProduct> productsview = [];
                       for (var product in products) {
                         final productname = product.data()['Product Name'];
-                        final orderedquantity = product.data()['Ordered Quantity'];
+                        final orderedquantity =
+                            product.data()['Ordered Quantity'];
                         final productprice = product.data()['Price'] as num;
                         final productdiscount = product.data()['Discount'];
                         final productdiscountpercent =
@@ -166,7 +167,8 @@ class SingleCartProduct extends StatelessWidget {
       this.cart_prod_discountPercent,
       this.cart_prod_type,
       this.cart_prod_changeFlag,
-      this.cart_prod_id,this.cart_prod_quantity});
+      this.cart_prod_id,
+      this.cart_prod_quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -183,34 +185,31 @@ class SingleCartProduct extends StatelessWidget {
                 width: 80,
               ),
               title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Flexible(flex: 15, child: Text(cart_prod_name)),
-                  Spacer(),
-                  Flexible(
-                    flex: 2,
-                    child: IconButton(
-                      icon: Icon(Icons.highlight_remove),
-                      color: Colors.red[300],
-                      onPressed: () async {
-                        double oldPrice;
-                        if (cart_prod_discount == 'false')
-                          oldPrice = cart_prod_price.toDouble();
-                        else
-                          oldPrice = double.parse(cart_prod_newPrice);
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(FirebaseAuth.instance.currentUser.uid)
-                            .collection('cart')
-                            .doc(cart_prod_id)
-                            .delete();
-                        await FirebaseFirestore.instance
-                            .collection('Customers')
-                            .doc(FirebaseAuth.instance.currentUser.uid)
-                            .update({'Total': FieldValue.increment(-oldPrice)});
-                      },
-                    ),
-                  ),
                 ],
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.highlight_remove),
+                color: Colors.red[300],
+                onPressed: () async {
+                  double oldPrice;
+                  if (cart_prod_discount == 'false')
+                    oldPrice = cart_prod_price.toDouble();
+                  else
+                    oldPrice = double.parse(cart_prod_newPrice);
+                  await FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .collection('cart')
+                      .doc(cart_prod_id)
+                      .delete();
+                  await FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .update({'Total': FieldValue.increment(-oldPrice)});
+                },
               ),
               subtitle: Column(
                 children: <Widget>[
@@ -262,7 +261,9 @@ class SingleCartProduct extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                            "The Product named: '$cart_prod_name' has been removed or edited, try adding it again",style: TextStyle(color: Colors.white),)),
+                      "The Product named: '$cart_prod_name' has been removed or edited, try adding it again",
+                      style: TextStyle(color: Colors.white),
+                    )),
                     IconButton(
                         icon: Icon(Icons.close),
                         onPressed: () {
